@@ -108,7 +108,7 @@
     .back-btn::before { content: '←'; font-size: 14px; }
     .back-btn:hover { color: var(--black); }
     .gallery { display: grid; gap: 12px; margin-bottom: 20px; }
-    .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); }
+    .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); margin-top: 10px;}
     .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
     .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
     .gallery-thumb:hover { opacity: 0.85; }
@@ -155,8 +155,8 @@
 
     /* Trailer */
     .trailer-wrap {
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-top: 30px;
+      margin-bottom: 30px;
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid var(--gray-mid);
@@ -183,7 +183,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       margin-top: 20px;
     }
 
@@ -341,7 +341,7 @@
     .btn-buy { display: block; width: 100%; background: #25bd31; color: var(--white); border: none; border-radius: 6px; padding: 14px; font-family: var(--font); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.18s; text-align: center; text-decoration: none; }
     .btn-buy:hover { background: #1b9f26; }
     .suggestions { margin-top: 50px; border-top: 1.5px solid var(--black); padding-top: 36px; }
-    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 24px; font-weight: 700; }
+    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
     .suggestions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
     .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
     .sugg-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
