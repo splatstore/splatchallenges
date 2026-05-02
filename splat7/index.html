@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPLAT — Video Store</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #ffffff;
+      --black: #111111;
+      --green: #7ec98f;
+      --green-dark: #5db570;
+      --green-light: #e8f7eb;
+      --gray: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --gray-text: #888;
+      --font: 'Arial', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --white: #000000;
+        --black: #f0f0f0;
+        --green: #7ec98f;
+        --green-dark: #5db570;
+        --green-light: #1e3324;
+        --gray: #242424;
+        --gray-mid: #333333;
+        --gray-text: #999;
+      }
+      header { border-bottom-color: #333; }
+      .card { border-color: #333; }
+      .search-input { background: #242424; color: #f0f0f0; border-color: #444; }
+      .search-bar-wrap { background: #000000; border-bottom-color: #333; }
+      .burger-menu { background: #0d0d0d; border-color: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+      .burger-menu a { color: #f0f0f0; }
+      .burger-menu a:hover { background: #1a1a1a; }
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--black);
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--black);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .logo span {
+      color: var(--green);
+    }
+
+    /* ========== BURGER MENU ========== */
+    .burger-wrap {
+      position: relative;
+    }
+
+    .burger-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+
+    .burger-btn:hover { background: var(--gray); }
+
+    .burger-btn span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: var(--black);
+      border-radius: 2px;
+      transition: background 0.15s;
+    }
+
+    .burger-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--gray-mid);
+      border-radius: 8px;
+      min-width: 180px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+      overflow: hidden;
+      z-index: 200;
+    }
+
+    .burger-menu.open { display: block; }
+
+    .burger-menu a {
+      display: block;
+      padding: 13px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      transition: background 0.12s;
+    }
+
+    .burger-menu a:hover { background: var(--gray); }
+
+    /* ========== HERO (index only) ========== */
+    .hero {
+      padding: 56px 48px 36px;
+      border-bottom: 1px solid var(--gray-mid);
+      margin-bottom: 0;
+    }
+
+    .hero h1 {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.15;
+    }
+
+    /* ========== GRID ========== */
+    .grid-section {
+      padding: 48px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    /* ========== CARD ========== */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-mid);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+      transform: translateY(-2px);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      background: var(--gray);
+    }
+
+    .card-body {
+      padding: 16px 18px 18px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .btn-see-more {
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 20px;
+      padding: 7px 18px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background 0.18s;
+      text-transform: uppercase;
+    }
+
+    .btn-see-more:hover {
+      background: var(--green-dark);
+    }
+
+    a.btn-see-more {
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* ========== DETAIL PAGE ========== */
+    .detail-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font);
+      margin-bottom: 36px;
+      padding: 0;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover {
+      color: var(--black);
+    }
+
+    .back-btn::before {
+      content: '←';
+      font-size: 14px;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--gray-mid);
+      display: block;
+      background: var(--gray);
+    }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .gallery-thumb {
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.15s, opacity 0.15s;
+      display: block;
+      width: 100%;
+      background: var(--gray);
+    }
+
+    .gallery-thumb:hover {
+      opacity: 0.85;
+    }
+
+    .gallery-thumb.active {
+      border-color: var(--green);
+    }
+
+    /* Detail info */
+    .detail-info {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .detail-left {}
+
+    .detail-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .detail-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 28px;
+    }
+
+    /* Specs block */
+    .specs-block {
+      background: var(--gray);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .specs-block h3 {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-mid);
+      font-size: 13px;
+    }
+
+    .spec-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .spec-label {
+      color: var(--gray-text);
+      font-weight: 400;
+    }
+
+    .spec-value {
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .model-tag {
+      display: inline-block;
+      background: var(--green-light);
+      color: var(--green-dark);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0;
+    }
+
+    /* Right column (buy) */
+    .detail-right {
+      background: var(--gray);
+      border-radius: 8px;
+      padding: 28px 24px;
+      border: 1px solid var(--gray-mid);
+      position: sticky;
+      top: 80px;
+    }
+
+    .detail-right .price-big {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .detail-right .price-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 20px;
+    }
+
+    .btn-buy {
+      display: block;
+      width: 100%;
+      background: #003087;
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .btn-buy:hover {
+      background: #009cde;
+    }
+
+    .btn-cart {
+      display: block;
+      width: 100%;
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--black);
+      border-radius: 6px;
+      padding: 13px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .btn-cart:hover {
+      background: var(--gray);
+    }
+
+    /* Suggestions */
+    .suggestions {
+      margin-top: 56px;
+      border-top: 1.5px solid var(--black);
+      padding-top: 36px;
+    }
+
+    .suggestions h2 {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+
+    .suggestions-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .sugg-card {
+      cursor: pointer;
+      border: 1px solid var(--gray-mid);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.18s;
+    }
+
+    .sugg-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    .sugg-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      background: var(--gray);
+    }
+
+    .sugg-info {
+      padding: 10px 12px 12px;
+    }
+
+    .sugg-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .sugg-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    /* ========== SEARCH BAR ========== */
+    .search-bar-wrap {
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-mid);
+      padding: 20px 48px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-bar-inner {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-text);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 40px 11px 40px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 30px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--black);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .search-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(126,201,143,0.18);
+    }
+
+    .search-input::placeholder {
+      color: var(--gray-text);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-text);
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+      display: none;
+      transition: color 0.15s;
+    }
+
+    .search-clear:hover {
+      color: var(--black);
+    }
+
+    .search-count {
+      font-size: 12px;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray-text);
+      font-size: 14px;
+      letter-spacing: 1px;
+      display: none;
+    }
+
+    .no-results span {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .search-bar-wrap { padding: 14px 20px; top: 56px; }
+    }
+
+    /* PAGE TRANSITIONS */
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .detail-info {
+        grid-template-columns: 1fr;
+      }
+      .detail-right {
+        position: static;
+      }
+      .suggestions-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 20px; }
+      .hero { padding: 36px 20px 24px; }
+      .grid-section { padding: 24px 20px; }
+      .video-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .detail-page { padding: 24px 20px 60px; }
+      .gallery-thumbs { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .suggestions-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero p { font-size: 24px; }
+      .card-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .btn-see-more { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">SPLAT<span>Challenges</span></a>
+    <div class="burger-wrap">
+      <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="burger-menu" id="burger-menu">
+        <a href="index.html">All Videos</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- INDEX PAGE -->
+  <div id="page-index" class="page active">
+    <div class="hero">
+      <p>All videos</p>
+    </div>
+    <div class="search-bar-wrap">
+      <div class="search-bar-inner">
+        <span class="search-icon"></span>
+        <input
+          class="search-input"
+          id="search-input"
+          type="text"
+          placeholder="Search by title or model"
+          oninput="handleSearch(this.value)"
+          autocomplete="off"
+        />
+        <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Clear search">✕</button>
+      </div>
+      <span class="search-count" id="search-count"></span>
+    </div>
+    <div class="grid-section">
+      <div class="video-grid" id="video-grid"></div>
+      <div class="no-results" id="no-results">
+        No videos found for <span id="no-results-query"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const videos = [
+      {
+        id: "AE01",
+        name: "AERIAL 1. SPLAT SPA SALON",
+        price: 10,
+        date: "28/11/2022",
+        time: "24:05",
+        res: "480p",
+        size: "862,81 Mo",
+        img: "https://i.ibb.co/ccCpXdxy/AERIAL1-img4.jpg",
+        img1: "https://i.ibb.co/KxK3n6T3/AERIAL1-img1.jpg",
+        img2: "https://i.ibb.co/N6Mhhc4B/AERIAL1-img2.jpg",
+        img3: "https://i.ibb.co/B5C2wTNJ/AERIAL1-img3.jpg",
+        img4: "https://i.ibb.co/ccCpXdxy/AERIAL1-img4.jpg",
+        img5: "https://i.ibb.co/Y7dmNbYb/AERIAL1-img5.jpg",
+        model: "AERIAL"
+      },
+      {
+        id: "BB03",
+        name: "BABY 3. SO CLUMSY! THE NERD",
+        price: 10,
+        date: "04/04/2021",
+        time: "12:08",
+        res: "480p",
+        size: "411,23 Mo",
+        img: "https://i.ibb.co/My0kVh4Y/BABY3-img4.jpg",
+        img1: "https://i.ibb.co/n85j3570/BABY3-img1.jpg",
+        img2: "https://i.ibb.co/DfjMg6YM/BABY3-img2.jpg",
+        img3: "https://i.ibb.co/8npHR8Md/BABY3-img3.jpg",
+        img4: "https://i.ibb.co/My0kVh4Y/BABY3-img4.jpg",
+        img5: "https://i.ibb.co/C3nyfqrX/BABY3-img5.jpg",
+        model: "BABY"
+      },
+      {
+        id: "CA01",
+        name: "CANDY 1. HOW TO PIE YOURSELF",
+        price: 10,
+        date: "05/06/2022",
+        time: "06:55",
+        res: "480p",
+        size: "229,12 Mo",
+        img: "https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg",
+        img1: "https://i.ibb.co/x87TgqVN/CANDY1-img1.jpg",
+        img2: "https://i.ibb.co/Gf4qvP7z/CANDY1-img2.jpg",
+        img3: "https://i.ibb.co/hRS6smkW/CANDY1-img3.jpg",
+        img4: "https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg",
+        img5: "https://i.ibb.co/Kpd5ffZG/CANDY1-img5.jpg",
+        model: "CANDY"
+      },
+      {
+        id: "JC00",
+        name: "JACKSON. THE SPLATTER",
+        price: 10,
+        date: "2024",
+        time: "08:30",
+        res: "1080p FHD",
+        size: "164,25 Mo",
+        img: "https://i.ibb.co/FbPKNf57/JACKSON-img3.jpg",
+        img1: "https://i.ibb.co/SwxJn1K3/JACKSON-img1.jpg",
+        img2: "https://i.ibb.co/QjXZdxZQ/JACKSON-img2.jpg",
+        img3: "https://i.ibb.co/FbPKNf57/JACKSON-img3.jpg",
+        img4: "https://i.ibb.co/4wHDcwxf/JACKSON-img4.jpg",
+        img5: "https://i.ibb.co/MvpGK7P/JACKSON-img5.jpg",
+        model: "JACKSON"
+      },
+      {
+        id: "KT04",
+        name: "KITTY 4. SPLAT SPA SALON",
+        price: 10,
+        date: "28/06/2021",
+        time: "23:07",
+        res: "480p",
+        size: "812,51 Mo",
+        img: "https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg",
+        img1: "https://i.ibb.co/k6zxr5qF/KITTY4-img1.jpg",
+        img2: "https://i.ibb.co/wh3bV9Px/KITTY4-img2.jpg",
+        img3: "https://i.ibb.co/39MD7Xpd/KITTY4-img3.jpg",
+        img4: "https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg",
+        img5: "https://i.ibb.co/BKfZ3HFT/KITTY4-img5.jpg",
+        model: "KITTY"
+      },
+      {
+        id: "KT07",
+        name: "KITTY 7. KISSING BOOTH",
+        price: 10,
+        date: "2024",
+        time: "04:37",
+        res: "1080p FHD",
+        size: "666,59 Mo",
+        img: "https://i.ibb.co/wZnw7Rfs/KITTY7-img2.jpg",
+        img1: "https://i.ibb.co/vbypStK/KITTY7-img1.jpg",
+        img2: "https://i.ibb.co/wZnw7Rfs/KITTY7-img2.jpg",
+        img3: "https://i.ibb.co/B8gxhFv/KITTY7-img3.jpg",
+        img4: "https://i.ibb.co/yBP8WhXP/KITTY7-img4.jpg",
+        img5: "https://i.ibb.co/0yQYh64P/KITTY7-img5.jpg",
+        model: "KITTY"
+      },
+      {
+        id: "NU01",
+        name: "NURSEY 1. LAYING DOWN NUTELLA TREATMENT",
+        price: 10,
+        date: "12/12/2022",
+        time: "23:45",
+        res: "480p",
+        size: "851,82 Mo",
+        img: "https://i.ibb.co/3yBZ7GMD/NURSEY1-img4.jpg",
+        img1: "https://i.ibb.co/gMVZxqjF/NURSEY1-img1.jpg",
+        img2: "https://i.ibb.co/DPvQjMmM/NURSEY1-img2.jpg",
+        img3: "https://i.ibb.co/p6Dh6TFL/NURSEY1-img3.jpg",
+        img4: "https://i.ibb.co/3yBZ7GMD/NURSEY1-img4.jpg",
+        img5: "https://i.ibb.co/XkbK12y6/NURSEY1-img5.jpg",
+        model: "NURSEY"
+      },
+      {
+        id: "PK02",
+        name: "POKAR 2. SPLAT SPA SALON: THOUGH COSTUMER",
+        price: 10,
+        date: "16/08/2021",
+        time: "16:09",
+        res: "480p",
+        size: "518,38 Mo",
+        img: "https://i.ibb.co/pv6ZBS34/POKAR2-img5.jpg",
+        img1: "https://i.ibb.co/Gf7bthjB/POKAR2-img1.jpg",
+        img2: "https://i.ibb.co/XxZ3QtQG/POKAR2-img2.jpg",
+        img3: "https://i.ibb.co/HDHQH5Cm/POKAR2-img3.jpg",
+        img4: "https://i.ibb.co/vpprxY2/POKAR2-img4.jpg",
+        img5: "https://i.ibb.co/pv6ZBS34/POKAR2-img5.jpg",
+        model: "POKAR"
+      },
+      {
+        id: "PK03",
+        name: "POKAR 3. EXTREME CHALLENGE",
+        price: 10,
+        date: "13/03/2022",
+        time: "07:39",
+        res: "480p",
+        size: "185,65 Mo",
+        img: "https://i.ibb.co/BKqSgrQW/POKAR3-img4.jpg",
+        img1: "https://i.ibb.co/ZRsN4K0N/POKAR3-img1.jpg",
+        img2: "https://i.ibb.co/4ZDw9qYC/POKAR3-img2.jpg",
+        img3: "https://i.ibb.co/spNY80v8/POKAR3-img3.jpg",
+        img4: "https://i.ibb.co/BKqSgrQW/POKAR3-img4.jpg",
+        img5: "https://i.ibb.co/zTdQkB4B/POKAR3-img5.jpg",
+        model: "POKAR"
+      },
+      {
+        id: "PW02",
+        name: "POWER 2. SPLAT PASTRY SCHOOL",
+        price: 10,
+        date: "27/03/2022",
+        time: "18:53",
+        res: "480p",
+        size: "570,80 Mo",
+        img: "https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg",
+        img1: "https://i.ibb.co/7dn7rgGk/POWER2-img1.jpg",
+        img2: "https://i.ibb.co/kV2SbfQJ/POWER2-img2.jpg",
+        img3: "https://i.ibb.co/4ZBjx9ch/POWER2-img3.jpg",
+        img4: "https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg",
+        img5: "https://i.ibb.co/FkJWCbKh/POWER2-img5.jpg",
+        model: "POWER"
+      },
+      {
+        id: "SC01",
+        name: "SCHOOL 1. LEARNING PIE IN THE FACE TECHNIQUES",
+        price: 10,
+        date: "01/11/2020",
+        time: "09:08",
+        res: "480p",
+        size: "340,61 Mo",
+        img: "https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg",
+        img1: "https://i.ibb.co/pj90xwTZ/SCHOOL1-img1.jpg",
+        img2: "https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg",
+        img3: "https://i.ibb.co/B2skCnN8/SCHOOL1-img3.jpg",
+        img4: "https://i.ibb.co/NgpVJ2z8/SCHOOL1-img4.jpg",
+        img5: "https://i.ibb.co/QF4Bgy3G/SCHOOL1-img5.jpg",
+        model: "SCHOOL"
+      },
+      {
+        id: "VN01",
+        name: "VENUS 1. PIE CHALLENGE",
+        price: 10,
+        date: "12/04/2021",
+        time: "02:26",
+        res: "480p",
+        size: "84,95 Mo",
+        img: "https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg",
+        img1: "https://i.ibb.co/BVjVK6tm/VENUS1-img1.jpg",
+        img2: "https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg",
+        img3: "https://i.ibb.co/m5PXBNsZ/VENUS1-img3.jpg",
+        img4: "https://i.ibb.co/7tM1gqXs/VENUS1-img4.jpg",
+        img5: "https://i.ibb.co/4ZCPtfKS/VENUS1-img5.jpg",
+        model: "VENUS"
+      },
+      {
+        id: "CB01",
+        name: "CARIBBEAN 1. QUESTIONS & ANSWERS",
+        price: 10,
+        date: "2024",
+        time: "05:45",
+        res: "1080p FHD",
+        size: "791,36 Mo",
+        img: "https://i.ibb.co/yHxVNgZ/CARIBBEAN1-img2.jpg",
+        img1: "https://i.ibb.co/MDh8sbZ2/CARIBBEAN1-img1.jpg",
+        img2: "https://i.ibb.co/yHxVNgZ/CARIBBEAN1-img2.jpg",
+        img3: "https://i.ibb.co/35zVJ0Hp/CARIBBEAN1-img3.jpg",
+        img4: "https://i.ibb.co/BVxbRdVc/CARIBBEAN1-img4.jpg",
+        img5: "https://i.ibb.co/5t9JMx8/CARIBBEAN1-img5.jpg",
+        model: "CARIBBEAN"
+      },
+      {
+        id: "CB02",
+        name: "CARIBBEAN 2. VAIN MODEL",
+        price: 10,
+        date: "2024",
+        time: "11:05",
+        res: "1080p FHD",
+        size: "1,57 Go",
+        img: "https://i.ibb.co/dTFqBg5/CARIBBEAN2-img4.jpg",
+        img1: "https://i.ibb.co/Y7VgYL6g/CARIBBEAN2-img1.jpg",
+        img2: "https://i.ibb.co/G4HRbTjv/CARIBBEAN2-img2.jpg",
+        img3: "https://i.ibb.co/qL8f4j4Z/CARIBBEAN2-img3.jpg",
+        img4: "https://i.ibb.co/dTFqBg5/CARIBBEAN2-img4.jpg",
+        img5: "https://i.ibb.co/rRH1kr0h/CARIBBEAN2-img5.jpg",
+        model: "CARIBBEAN"
+      },
+      {
+        id: "CB03",
+        name: "CARIBBEAN 3. TEACHING SIGN LANGUAGE",
+        price: 10,
+        date: "2024",
+        time: "05:20",
+        res: "1080p FHD",
+        size: "769,29 Mo",
+        img: "https://i.ibb.co/rRwz1kbb/CARIBBEAN3-img3.jpg",
+        img1: "https://i.ibb.co/sJDP0yWm/CARIBBEAN3-img1.jpg",
+        img2: "https://i.ibb.co/5xB3ntLb/CARIBBEAN3-img2.jpg",
+        img3: "https://i.ibb.co/rRwz1kbb/CARIBBEAN3-img3.jpg",
+        img4: "https://i.ibb.co/qMr3qY44/CARIBBEAN3-img4.jpg",
+        img5: "https://i.ibb.co/xtjS5h9d/CARIBBEAN3-img5.jpg",
+        model: "CARIBBEAN"
+      },
+      {
+        id: "JN02",
+        name: "JONES 2. TWELVE GRAPES",
+        price: 10,
+        date: "03/01/2023",
+        time: "07:11",
+        res: "480p",
+        size: "244,77 Mo",
+        img: "https://i.ibb.co/8nCb6DHz/JONES2-img4.jpg",
+        img1: "https://i.ibb.co/nqy4t16f/JONES2-img1.jpg",
+        img2: "https://i.ibb.co/BWYm9fn/JONES2-img2.jpg",
+        img3: "https://i.ibb.co/9mdycryw/JONES2-img3.jpg",
+        img4: "https://i.ibb.co/8nCb6DHz/JONES2-img4.jpg",
+        img5: "https://i.ibb.co/Z1Y0FTxB/JONES2-img5.jpg",
+        model: "JONES"
+      }
+    ];
+
+    /* ===== BUILD INDEX ===== */
+    function buildGrid(list) {
+      const grid = document.getElementById('video-grid');
+      const noResults = document.getElementById('no-results');
+      const countEl = document.getElementById('search-count');
+      const query = document.getElementById('search-input').value.trim();
+
+      if (!list) list = videos;
+
+      if (list.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        document.getElementById('no-results-query').textContent = query;
+        countEl.textContent = '0 results';
+        return;
+      }
+
+      noResults.style.display = 'none';
+      countEl.textContent = query ? `${list.length} result${list.length > 1 ? 's' : ''}` : '';
+
+      grid.innerHTML = list.map(v => `
+        <div class="card">
+          <img class="card-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
+          <div class="card-body">
+            <div class="card-title">${v.name}</div>
+            <div class="card-footer">
+              <span class="card-price">$${v.price} USD</span>
+              <a class="btn-see-more" href="${v.id}.html">See more</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ===== SEARCH ===== */
+    function handleSearch(value) {
+      const clearBtn = document.getElementById('search-clear');
+      clearBtn.style.display = value.length > 0 ? 'block' : 'none';
+
+      const q = value.trim().toLowerCase();
+      if (!q) {
+        buildGrid(videos);
+        return;
+      }
+
+      const filtered = videos.filter(v =>
+        v.name.toLowerCase().includes(q) ||
+        v.model.toLowerCase().includes(q) ||
+        v.id.toLowerCase().includes(q)
+      );
+      buildGrid(filtered);
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('search-input');
+      input.value = '';
+      document.getElementById('search-clear').style.display = 'none';
+      document.getElementById('search-count').textContent = '';
+      buildGrid(videos);
+      input.focus();
+    }
+
+    // Init
+    buildGrid();
+    function toggleBurger() {
+      document.getElementById('burger-menu').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      const wrap = document.querySelector('.burger-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('burger-menu').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
