@@ -107,14 +107,14 @@
     .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); text-decoration: none; font-family: var(--font); margin-bottom: 36px; transition: color 0.15s; }
     .back-btn::before { content: '←'; font-size: 14px; }
     .back-btn:hover { color: var(--black); }
-    .gallery { display: grid; gap: 12px; margin-bottom: 40px; }
+    .gallery { display: grid; gap: 12px; margin-bottom: 18px; }
     .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); }
     .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
     .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
     .gallery-thumb:hover { opacity: 0.85; }
     .gallery-thumb.active { border-color: var(--green); }
     .detail-info { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start; }
-    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 12px; line-height: 1.3; }
+    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
     .detail-price { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 28px; }
     .specs-block { background: var(--gray); border-radius: 6px; margin-bottom: 24px; overflow: hidden; }
 
@@ -155,6 +155,7 @@
 
     /* Trailer */
     .trailer-wrap {
+      margin-top: 12px;
       margin-bottom: 40px;
       border-radius: 8px;
       overflow: hidden;
@@ -182,7 +183,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0;
+      margin-bottom: 10px;
       margin-top: 14px;
     }
 
@@ -245,7 +246,7 @@
     /* Footer */
     .site-footer {
       border-top: 1px solid var(--gray-mid);
-      margin-top: 64px;
+      margin-top: 10px;
       padding: 32px 48px;
       text-align: center;
     }
@@ -318,6 +319,21 @@
       color: var(--gray-text);
       letter-spacing: 1px;
       text-transform: uppercase;
+    }
+    .notice-box {
+      background: rgba(255, 220, 50, 0.12);
+      border: 1.5px solid #f0c000;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--black);
+      letter-spacing: 0.3px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .notice-box { background: rgba(255, 200, 0, 0.08); border-color: #c9a000; color: #f0f0f0; }
     }
     .detail-right { background: var(--gray); border-radius: 8px; padding: 28px 24px; border: 1px solid var(--gray-mid); position: sticky; top: 80px; }
     .price-big { font-size: 32px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
@@ -406,6 +422,10 @@
           </summary>
           <div class="specs-body">
             <div class="spec-row">
+              <span class="spec-label">Code</span>
+              <span class="spec-value">AE01</span>
+            </div>
+            <div class="spec-row">
               <span class="spec-label">Duration</span>
               <span class="spec-value">24:05</span>
             </div>
@@ -423,7 +443,8 @@
 
       <div class="detail-right">
         <div class="price-big">$10</div>
-        <div class="price-label">USD or EUR by PayPal — Specified the video(s) and your email address.</div>
+        <div class="price-label">USD or EUR by PayPal</div>
+        <div class="notice-box">⚠ Specify the video(s) and your email address in the PayPal note.</div>
         <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now with PayPal</a>
       </div>
     </div>
@@ -479,7 +500,7 @@
   </div>
 
   <footer class="site-footer">
-    <p>© 2024 SPLAT Challenges. All rights reserved.</p>
+    <p>© 2026 SPLAT Challenges. All rights reserved.</p>
     <p>Contact : <a href="mailto:splaymessydares@gmail.com">splaymessydares@gmail.com</a></p>
     <p style="margin-top:8px; font-size:11px;">All videos are sold for personal use only. Unauthorized reproduction or redistribution is prohibited.</p>
   </footer>
