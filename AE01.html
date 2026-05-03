@@ -27,8 +27,6 @@
       header { border-bottom-color: #333; }
       .specs-block { background: #111111; }
       .detail-right { background: #111111; border-color: #333; }
-      .model-link { background: #111111; border-color: #444; }
-      .model-link:hover { border-color: var(--green); }
       .sugg-card { border-color: #333; }
       .suggestions { border-top-color: #333; }
     }
@@ -114,7 +112,7 @@
     .gallery-thumb:hover { opacity: 0.85; }
     .gallery-thumb.active { border-color: var(--green); }
     .detail-info { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start;}
-    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
+    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 20px; line-height: 1.3; }
     .detail-price { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 28px; }
     .specs-block { background: var(--gray); border-radius: 6px; overflow: hidden;  border: 1px solid var(--gray-mid);}
 
@@ -178,68 +176,11 @@
     .spec-value { font-weight: 700; color: var(--black); }
     .model-tag { display: inline-block; background: var(--green-light); color: var(--green-dark); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
-    /* Model + share row */
-    .model-share-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      margin-top: 20px;
-    }
+    
 
-    /* Share button */
-    .share-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      border: 1px solid var(--gray-mid);
-      background: var(--gray);
-      cursor: pointer;
-      transition: border-color 0.18s, box-shadow 0.18s;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .share-btn:hover {
-      border-color: var(--green);
-      box-shadow: 0 3px 12px rgba(126,201,143,0.18);
-    }
-
-    .share-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: none;
-      stroke: var(--black);
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Share tooltip */
-    .share-toast {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 8px);
-      right: 0;
-      background: var(--black);
-      color: var(--white);
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-
-    .share-toast.visible { display: block; }
+    
 
     @media (prefers-color-scheme: dark) {
-      .share-btn { background: #242424; border-color: #444; }
-      .share-btn svg { stroke: #f0f0f0; }
-      .share-btn:hover { border-color: var(--green); }
       .share-toast { background: #f0f0f0; color: #111111; }
     }
 
@@ -274,138 +215,16 @@
       .site-footer { padding: 24px 20px; }
     }
 
-    /* Right buttons group */
-    .row-right-btns {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    
 
-    /* More button (3 dots) */
-    .more-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      border: 1px solid var(--gray-mid);
-      background: var(--gray);
-      cursor: pointer;
-      transition: border-color 0.18s, box-shadow 0.18s;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .more-btn:hover {
-      border-color: var(--green);
-      box-shadow: 0 3px 12px rgba(126,201,143,0.18);
-    }
-
-    .more-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--black);
-    }
-
-    /* More popover */
-    .more-popover {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: var(--white);
-      border: 1px solid var(--gray-mid);
-      border-radius: 8px;
-      padding: 0;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--black);
-      white-space: nowrap;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      z-index: 50;
-      overflow: hidden;
-    }
-
-    .more-popover.open { display: block; }
-
-    .popover-row {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--black);
-      padding: 10px 18px;
-      text-align: left;
-    }
-
-    .popover-divider {
-      border: none;
-      border-top: 1px solid var(--gray-mid);
-      margin: 0;
-      width: 100%;
-    }
+    
 
     @media (prefers-color-scheme: dark) {
       .popover-divider { border-top-color: #444; }
     }
 
     @media (prefers-color-scheme: dark) {
-      .more-btn { background: #242424; border-color: #444; }
-      .more-btn svg { fill: #f0f0f0; }
-      .more-btn:hover { border-color: var(--green); }
-      .more-popover { background: #111111; border-color: #444; color: #f0f0f0; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-    }
-
-    /* Model link card */
-    .model-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      border: 1px solid var(--gray-mid);
-      border-radius: 40px;
-      padding: 8px 18px 8px 8px;
-      transition: box-shadow 0.18s, border-color 0.18s;
-      background: var(--gray);
-      margin-bottom: 0;
-      margin-top: 0;
-    }
-
-    .model-link:hover {
-      border-color: var(--green);
-      box-shadow: 0 3px 12px rgba(126,201,143,0.18);
-    }
-
-    .model-link-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--gray);
-      display: block;
-      flex-shrink: 0;
-    }
-
-    .model-link-info {}
-
-    .model-link-name {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--black);
-      line-height: 1.2;
-    }
-
-    .model-link-count {
-      font-size: 11px;
-      color: var(--gray-text);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .notice-box {
+      .notice-box {
       background: rgba(255, 220, 50, 0.12);
       border: 1.5px solid #f0c000;
       border-radius: 6px;
@@ -435,7 +254,7 @@
     .sugg-title { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
     .sugg-price { font-size: 12px; font-weight: 700; color: var(--green-dark); }
     @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; } .detail-right { position: static; } .suggestions-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } .model-link { padding: 6px 12px 6px 6px; gap: 8px; } .model-link-avatar { width: 38px; height: 38px; } .model-link-name { font-size: 11px; } .model-link-count { font-size: 10px; } .share-btn, .more-btn { width: 50px; height: 50px; } .share-btn svg, .more-btn svg { width: 16px; height: 16px; } .row-right-btns { gap: 7px; } }
+    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } }
   </style>
 </head>
 <body>
@@ -480,46 +299,20 @@
     <div class="detail-info">
       <div class="detail-left">
         <div class="detail-title">AERIAL 1. Pies & Chocolate</div>
-        <div class="model-share-row">
-          <a class="model-link" href="AERIAL.html">
-            <img class="model-link-avatar" src="https://i.ibb.co/nsVx06nW/AE01-img1.jpg" alt="AERIAL" />
-            <div class="model-link-info">
-              <div class="model-link-name">Aerial</div>
-              <div class="model-link-count">3 videos</div>
-            </div>
-          </a>
-          <div class="row-right-btns">
-            <button class="share-btn" onclick="shareVideo()" aria-label="Share">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
-              <span class="share-toast" id="share-toast">Link copied!</span>
-            </button>
-            <button class="more-btn" onclick="toggleMore()" aria-label="More">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="5" r="1.5"/>
-                <circle cx="12" cy="12" r="1.5"/>
-                <circle cx="12" cy="19" r="1.5"/>
-              </svg>
-              <div class="more-popover" id="more-popover">
-                <div class="popover-row">Code : AE01</div>
-                <hr class="popover-divider" />
-                <div class="popover-row">Tags : PIE, CAKE</div>
-              </div>
-            </button>
-          </div>
-        </div>
-        <div class="trailer-wrap">
-            <iframe width="420" height="345" src="https://www.youtube.com/embed/ZAOlPY3TTyc"></iframe>
-        </div>
         <details class="specs-block">
           <summary class="specs-toggle">
             <h3>Video Details</h3>
             <span class="specs-arrow">▼</span>
           </summary>
           <div class="specs-body">
+            <div class="spec-row">
+              <span class="spec-label">Code</span>
+              <span class="spec-value">AE01</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Model</span>
+              <span class="spec-value">AERIAL</span>
+            </div>
             <div class="spec-row">
               <span class="spec-label">Duration</span>
               <span class="spec-value">5:08</span>
@@ -532,8 +325,16 @@
               <span class="spec-label">File size</span>
               <span class="spec-value">747.64 MB</span>
             </div>
+            <div class="spec-row">
+              <span class="spec-label">Tags</span>
+              <span class="spec-value">Pie, Cake</span>
+            </div>
           </div>
         </details>
+
+    <div class="trailer-wrap">
+            <iframe width="420" height="345" src="https://www.youtube.com/embed/ZAOlPY3TTyc"></iframe>
+        </div>
       </div>
 
       <div class="detail-right">
@@ -605,12 +406,7 @@
       document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
       document.getElementById('main-img').src = el.src;
-    }
-
-    function shareVideo() {
-      const url = 'https://splatchallenges.netlify.app/ae01';
-      if (navigator.share) {
-        navigator.share({ title: 'AERIAL 1. SPLAT SPA SALON', url: url });
+    });
       } else {
         navigator.clipboard.writeText(url).then(() => {
           const toast = document.getElementById('share-toast');
@@ -620,10 +416,6 @@
       }
     }
 
-    function toggleMore() {
-      document.getElementById('more-popover').classList.toggle('open');
-    }
-
     function toggleBurger() {
       document.getElementById('burger-menu').classList.toggle('open');
     }
@@ -631,10 +423,6 @@
       const wrap = document.querySelector('.burger-wrap');
       if (wrap && !wrap.contains(e.target)) {
         document.getElementById('burger-menu').classList.remove('open');
-      }
-      const moreBtn = document.querySelector('.more-btn');
-      if (moreBtn && !moreBtn.contains(e.target)) {
-        document.getElementById('more-popover').classList.remove('open');
       }
     });
   </script>
