@@ -33,7 +33,7 @@
       .suggestions { border-top-color: #333; }
     }
     body { font-family: var(--font); background: var(--white); color: var(--black); min-height: 100vh; }
-    header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1.5px solid var(--black); padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    header { position: sticky; top: 0; z-index: 100; background: var(--gray); border-bottom: 1px solid var(--gray-mid);; padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: var(--font); font-size: 22px; font-weight: 700; letter-spacing: 4px; color: var(--black); text-decoration: none; }
     .logo span { color: var(--green); }
     nav { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); }
@@ -107,7 +107,7 @@
     .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); text-decoration: none; font-family: var(--font); margin-bottom: 36px; transition: color 0.15s; }
     .back-btn::before { content: '←'; font-size: 14px; }
     .back-btn:hover { color: var(--black); }
-    .gallery { display: grid; gap: 12px; margin-bottom: 20px; }
+    .gallery { display: grid; gap: 12px; margin-bottom: 22px; }
     .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); margin-top: 10px;}
     .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
     .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
@@ -196,7 +196,7 @@
       height: 58px;
       border-radius: 50%;
       border: 1px solid var(--gray-mid);
-      background: var(--white);
+      background: var(--gray);
       cursor: pointer;
       transition: border-color 0.18s, box-shadow 0.18s;
       flex-shrink: 0;
@@ -237,7 +237,7 @@
     .share-toast.visible { display: block; }
 
     @media (prefers-color-scheme: dark) {
-      .share-btn { background: #111111; border-color: #444; }
+      .share-btn { background: #242424; border-color: #444; }
       .share-btn svg { stroke: #f0f0f0; }
       .share-btn:hover { border-color: var(--green); }
       .share-toast { background: #f0f0f0; color: #111111; }
@@ -249,6 +249,7 @@
       margin-top: 10px;
       padding: 32px 48px;
       text-align: center;
+      background: var(--gray);
     }
 
     .site-footer p {
@@ -283,7 +284,7 @@
       border-radius: 40px;
       padding: 8px 18px 8px 8px;
       transition: box-shadow 0.18s, border-color 0.18s;
-      background: var(--white);
+      background: var(--gray);
       margin-bottom: 0;
       margin-top: 0;
     }
@@ -343,7 +344,7 @@
     .suggestions { margin-top: 50px; border-top: 1.5px solid var(--black); padding-top: 36px; }
     .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
     .suggestions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-    .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
+    .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); background: var(--gray); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
     .sugg-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
     .sugg-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--gray); }
     .sugg-info { padding: 10px 12px 12px; }
