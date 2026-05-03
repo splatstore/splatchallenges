@@ -616,6 +616,163 @@
       white-space: nowrap;
     }
 
+    /* ========== TAGS FILTER ========== */
+    .tags-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .tags-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 30px;
+      background: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--black);
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+    }
+
+    .tags-btn:hover,
+    .tags-btn.active {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(126,201,143,0.18);
+    }
+
+    .tags-btn .tags-arrow {
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    .tags-btn.active .tags-arrow { transform: rotate(180deg); }
+
+    .tags-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .tags-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--white);
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 10px;
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      z-index: 200;
+    }
+
+    .tags-dropdown.open { display: block; }
+
+    .tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 20px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+    }
+
+    .tag-chip:hover { border-color: var(--green); }
+
+    .tag-chip.selected {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .tag-chip.selected::before { content: '✓ '; }
+
+    .tags-apply {
+      display: block;
+      width: 100%;
+      padding: 9px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .tags-apply:hover { background: #333; }
+
+    .tags-clear-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .tags-clear-btn {
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-size: 11px;
+      color: var(--gray-text);
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0;
+      transition: color 0.15s;
+    }
+
+    .tags-clear-btn:hover { color: var(--black); }
+
+    @media (prefers-color-scheme: dark) {
+      .tags-btn { background: #1a1a1a; border-color: #444; color: #f0f0f0; }
+      .tags-dropdown { background: #1a1a1a; border-color: #444; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+      .tag-chip { background: #242424; border-color: #555; color: #f0f0f0; }
+      .tag-chip.selected { background: var(--green); border-color: var(--green); color: #fff; }
+      .tags-apply { background: #f0f0f0; color: #111; }
+      .tags-apply:hover { background: #ccc; }
+    }
+
+    @media (max-width: 600px) {
+      .tags-btn { padding: 9px 12px; font-size: 12px; }
+      .tags-dropdown { left: auto; right: 0; min-width: 200px; }
+    }
+
     .no-results {
       text-align: center;
       padding: 60px 20px;
@@ -702,6 +859,28 @@
         />
         <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Clear search">✕</button>
       </div>
+      <div class="tags-wrap" id="tags-wrap">
+        <button class="tags-btn" id="tags-btn" onclick="toggleTagsDropdown()">
+          Tags <span class="tags-arrow">▼</span>
+          <span class="tags-badge" id="tags-badge" style="display:none"></span>
+        </button>
+        <div class="tags-dropdown" id="tags-dropdown">
+          <div class="tags-clear-row">
+            <button class="tags-clear-btn" onclick="clearTags()">Clear all</button>
+          </div>
+          <div class="tags-list" id="tags-list">
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Pie">Pie</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Cake">Cake</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Slime">Slime</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Spread">Spread</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Huge pie">Huge pie</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Feet">Feet</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Laying down">Laying down</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Shower">Shower</div>
+          </div>
+          <button class="tags-apply" onclick="applyTags()">Apply filters</button>
+        </div>
+      </div>
       <span class="search-count" id="search-count"></span>
     </div>
     <div class="grid-section">
@@ -713,281 +892,190 @@
   </div>
 
   <script>
+    const ALL_TAGS = ["Pie","Cake","Slime","Spread","Huge pie","Feet","Laying down","Shower"];
+
     const videos = [
       {
         id: "AE01",
         name: "AERIAL 1. Pies & Chocolate",
         price: 10,
         img: "https://i.ibb.co/GQCSFG10/AE01-img3.jpg",
-        model: "AERIAL"
+        model: "AERIAL",
+        tags: ["Pie", "Cake"]
       },
       {
         id: "AE02",
         name: "AERIAL 2. Splat Spa Salon",
         price: 10,
         img: "https://i.ibb.co/ccCpXdxy/AERIAL1-img4.jpg",
-        model: "AERIAL"
+        model: "AERIAL",
+        tags: ["Pie","Cake","Slime","Spread","Laying down"]
       },
       {
         id: "BB01",
         name: "BABY 1. Pie Challenge",
         price: 10,
         img: "https://i.ibb.co/5gqD7CCj/BABY1-img3.jpg",
-        model: "BABY"
+        model: "BABY",
+        tags: ["Pie"]
       },
       {
         id: "BB02",
         name: "BABY 2. Vain Model",
         price: 10,
         img: "https://i.ibb.co/dTSvPY1/BABY2-img3.jpg",
-        model: "BABY"
+        model: "BABY",
+        tags: ["Pie","Slime"]
       },
       {
         id: "BB03",
         name: "BABY 3. SO CLUMSY! THE NERD",
         price: 10,
         img: "https://i.ibb.co/My0kVh4Y/BABY3-img4.jpg",
-        model: "BABY"
+        model: "BABY",
+        tags: ["Pie","Huge pie","Laying down"]
       },
       {
         id: "BB04",
         name: "BABY 4. Messy Workout",
         price: 10,
         img: "https://i.ibb.co/2VdwDSf/BABY4-img3.jpg",
-        model: "BABY"
+        model: "BABY",
+        tags: ["Pie","Cake","Slime"]
       },
       {
         id: "BB05",
         name: "BABY 5. Extreme Challenge",
         price: 10,
         img: "https://i.ibb.co/xKbhfgrb/BABY5-img2.jpg",
-        model: "BABY"
+        model: "BABY",
+        tags: ["Pie","Cake","Slime","Feet"]
       },
       {
         id: "CA01",
         name: "CANDY 1. HOW TO PIE YOURSELF",
         price: 10,
-        date: "05/06/2022",
-        time: "06:55",
-        res: "480p",
-        size: "229,12 Mo",
         img: "https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg",
-        img1: "https://i.ibb.co/x87TgqVN/CANDY1-img1.jpg",
-        img2: "https://i.ibb.co/Gf4qvP7z/CANDY1-img2.jpg",
-        img3: "https://i.ibb.co/hRS6smkW/CANDY1-img3.jpg",
-        img4: "https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg",
-        img5: "https://i.ibb.co/Kpd5ffZG/CANDY1-img5.jpg",
-        model: "CANDY"
+        model: "CANDY",
+        tags: ["Pie","Laying down"]
       },
       {
         id: "JC00",
         name: "JACKSON. THE SPLATTER",
         price: 10,
-        date: "2024",
-        time: "08:30",
-        res: "1080p FHD",
-        size: "164,25 Mo",
         img: "https://i.ibb.co/FbPKNf57/JACKSON-img3.jpg",
-        img1: "https://i.ibb.co/SwxJn1K3/JACKSON-img1.jpg",
-        img2: "https://i.ibb.co/QjXZdxZQ/JACKSON-img2.jpg",
-        img3: "https://i.ibb.co/FbPKNf57/JACKSON-img3.jpg",
-        img4: "https://i.ibb.co/4wHDcwxf/JACKSON-img4.jpg",
-        img5: "https://i.ibb.co/MvpGK7P/JACKSON-img5.jpg",
-        model: "JACKSON"
+        model: "JACKSON",
+        tags: ["Pie","Huge pie"]
       },
       {
         id: "KT04",
         name: "KITTY 4. SPLAT SPA SALON",
         price: 10,
-        date: "28/06/2021",
-        time: "23:07",
-        res: "480p",
-        size: "812,51 Mo",
         img: "https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg",
-        img1: "https://i.ibb.co/k6zxr5qF/KITTY4-img1.jpg",
-        img2: "https://i.ibb.co/wh3bV9Px/KITTY4-img2.jpg",
-        img3: "https://i.ibb.co/39MD7Xpd/KITTY4-img3.jpg",
-        img4: "https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg",
-        img5: "https://i.ibb.co/BKfZ3HFT/KITTY4-img5.jpg",
-        model: "KITTY"
+        model: "KITTY",
+        tags: ["Pie","Slime","Spread","Laying down"]
       },
       {
         id: "KT07",
         name: "KITTY 7. KISSING BOOTH",
         price: 10,
-        date: "2024",
-        time: "04:37",
-        res: "1080p FHD",
-        size: "666,59 Mo",
         img: "https://i.ibb.co/wZnw7Rfs/KITTY7-img2.jpg",
-        img1: "https://i.ibb.co/vbypStK/KITTY7-img1.jpg",
-        img2: "https://i.ibb.co/wZnw7Rfs/KITTY7-img2.jpg",
-        img3: "https://i.ibb.co/B8gxhFv/KITTY7-img3.jpg",
-        img4: "https://i.ibb.co/yBP8WhXP/KITTY7-img4.jpg",
-        img5: "https://i.ibb.co/0yQYh64P/KITTY7-img5.jpg",
-        model: "KITTY"
+        model: "KITTY",
+        tags: ["Pie","Cake","Slime"]
       },
       {
         id: "NU01",
         name: "NURSEY 1. LAYING DOWN NUTELLA TREATMENT",
         price: 10,
-        date: "12/12/2022",
-        time: "23:45",
-        res: "480p",
-        size: "851,82 Mo",
         img: "https://i.ibb.co/3yBZ7GMD/NURSEY1-img4.jpg",
-        img1: "https://i.ibb.co/gMVZxqjF/NURSEY1-img1.jpg",
-        img2: "https://i.ibb.co/DPvQjMmM/NURSEY1-img2.jpg",
-        img3: "https://i.ibb.co/p6Dh6TFL/NURSEY1-img3.jpg",
-        img4: "https://i.ibb.co/3yBZ7GMD/NURSEY1-img4.jpg",
-        img5: "https://i.ibb.co/XkbK12y6/NURSEY1-img5.jpg",
-        model: "NURSEY"
+        model: "NURSEY",
+        tags: ["Spread","Laying down"]
       },
       {
         id: "PK02",
         name: "POKAR 2. SPLAT SPA SALON: THOUGH COSTUMER",
         price: 10,
-        date: "16/08/2021",
-        time: "16:09",
-        res: "480p",
-        size: "518,38 Mo",
         img: "https://i.ibb.co/pv6ZBS34/POKAR2-img5.jpg",
-        img1: "https://i.ibb.co/Gf7bthjB/POKAR2-img1.jpg",
-        img2: "https://i.ibb.co/XxZ3QtQG/POKAR2-img2.jpg",
-        img3: "https://i.ibb.co/HDHQH5Cm/POKAR2-img3.jpg",
-        img4: "https://i.ibb.co/vpprxY2/POKAR2-img4.jpg",
-        img5: "https://i.ibb.co/pv6ZBS34/POKAR2-img5.jpg",
-        model: "POKAR"
+        model: "POKAR",
+        tags: ["Pie","Slime","Spread","Laying down"]
       },
       {
         id: "PK03",
         name: "POKAR 3. EXTREME CHALLENGE",
         price: 10,
-        date: "13/03/2022",
-        time: "07:39",
-        res: "480p",
-        size: "185,65 Mo",
         img: "https://i.ibb.co/BKqSgrQW/POKAR3-img4.jpg",
-        img1: "https://i.ibb.co/ZRsN4K0N/POKAR3-img1.jpg",
-        img2: "https://i.ibb.co/4ZDw9qYC/POKAR3-img2.jpg",
-        img3: "https://i.ibb.co/spNY80v8/POKAR3-img3.jpg",
-        img4: "https://i.ibb.co/BKqSgrQW/POKAR3-img4.jpg",
-        img5: "https://i.ibb.co/zTdQkB4B/POKAR3-img5.jpg",
-        model: "POKAR"
+        model: "POKAR",
+        tags: ["Pie","Slime"]
       },
       {
         id: "PW02",
         name: "POWER 2. SPLAT PASTRY SCHOOL",
         price: 10,
-        date: "27/03/2022",
-        time: "18:53",
-        res: "480p",
-        size: "570,80 Mo",
         img: "https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg",
-        img1: "https://i.ibb.co/7dn7rgGk/POWER2-img1.jpg",
-        img2: "https://i.ibb.co/kV2SbfQJ/POWER2-img2.jpg",
-        img3: "https://i.ibb.co/4ZBjx9ch/POWER2-img3.jpg",
-        img4: "https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg",
-        img5: "https://i.ibb.co/FkJWCbKh/POWER2-img5.jpg",
-        model: "POWER"
+        model: "POWER",
+        tags: ["Pie","Cake","Slime","Spread","Laying down"]
       },
       {
         id: "SC01",
         name: "SCHOOL 1. LEARNING PIE IN THE FACE TECHNIQUES",
         price: 10,
-        date: "01/11/2020",
-        time: "09:08",
-        res: "480p",
-        size: "340,61 Mo",
         img: "https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg",
-        img1: "https://i.ibb.co/pj90xwTZ/SCHOOL1-img1.jpg",
-        img2: "https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg",
-        img3: "https://i.ibb.co/B2skCnN8/SCHOOL1-img3.jpg",
-        img4: "https://i.ibb.co/NgpVJ2z8/SCHOOL1-img4.jpg",
-        img5: "https://i.ibb.co/QF4Bgy3G/SCHOOL1-img5.jpg",
-        model: "SCHOOL"
+        model: "SCHOOL",
+        tags: ["Pie","Laying down"]
       },
       {
         id: "VN01",
         name: "VENUS 1. PIE CHALLENGE",
         price: 10,
-        date: "12/04/2021",
-        time: "02:26",
-        res: "480p",
-        size: "84,95 Mo",
         img: "https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg",
-        img1: "https://i.ibb.co/BVjVK6tm/VENUS1-img1.jpg",
-        img2: "https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg",
-        img3: "https://i.ibb.co/m5PXBNsZ/VENUS1-img3.jpg",
-        img4: "https://i.ibb.co/7tM1gqXs/VENUS1-img4.jpg",
-        img5: "https://i.ibb.co/4ZCPtfKS/VENUS1-img5.jpg",
-        model: "VENUS"
+        model: "VENUS",
+        tags: ["Pie"]
       },
       {
         id: "CB01",
         name: "CARIBBEAN 1. QUESTIONS & ANSWERS",
         price: 10,
-        date: "2024",
-        time: "05:45",
-        res: "1080p FHD",
-        size: "791,36 Mo",
         img: "https://i.ibb.co/yHxVNgZ/CARIBBEAN1-img2.jpg",
-        img1: "https://i.ibb.co/MDh8sbZ2/CARIBBEAN1-img1.jpg",
-        img2: "https://i.ibb.co/yHxVNgZ/CARIBBEAN1-img2.jpg",
-        img3: "https://i.ibb.co/35zVJ0Hp/CARIBBEAN1-img3.jpg",
-        img4: "https://i.ibb.co/BVxbRdVc/CARIBBEAN1-img4.jpg",
-        img5: "https://i.ibb.co/5t9JMx8/CARIBBEAN1-img5.jpg",
-        model: "CARIBBEAN"
+        model: "CARIBBEAN",
+        tags: ["Pie","Cake"]
       },
       {
         id: "CB02",
         name: "CARIBBEAN 2. VAIN MODEL",
         price: 10,
-        date: "2024",
-        time: "11:05",
-        res: "1080p FHD",
-        size: "1,57 Go",
         img: "https://i.ibb.co/dTFqBg5/CARIBBEAN2-img4.jpg",
-        img1: "https://i.ibb.co/Y7VgYL6g/CARIBBEAN2-img1.jpg",
-        img2: "https://i.ibb.co/G4HRbTjv/CARIBBEAN2-img2.jpg",
-        img3: "https://i.ibb.co/qL8f4j4Z/CARIBBEAN2-img3.jpg",
-        img4: "https://i.ibb.co/dTFqBg5/CARIBBEAN2-img4.jpg",
-        img5: "https://i.ibb.co/rRH1kr0h/CARIBBEAN2-img5.jpg",
-        model: "CARIBBEAN"
+        model: "CARIBBEAN",
+        tags: ["Pie","Slime","Feet"]
       },
       {
         id: "CB03",
         name: "CARIBBEAN 3. TEACHING SIGN LANGUAGE",
         price: 10,
-        date: "2024",
-        time: "05:20",
-        res: "1080p FHD",
-        size: "769,29 Mo",
         img: "https://i.ibb.co/rRwz1kbb/CARIBBEAN3-img3.jpg",
-        img1: "https://i.ibb.co/sJDP0yWm/CARIBBEAN3-img1.jpg",
-        img2: "https://i.ibb.co/5xB3ntLb/CARIBBEAN3-img2.jpg",
-        img3: "https://i.ibb.co/rRwz1kbb/CARIBBEAN3-img3.jpg",
-        img4: "https://i.ibb.co/qMr3qY44/CARIBBEAN3-img4.jpg",
-        img5: "https://i.ibb.co/xtjS5h9d/CARIBBEAN3-img5.jpg",
-        model: "CARIBBEAN"
+        model: "CARIBBEAN",
+        tags: ["Pie","Huge pie"]
       },
       {
         id: "JN02",
         name: "JONES 2. TWELVE GRAPES",
         price: 10,
-        date: "03/01/2023",
-        time: "07:11",
-        res: "480p",
-        size: "244,77 Mo",
         img: "https://i.ibb.co/8nCb6DHz/JONES2-img4.jpg",
-        img1: "https://i.ibb.co/nqy4t16f/JONES2-img1.jpg",
-        img2: "https://i.ibb.co/BWYm9fn/JONES2-img2.jpg",
-        img3: "https://i.ibb.co/9mdycryw/JONES2-img3.jpg",
-        img4: "https://i.ibb.co/8nCb6DHz/JONES2-img4.jpg",
-        img5: "https://i.ibb.co/Z1Y0FTxB/JONES2-img5.jpg",
-        model: "JONES"
+        model: "JONES",
+        tags: ["Pie","Huge pie"]
       }
     ];
+
+    /* ===== TAG STATE ===== */
+    let activeTags = new Set();
+
+    function getFilteredVideos() {
+      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      return videos.filter(v => {
+        const matchSearch = !q || v.name.toLowerCase().includes(q) || v.model.toLowerCase().includes(q) || v.id.toLowerCase().includes(q);
+        const matchTags = activeTags.size === 0 || [...activeTags].every(t => v.tags && v.tags.includes(t));
+        return matchSearch && matchTags;
+      });
+    }
 
     /* ===== BUILD INDEX ===== */
     function buildGrid(list) {
@@ -996,18 +1084,19 @@
       const countEl = document.getElementById('search-count');
       const query = document.getElementById('search-input').value.trim();
 
-      if (!list) list = videos;
+      if (!list) list = getFilteredVideos();
 
       if (list.length === 0) {
         grid.innerHTML = '';
         noResults.style.display = 'block';
-        document.getElementById('no-results-query').textContent = query;
+        document.getElementById('no-results-query').textContent = query || [...activeTags].join(', ');
         countEl.textContent = '0 results';
         return;
       }
 
       noResults.style.display = 'none';
-      countEl.textContent = query ? `${list.length} result${list.length > 1 ? 's' : ''}` : '';
+      const hasFilter = query || activeTags.size > 0;
+      countEl.textContent = hasFilter ? `${list.length} result${list.length > 1 ? 's' : ''}` : '';
 
       grid.innerHTML = list.map(v => `
         <div class="card">
@@ -1027,28 +1116,50 @@
     function handleSearch(value) {
       const clearBtn = document.getElementById('search-clear');
       clearBtn.style.display = value.length > 0 ? 'block' : 'none';
-
-      const q = value.trim().toLowerCase();
-      if (!q) {
-        buildGrid(videos);
-        return;
-      }
-
-      const filtered = videos.filter(v =>
-        v.name.toLowerCase().includes(q) ||
-        v.model.toLowerCase().includes(q) ||
-        v.id.toLowerCase().includes(q)
-      );
-      buildGrid(filtered);
+      buildGrid(getFilteredVideos());
     }
 
     function clearSearch() {
       const input = document.getElementById('search-input');
       input.value = '';
       document.getElementById('search-clear').style.display = 'none';
-      document.getElementById('search-count').textContent = '';
-      buildGrid(videos);
+      buildGrid(getFilteredVideos());
       input.focus();
+    }
+
+    /* ===== TAGS ===== */
+    function toggleTagsDropdown() {
+      const dropdown = document.getElementById('tags-dropdown');
+      const btn = document.getElementById('tags-btn');
+      dropdown.classList.toggle('open');
+      btn.classList.toggle('active');
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    function applyTags() {
+      activeTags = new Set(
+        [...document.querySelectorAll('.tag-chip.selected')].map(el => el.dataset.tag)
+      );
+      const badge = document.getElementById('tags-badge');
+      if (activeTags.size > 0) {
+        badge.style.display = 'inline-flex';
+        badge.textContent = activeTags.size;
+      } else {
+        badge.style.display = 'none';
+      }
+      document.getElementById('tags-dropdown').classList.remove('open');
+      document.getElementById('tags-btn').classList.remove('active');
+      buildGrid(getFilteredVideos());
+    }
+
+    function clearTags() {
+      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+      activeTags.clear();
+      document.getElementById('tags-badge').style.display = 'none';
+      buildGrid(getFilteredVideos());
     }
 
     // Init
@@ -1060,6 +1171,11 @@
       const wrap = document.querySelector('.burger-wrap');
       if (wrap && !wrap.contains(e.target)) {
         document.getElementById('burger-menu').classList.remove('open');
+      }
+      const tagsWrap = document.getElementById('tags-wrap');
+      if (tagsWrap && !tagsWrap.contains(e.target)) {
+        document.getElementById('tags-dropdown').classList.remove('open');
+        document.getElementById('tags-btn').classList.remove('active');
       }
     });
   </script>
