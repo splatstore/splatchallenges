@@ -872,10 +872,11 @@
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Pie">Pie</div>
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Cake">Cake</div>
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Slime">Slime</div>
-            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Spread">Spread</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Cream">Cream</div>
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Huge pie">Huge pie</div>
-            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Feet">Feet</div>
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Laying down">Laying down</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Two angles">Two angles</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Feet">Feet</div>
             <div class="tag-chip" onclick="toggleTag(this)" data-tag="Shower">Shower</div>
           </div>
           <button class="tags-apply" onclick="applyTags()">Apply filters</button>
@@ -892,7 +893,7 @@
   </div>
 
   <script>
-    const ALL_TAGS = ["Pie","Cake","Slime","Spread","Huge pie","Feet","Laying down","Shower"];
+    const ALL_TAGS = ["Cake","Slime","Spread","Huge pie","Feet","Laying down","Shower","Two angles"];
 
     const videos = [
       {
@@ -901,7 +902,7 @@
         price: 10,
         img: "https://i.ibb.co/GQCSFG10/AE01-img3.jpg",
         model: "AERIAL",
-        tags: ["Pie", "Cake"]
+        tags: ["Pie","Cake","Two angles"]
       },
       {
         id: "AE02",
@@ -909,7 +910,7 @@
         price: 10,
         img: "https://i.ibb.co/ccCpXdxy/AERIAL1-img4.jpg",
         model: "AERIAL",
-        tags: ["Pie","Cake","Slime","Spread","Laying down"]
+        tags: ["Pie","Cake","Cream","Laying down","Two angles"]
       },
       {
         id: "BB01",
@@ -917,7 +918,7 @@
         price: 10,
         img: "https://i.ibb.co/5gqD7CCj/BABY1-img3.jpg",
         model: "BABY",
-        tags: ["Pie"]
+        tags: ["Pie","Two angles"]
       },
       {
         id: "BB02",
@@ -925,7 +926,7 @@
         price: 10,
         img: "https://i.ibb.co/dTSvPY1/BABY2-img3.jpg",
         model: "BABY",
-        tags: ["Pie","Slime"]
+        tags: ["Pie","Slime","Two angles"]
       },
       {
         id: "BB03",
@@ -933,7 +934,7 @@
         price: 10,
         img: "https://i.ibb.co/My0kVh4Y/BABY3-img4.jpg",
         model: "BABY",
-        tags: ["Pie","Huge pie","Laying down"]
+        tags: ["Pie","Huge pie","Laying down","Two angles"]
       },
       {
         id: "BB04",
@@ -949,7 +950,7 @@
         price: 10,
         img: "https://i.ibb.co/xKbhfgrb/BABY5-img2.jpg",
         model: "BABY",
-        tags: ["Pie","Cake","Slime","Feet"]
+        tags: ["Pie","Cake","Feet","Two angles"]
       },
       {
         id: "CA01",
@@ -957,7 +958,7 @@
         price: 10,
         img: "https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg",
         model: "CANDY",
-        tags: ["Pie","Laying down"]
+        tags: ["Pie","Laying down","Two angles"]
       },
       {
         id: "JC00",
@@ -965,7 +966,7 @@
         price: 10,
         img: "https://i.ibb.co/FbPKNf57/JACKSON-img3.jpg",
         model: "JACKSON",
-        tags: ["Pie","Huge pie"]
+        tags: ["Pie","Huge pie","Two angles"]
       },
       {
         id: "KT04",
@@ -973,7 +974,7 @@
         price: 10,
         img: "https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg",
         model: "KITTY",
-        tags: ["Pie","Slime","Spread","Laying down"]
+        tags: ["Pie","Cream","Laying down","Two angles"]
       },
       {
         id: "KT07",
@@ -981,7 +982,7 @@
         price: 10,
         img: "https://i.ibb.co/wZnw7Rfs/KITTY7-img2.jpg",
         model: "KITTY",
-        tags: ["Pie","Cake","Slime"]
+        tags: ["Pie","Cake"]
       },
       {
         id: "NU01",
@@ -989,7 +990,7 @@
         price: 10,
         img: "https://i.ibb.co/3yBZ7GMD/NURSEY1-img4.jpg",
         model: "NURSEY",
-        tags: ["Spread","Laying down"]
+        tags: ["Cream","Laying down","Two angles"]
       },
       {
         id: "PK02",
@@ -997,7 +998,7 @@
         price: 10,
         img: "https://i.ibb.co/pv6ZBS34/POKAR2-img5.jpg",
         model: "POKAR",
-        tags: ["Pie","Slime","Spread","Laying down"]
+        tags: ["Pie","Cream","Laying down","Two angles"]
       },
       {
         id: "PK03",
@@ -1013,7 +1014,7 @@
         price: 10,
         img: "https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg",
         model: "POWER",
-        tags: ["Pie","Cake","Slime","Spread","Laying down"]
+        tags: ["Pie","Cake","Cream","Laying down","Two angles"]
       },
       {
         id: "SC01",
@@ -1021,7 +1022,7 @@
         price: 10,
         img: "https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg",
         model: "SCHOOL",
-        tags: ["Pie","Laying down"]
+        tags: ["Pie","Laying down","Two angles"]
       },
       {
         id: "VN01",
@@ -1045,7 +1046,7 @@
         price: 10,
         img: "https://i.ibb.co/dTFqBg5/CARIBBEAN2-img4.jpg",
         model: "CARIBBEAN",
-        tags: ["Pie","Slime","Feet"]
+        tags: ["Pie","Slime","Feet","Two angles"]
       },
       {
         id: "CB03",
