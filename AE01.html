@@ -35,8 +35,8 @@
     }
     body { font-family: var(--font); background: var(--white); color: var(--black); min-height: 100vh; }
     header { position: sticky; top: 0; z-index: 100; background: var(--gray); border-bottom: 1px solid var(--gray-mid);; padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: var(--font); font-size: 22px; font-weight: 700; letter-spacing: 4px; color: var(--black); text-decoration: none; }
-    .logo span { color: var(--green); }
+    .logo { display: flex; align-items: center; text-decoration: none; height: 44px; }
+    .logo img { height: 44px; width: auto; display: block; }
     nav { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); }
     /* ========== BURGER MENU ========== */
     .burger-wrap {
@@ -402,7 +402,7 @@
 <body>
 
   <header>
-    <a class="logo" href="index.html">SPLAT<span>Challenges</span></a>
+    <a class="logo" href="index.html"><img src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT Challenges" /></a>
     <div class="burger-wrap">
       <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
         <span></span><span></span><span></span>
