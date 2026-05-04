@@ -157,7 +157,7 @@
 
     /* Trailer */
     .trailer-wrap {
-      margin-top: 30px;
+      margin-top: 50px;
       margin-bottom: 30px;
       border-radius: 8px;
       overflow: hidden;
@@ -175,7 +175,7 @@
       border: none;
     }
     .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-mid); font-size: 13px; }
-    .spec-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .spec-row:last-child { border-bottom: none; }
     .spec-label { color: var(--gray-text); font-weight: 400; }
     .spec-value { font-weight: 700; color: var(--black); }
     .model-tag { display: inline-block; background: var(--green-light); color: var(--green-dark); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
@@ -205,6 +205,7 @@
 
     @media (prefers-color-scheme: dark) {
       .site-footer { border-top-color: #333; }
+      .btn-buy { background: var(--white); color: var(--black); }
     }
 
     @media (max-width: 600px) {
@@ -360,7 +361,24 @@
     .detail-right { background: var(--gray); border-radius: 8px; padding: 28px 24px; border: 1px solid var(--gray-mid); position: sticky; top: 80px;}
     .price-big { font-size: 32px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
     .price-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 20px; }
-    .btn-buy { display: block; width: 100%; background: #32CD32; color: var(--white); border: none; border-radius: 6px; padding: 14px; font-family: var(--font); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.18s; text-align: center; text-decoration: none; }
+    .btn-buy {
+      display: block;
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      text-align: center;
+      text-decoration: none;
+    }
     .btn-buy:hover { background: #1db029; }
     .suggestions { margin-top: 50px; border-top: 1.5px solid var(--black); padding-top: 36px; }
     .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
