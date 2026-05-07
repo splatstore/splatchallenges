@@ -61,7 +61,13 @@
       height: 64px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .logo {
@@ -112,7 +118,7 @@
       display: none;
       position: absolute;
       top: calc(100% + 10px);
-      right: 0;
+      left: 0;
       background: var(--white);
       border: 1px solid var(--gray-mid);
       border-radius: 8px;
@@ -546,6 +552,15 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      transform: translateY(0);
+      transition: transform 0.28s ease, opacity 0.28s ease;
+      opacity: 1;
+    }
+
+    .search-bar-wrap.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
     }
 
     .search-bar-inner {
@@ -828,14 +843,16 @@
 <body>
 
   <header>
-    <a class="logo" href="index.html"><img src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT Challenges" /></a>
-    <div class="burger-wrap">
-      <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="burger-menu" id="burger-menu">
-        <a href="index.html">All Videos</a>
-      </nav>
+    <div class="header-left">
+      <div class="burger-wrap">
+        <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="burger-menu" id="burger-menu">
+          <a href="index.html">All Videos</a>
+        </nav>
+      </div>
+      <a class="logo" href="index.html"><img src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT Challenges" /></a>
     </div>
   </header>
 
@@ -1164,6 +1181,24 @@
     function toggleBurger() {
       document.getElementById('burger-menu').classList.toggle('open');
     }
+
+    // Hide search bar on scroll down, show on scroll up
+    (function() {
+      let lastY = 0;
+      window.addEventListener('scroll', function() {
+        const bar = document.querySelector('.search-bar-wrap');
+        if (!bar) return;
+        const currentY = window.scrollY;
+        if (currentY > lastY && currentY > 80) {
+          bar.classList.add('hidden');
+          document.getElementById('tags-dropdown').classList.remove('open');
+          document.getElementById('tags-btn').classList.remove('active');
+        } else {
+          bar.classList.remove('hidden');
+        }
+        lastY = currentY;
+      }, { passive: true });
+    })();
     document.addEventListener('click', function(e) {
       const wrap = document.querySelector('.burger-wrap');
       if (wrap && !wrap.contains(e.target)) {
