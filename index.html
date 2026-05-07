@@ -787,7 +787,7 @@
     }
 
     @media (max-width: 600px) {
-      .search-bar-wrap { padding: 14px 20px; top: 56px; }
+      .search-bar-wrap { padding: 12px 20px; top: 56px; }
     }
 
     /* PAGE TRANSITIONS */
@@ -846,12 +846,12 @@
     </div>
     <div class="search-bar-wrap">
       <div class="search-bar-inner">
-        <span class="search-icon"></span>
+        <span class="search-icon">🔍</span>
         <input
           class="search-input"
           id="search-input"
           type="text"
-          placeholder="Search by title or model"
+          placeholder="Search"
           oninput="handleSearch(this.value)"
           autocomplete="off"
         />
@@ -1087,13 +1087,13 @@
         grid.innerHTML = '';
         noResults.style.display = 'block';
         document.getElementById('no-results-query').textContent = query || [...activeTags].join(', ');
-        countEl.textContent = '0 results';
+        countEl.textContent = '0 videos';
         return;
       }
 
       noResults.style.display = 'none';
       const hasFilter = query || activeTags.size > 0;
-      countEl.textContent = hasFilter ? `${list.length} result${list.length > 1 ? 's' : ''}` : '';
+      countEl.textContent = hasFilter ? `${list.length} video${list.length > 1 ? 's' : ''}` : '';
 
       grid.innerHTML = list.map(v => `
         <div class="card">
