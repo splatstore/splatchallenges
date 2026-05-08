@@ -551,6 +551,7 @@
       padding: 10px 48px 10px;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       transform: translateY(0);
       transition: transform 0.28s ease, opacity 0.28s ease;
@@ -581,7 +582,7 @@
 
     .search-input {
       width: 100%;
-      padding: 11px 40px 11px 40px;
+      padding: 11px 40px 11px 16px;
       border: 1.5px solid var(--gray-mid);
       border-radius: 30px;
       font-family: var(--font);
@@ -639,7 +640,7 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 10px 16px;
+      padding: 11px 16px;
       border: 1.5px solid var(--gray-mid);
       border-radius: 30px;
       background: var(--white);
@@ -773,7 +774,7 @@
     .tags-clear-btn:hover { color: var(--black); }
 
     @media (prefers-color-scheme: dark) {
-      .tags-btn { background: #1a1a1a; border-color: #444; color: #f0f0f0; }
+      .tags-btn { background: #000000; border-color: #444; color: #f0f0f0; }
       .tags-dropdown { background: #1a1a1a; border-color: #444; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
       .tag-chip { background: #242424; border-color: #555; color: #f0f0f0; }
       .tag-chip.selected { background: var(--green); border-color: var(--green); color: #fff; }
@@ -802,7 +803,9 @@
     }
 
     @media (max-width: 600px) {
-      .search-bar-wrap { padding: 12px 20px; top: 56px; }
+      .search-bar-wrap { padding: 12px 16px; top: 56px; justify-content: stretch; }
+      .search-bar-inner { flex: 1; max-width: none; }
+      .tags-wrap { flex-shrink: 0; }
     }
 
     /* PAGE TRANSITIONS */
@@ -863,7 +866,6 @@
     </div>
     <div class="search-bar-wrap">
       <div class="search-bar-inner">
-        <span class="search-icon"></span>
         <input
           class="search-input"
           id="search-input"
