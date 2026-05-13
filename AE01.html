@@ -69,40 +69,74 @@
       border-radius: 2px;
     }
 
+    /* Overlay behind panel */
+    .burger-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 190;
+    }
+    .burger-overlay.open { display: block; }
+
     .burger-menu {
       display: none;
-      position: absolute;
-      top: calc(100% + 10px);
+      position: fixed;
+      top: 0;
       left: 0;
+      bottom: 0;
+      width: 260px;
       background: var(--white);
-      border: 1px solid var(--gray-mid);
-      border-radius: 8px;
-      min-width: 180px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      overflow: hidden;
+      border-right: 1px solid var(--gray-mid);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
       z-index: 200;
+      flex-direction: column;
+      padding-top: 20px;
     }
 
-    .burger-menu.open { display: block; }
+    .burger-menu.open { display: flex; }
+
+    .burger-menu-close {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 20px 16px;
+    }
+
+    .burger-menu-close button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--black);
+      line-height: 1;
+      padding: 4px;
+    }
 
     .burger-menu a {
       display: block;
-      padding: 13px 20px;
+      padding: 14px 24px;
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--black);
       text-decoration: none;
+      border-top: 1px solid var(--gray-mid);
       transition: background 0.12s;
     }
+
+    .burger-menu a:last-child { border-bottom: 1px solid var(--gray-mid); }
 
     .burger-menu a:hover { background: var(--gray); }
 
     @media (prefers-color-scheme: dark) {
-      .burger-menu { background: #0d0d0d; border-color: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-      .burger-menu a { color: #f0f0f0; }
+      .burger-menu { background: #0d0d0d; border-right-color: #333; }
+      .burger-menu a { color: #f0f0f0; border-top-color: #333; }
+      .burger-menu a:last-child { border-bottom-color: #333; }
       .burger-menu a:hover { background: #1a1a1a; }
+      .burger-menu-close button { color: #f0f0f0; }
+      .burger-overlay { background: rgba(0,0,0,0.55); }
     }
 
     .detail-page { max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; }
@@ -444,6 +478,8 @@
 </head>
 <body>
 
+  <div class="burger-overlay" id="burger-overlay" onclick="closeBurger()"></div>
+
   <header>
     <div class="header-left">
       <div class="burger-wrap">
@@ -451,6 +487,9 @@
           <span></span><span></span><span></span>
         </button>
         <nav class="burger-menu" id="burger-menu">
+          <div class="burger-menu-close">
+            <button onclick="closeBurger()" aria-label="Close">✕</button>
+          </div>
           <a href="index.html">All Videos</a>
         </nav>
       </div>
@@ -527,72 +566,15 @@
     <!-- Suggestions -->
     <div class="suggestions">
       <h2>Related videos</h2>
-      <div class="suggestions-grid">
-        <a class="sugg-card" href="BB03.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/8npHR8Md/BABY3-img3.jpg" alt="BABY 3. SO CLUMSY! THE NERD" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">BABY 3. SO CLUMSY! THE NERD</div>
-            <div class="sugg-price">$12 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="CA02.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg" alt="CANDY 1. HOW TO PIE YOURSELF" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">CANDY 2. HOW TO PIE YOURSELF</div>
-            <div class="sugg-price">$10 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="JN02.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/BWYm9fn/JONES2-img2.jpg" alt="TWELVE GRAPES (JONES 2)" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">JONES 2. TWELVE GRAPES</div>
-            <div class="sugg-price">$10 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="KT04.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg" alt="KITTY 4. SPLAT SPA SALON" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">KITTY 4. SPLAT SPA SALON</div>
-            <div class="sugg-price">$12 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="NU01.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/p6Dh6TFL/NURSEY1-img3.jpg" alt="NURSEY 1. LAYING DOWN NUTELLA TREATMENT" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">NURSEY 1. LAYING DOWN NUTELLA TREATMENT</div>
-            <div class="sugg-price">$12 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="VN01.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg" alt="PIE CHALLENGE (VENUS 1)" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">VENUS 1. PIE CHALLENGE</div>
-            <div class="sugg-price">$10 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="PW02.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg" alt="POWER 2. SPLAT PASTRY SCHOOL" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">POWER 2. SPLAT PASTRY SCHOOL</div>
-            <div class="sugg-price">$12 USD</div>
-          </div>
-        </a>
-        <a class="sugg-card" href="SC01.html">
-          <img class="sugg-thumb" src="https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg" alt="SCHOOL 1. LEARNING PIE IN THE FACE TECHNIQUES" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">SCHOOL 1. LEARNING PIE IN THE FACE</div>
-            <div class="sugg-price">$10 USD</div>
-          </div>
-        </a>
-      </div>
+      <div class="suggestions-grid" id="suggestions-grid"></div>
     </div>
   </div>
 
   <footer class="site-footer">
     <p>
-      <a href="mailto:splaymessydares@gmail.com">Email</a>⠀|⠀
-      <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram</a>⠀|⠀
-      <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD</a>⠀|⠀
+      <a href="mailto:splaymessydares@gmail.com">Email </a>|
+      <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram </a>|
+      <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD </a>|
       <a href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">PayPal</a>
     </p>
     <p>© 2026 SPLAT. All rights reserved.</p>
@@ -607,14 +589,42 @@
     }
 
     function toggleBurger() {
-      document.getElementById('burger-menu').classList.toggle('open');
+      const menu = document.getElementById('burger-menu');
+      const overlay = document.getElementById('burger-overlay');
+      menu.classList.toggle('open');
+      overlay.classList.toggle('open');
     }
-    document.addEventListener('click', function(e) {
-      const wrap = document.querySelector('.burger-wrap');
-      if (wrap && !wrap.contains(e.target)) {
-        document.getElementById('burger-menu').classList.remove('open');
-      }
-    });
+
+    function closeBurger() {
+      document.getElementById('burger-menu').classList.remove('open');
+      document.getElementById('burger-overlay').classList.remove('open');
+    }
+
+    // Random suggestions
+    const allSuggestions = [
+      { href: 'BB03.html', img: 'https://i.ibb.co/8npHR8Md/BABY3-img3.jpg', title: 'BABY 3. SO CLUMSY! THE NERD', price: '$12 USD' },
+      { href: 'CA02.html', img: 'https://i.ibb.co/zhxwmCtS/CANDY1-img4.jpg', title: 'CANDY 2. HOW TO PIE YOURSELF', price: '$10 USD' },
+      { href: 'JN02.html', img: 'https://i.ibb.co/BWYm9fn/JONES2-img2.jpg', title: 'JONES 2. TWELVE GRAPES', price: '$10 USD' },
+      { href: 'KT04.html', img: 'https://i.ibb.co/BH7MZDXb/KITTY4-img4.jpg', title: 'KITTY 4. SPLAT SPA SALON', price: '$12 USD' },
+      { href: 'NU01.html', img: 'https://i.ibb.co/p6Dh6TFL/NURSEY1-img3.jpg', title: 'NURSEY 1. LAYING DOWN NUTELLA TREATMENT', price: '$12 USD' },
+      { href: 'VN01.html', img: 'https://i.ibb.co/HfqfKj4x/VENUS1-img2.jpg', title: 'VENUS 1. PIE CHALLENGE', price: '$10 USD' },
+      { href: 'PW02.html', img: 'https://i.ibb.co/RTRk06vQ/POWER2-img4.jpg', title: 'POWER 2. SPLAT PASTRY SCHOOL', price: '$12 USD' },
+      { href: 'SC01.html', img: 'https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg', title: 'SCHOOL 1. LEARNING PIE IN THE FACE', price: '$10 USD' }
+    ];
+
+    (function renderSuggestions() {
+      const shuffled = allSuggestions.slice().sort(() => Math.random() - 0.5);
+      const picked = shuffled.slice(0, 6);
+      document.getElementById('suggestions-grid').innerHTML = picked.map(s => `
+        <a class="sugg-card" href="${s.href}">
+          <img class="sugg-thumb" src="${s.img}" alt="${s.title}" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">${s.title}</div>
+            <div class="sugg-price">${s.price}</div>
+          </div>
+        </a>
+      `).join('');
+    })();
   </script>
 </body>
 </html>
