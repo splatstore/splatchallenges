@@ -167,6 +167,68 @@
       line-height: 1.15;
     }
 
+    /* ========== SHOW MORE ========== */
+    .show-more-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 36px 0 24px;
+    }
+
+    .show-more-btn {
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--black);
+      border-radius: 30px;
+      padding: 12px 36px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .show-more-btn:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .show-more-btn { background: #1a1a1a; border-color: #f0f0f0; color: #f0f0f0; }
+      .show-more-btn:hover { background: #f0f0f0; color: #111; }
+    }
+
+    /* ========== FOOTER ========== */
+    .site-footer {
+      border-top: 1px solid var(--gray-mid);
+      padding: 32px 48px;
+      text-align: center;
+      background: var(--gray);
+    }
+
+    .site-footer p {
+      font-size: 12px;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    .site-footer a {
+      color: var(--green-dark);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { text-decoration: underline; }
+
+    @media (prefers-color-scheme: dark) {
+      .site-footer { border-top-color: #333; }
+    }
+
+    @media (max-width: 600px) {
+      .site-footer { padding: 24px 20px; }
+    }
+
     /* ========== GRID ========== */
     .grid-section {
       padding: 48px;
@@ -901,6 +963,9 @@
     </div>
     <div class="grid-section">
       <div class="video-grid" id="video-grid"></div>
+      <div class="show-more-wrap" id="show-more-wrap" style="display:none;">
+        <button class="show-more-btn" onclick="showMore()">Show More</button>
+      </div>
       <div class="no-results" id="no-results">
         No videos found for <span id="no-results-query"></span>
       </div>
@@ -1590,17 +1655,25 @@
     }
 
     /* ===== BUILD INDEX ===== */
+    const PAGE_SIZE = 30;
+    let currentList = [];
+    let currentPage = 0;
+
     function buildGrid(list) {
       const grid = document.getElementById('video-grid');
       const noResults = document.getElementById('no-results');
       const countEl = document.getElementById('search-count');
+      const showMoreWrap = document.getElementById('show-more-wrap');
       const query = document.getElementById('search-input').value.trim();
 
       if (!list) list = getFilteredVideos();
+      currentList = list;
+      currentPage = 0;
 
       if (list.length === 0) {
         grid.innerHTML = '';
         noResults.style.display = 'block';
+        showMoreWrap.style.display = 'none';
         document.getElementById('no-results-query').textContent = query || [...activeTags].join(', ');
         countEl.textContent = '0 videos';
         return;
@@ -1610,7 +1683,13 @@
       const hasFilter = query || activeTags.size > 0;
       countEl.textContent = hasFilter ? `${list.length} video${list.length > 1 ? 's' : ''}` : '';
 
-      grid.innerHTML = list.map(v => `
+      const page = list.slice(0, PAGE_SIZE);
+      grid.innerHTML = renderCards(page);
+      showMoreWrap.style.display = list.length > PAGE_SIZE ? 'flex' : 'none';
+    }
+
+    function renderCards(items) {
+      return items.map(v => `
         <div class="card">
           <img class="card-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
           <div class="card-body">
@@ -1622,6 +1701,17 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function showMore() {
+      currentPage++;
+      const grid = document.getElementById('video-grid');
+      const showMoreWrap = document.getElementById('show-more-wrap');
+      const start = currentPage * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const nextItems = currentList.slice(start, end);
+      grid.innerHTML += renderCards(nextItems);
+      showMoreWrap.style.display = currentList.length > end ? 'flex' : 'none';
     }
 
     /* ===== SEARCH ===== */
@@ -1709,5 +1799,16 @@
       }
     });
   </script>
+
+  <footer class="site-footer">
+    <p>
+      <a href="mailto:splaymessydares@gmail.com">Email</a> |
+      <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram</a> |
+      <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD</a> |
+      <a href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">PayPal</a>
+    </p>
+    <p>© 2026 SPLAT. All rights reserved.</p>
+    <p style="margin-top:8px; font-size:11px;">All videos are sold for personal use only. Unauthorized reproduction or redistribution is prohibited.</p>
+  </footer>
 </body>
 </html>
