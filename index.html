@@ -1773,12 +1773,19 @@
       countEl.textContent = hasFilter ? `${list.length} video${list.length > 1 ? 's' : ''}` : '';
 
       const page = list.slice(0, PAGE_SIZE);
-      grid.innerHTML = renderCards(page);
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      page.forEach(v => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderCard(v);
+        frag.appendChild(tmp.firstElementChild);
+      });
+      grid.appendChild(frag);
       showMoreWrap.style.display = list.length > PAGE_SIZE ? 'flex' : 'none';
     }
 
-    function renderCards(items) {
-      return items.map(v => `
+    function renderCard(v) {
+      return `
         <div class="card">
           <img class="card-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
           <div class="card-body">
@@ -1788,8 +1795,11 @@
               <a class="btn-see-more" href="${v.id}.html">See more</a>
             </div>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+    }
+
+    function renderCards(items) {
+      return items.map(renderCard).join('');
     }
 
     function showMore() {
@@ -1799,7 +1809,13 @@
       const start = currentPage * PAGE_SIZE;
       const end = start + PAGE_SIZE;
       const nextItems = currentList.slice(start, end);
-      grid.innerHTML += renderCards(nextItems);
+      const fragment = document.createDocumentFragment();
+      nextItems.forEach(v => {
+        const div = document.createElement('div');
+        div.innerHTML = renderCard(v);
+        fragment.appendChild(div.firstElementChild);
+      });
+      grid.appendChild(fragment);
       showMoreWrap.style.display = currentList.length > end ? 'flex' : 'none';
     }
 
