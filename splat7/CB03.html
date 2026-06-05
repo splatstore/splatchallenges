@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TEACHING SIGN LANGUAGE (CARIBBEAN 3) — SPLAT Video Store</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --white: #ffffff; --black: #111111; --green: #7ec98f;
+      --green-dark: #5db570; --green-light: #e8f7eb;
+      --gray: #f5f5f5; --gray-mid: #e0e0e0; --gray-text: #888;
+      --font: 'Arial', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--white); color: var(--black); min-height: 100vh; }
+    header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1.5px solid var(--black); padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: var(--font); font-size: 22px; font-weight: 700; letter-spacing: 4px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--green); }
+    nav { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); }
+    .detail-page { max-width: 1100px; margin: 0 auto; padding: 48px 48px 80px; }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); text-decoration: none; font-family: var(--font); margin-bottom: 36px; transition: color 0.15s; }
+    .back-btn::before { content: '←'; font-size: 14px; }
+    .back-btn:hover { color: var(--black); }
+    .gallery { display: grid; gap: 12px; margin-bottom: 40px; }
+    .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); }
+    .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
+    .gallery-thumb:hover { opacity: 0.85; }
+    .gallery-thumb.active { border-color: var(--green); }
+    .detail-info { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start; }
+    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 12px; line-height: 1.3; }
+    .detail-price { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 28px; }
+    .specs-block { background: var(--gray); border-radius: 6px; padding: 20px 24px; margin-bottom: 24px; }
+    .specs-block h3 { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 14px; font-weight: 700; }
+    .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-mid); font-size: 13px; }
+    .spec-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .spec-label { color: var(--gray-text); font-weight: 400; }
+    .spec-value { font-weight: 700; color: var(--black); }
+    .model-tag { display: inline-block; background: var(--green-light); color: var(--green-dark); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .detail-right { background: var(--gray); border-radius: 8px; padding: 28px 24px; border: 1px solid var(--gray-mid); position: sticky; top: 80px; }
+    .price-big { font-size: 32px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+    .price-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 20px; }
+    .btn-buy { display: block; width: 100%; background: #003087; color: var(--white); border: none; border-radius: 6px; padding: 14px; font-family: var(--font); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.18s; text-align: center; text-decoration: none; }
+    .btn-buy:hover { background: #009cde; }
+    .suggestions { margin-top: 56px; border-top: 1.5px solid var(--black); padding-top: 36px; }
+    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 24px; font-weight: 700; }
+    .suggestions-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
+    .sugg-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .sugg-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--gray); }
+    .sugg-info { padding: 10px 12px 12px; }
+    .sugg-title { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
+    .sugg-price { font-size: 12px; font-weight: 700; color: var(--green-dark); }
+    @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; } .detail-right { position: static; } .suggestions-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">SPLAT<span>Challenges</span></a>
+    <nav>Video Store</nav>
+  </header>
+
+  <div class="detail-page">
+    <a class="back-btn" href="index.html">Back to videos</a>
+
+    <div class="gallery">
+      <img id="main-img" class="gallery-main" src="https://i.ibb.co/sJDP0yWm/CARIBBEAN3-img1.jpg" alt="CARIBBEAN 3. TEACHING SIGN LANGUAGE" />
+      <div class="gallery-thumbs">
+        <img class="gallery-thumb active" src="https://i.ibb.co/sJDP0yWm/CARIBBEAN3-img1.jpg" alt="Image 1" onclick="selectThumb(this)" />
+        <img class="gallery-thumb" src="https://i.ibb.co/5xB3ntLb/CARIBBEAN3-img2.jpg" alt="Image 2" onclick="selectThumb(this)" />
+        <img class="gallery-thumb" src="https://i.ibb.co/rRwz1kbb/CARIBBEAN3-img3.jpg" alt="Image 3" onclick="selectThumb(this)" />
+        <img class="gallery-thumb" src="https://i.ibb.co/qMr3qY44/CARIBBEAN3-img4.jpg" alt="Image 4" onclick="selectThumb(this)" />
+        <img class="gallery-thumb" src="https://i.ibb.co/xtjS5h9d/CARIBBEAN3-img5.jpg" alt="Image 5" onclick="selectThumb(this)" />
+      </div>
+    </div>
+
+    <div class="detail-info">
+      <div class="detail-left">
+        <div class="detail-title">CARIBBEAN 3. TEACHING SIGN LANGUAGE</div>
+        <div class="detail-price">$10 USD</div>
+        <div class="specs-block">
+          <h3>Video Details</h3>
+          <div class="spec-row">
+            <span class="spec-label">Duration</span>
+            <span class="spec-value">05:20</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Quality</span>
+            <span class="spec-value">1080p FHD</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">File size</span>
+            <span class="spec-value">769,29 Mo</span>
+          </div>
+        </div>
+        <span class="model-tag">Model: CARIBBEAN</span>
+      </div>
+
+      <div class="detail-right">
+        <div class="price-big">$10</div>
+        <div class="price-label">USD or EUR by PayPal — splaymessydares@gmail.com</div>
+        <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now with PayPal</a>
+      </div>
+    </div>
+
+    <div class="suggestions">
+      <h2>You may also like</h2>
+      <div class="suggestions-grid">
+        <a class="sugg-card" href="AE01.html">
+          <img class="sugg-thumb" src="https://i.ibb.co/N6Mhhc4B/AERIAL1-img2.jpg" alt="SPLAT SPA SALON (AERIAL 1)" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">AERIAL 1. SPLAT SPA SALON</div>
+            <div class="sugg-price">$10 USD</div>
+          </div>
+        </a>
+        <a class="sugg-card" href="PK02.html">
+          <img class="sugg-thumb" src="https://i.ibb.co/XxZ3QtQG/POKAR2-img2.jpg" alt="SPLAT SPA SALON: THOUGH COSTUMER (POKAR 2)" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">POKAR 2. SPLAT SPA SALON: THOUGH COSTUMER</div>
+            <div class="sugg-price">$10 USD</div>
+          </div>
+        </a>
+        <a class="sugg-card" href="CB01.html">
+          <img class="sugg-thumb" src="https://i.ibb.co/yHxVNgZ/CARIBBEAN1-img2.jpg" alt="QUESTIONS &amp; ANSWERS (CARIBBEAN 1)" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">CARIBBEAN 1. QUESTIONS &amp; ANSWERS</div>
+            <div class="sugg-price">$10 USD</div>
+          </div>
+        </a>
+        <a class="sugg-card" href="SC01.html">
+          <img class="sugg-thumb" src="https://i.ibb.co/6RkwhLyN/SCHOOL1-img2.jpg" alt="LEARNING PIE IN THE FACE TECHNIQUES (SCHOOL 1)" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">SCHOOL 1. LEARNING PIE IN THE FACE TECHNIQUES</div>
+            <div class="sugg-price">$10 USD</div>
+          </div>
+        </a>
+        <a class="sugg-card" href="CA01.html">
+          <img class="sugg-thumb" src="https://i.ibb.co/Gf4qvP7z/CANDY1-img2.jpg" alt="HOW TO PIE YOURSELF (CANDY 1)" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">CANDY 1. HOW TO PIE YOURSELF</div>
+            <div class="sugg-price">$10 USD</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectThumb(el) {
+      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('main-img').src = el.src;
+    }
+  </script>
+</body>
+</html>
