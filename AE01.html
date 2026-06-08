@@ -515,6 +515,22 @@
     .sugg-info { padding: 10px 12px 12px; }
     .sugg-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
     .sugg-price { font-size: 12px; font-weight: 700; color: var(--green-dark); }
+    /* View counter */
+    .view-counter { 
+      font-size: 11px; 
+      letter-spacing: 1.5px; 
+      text-transform: uppercase; 
+      color: var(--gray-text); 
+      margin-top: 20px; 
+      padding-top: 20px; 
+      border-top: 1px solid var(--gray-mid);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .view-counter-icon { font-size: 14px; }
+    .view-counter-text { font-weight: 700; color: var(--black); }
+    @media (prefers-color-scheme: dark) { .view-counter { border-top-color: #333; } }
     @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; gap: 30px; } .detail-right { position: static; } .suggestions-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
     @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } .suggestions::before { left: -20px; right: -20px; }  }
   </style>
@@ -610,6 +626,10 @@
         <div class="price-label">By PayPal</div>
         <div class="notice-box">Specify the video(s) and your email address.</div>
         <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
+        <div class="view-counter">
+          <span class="view-counter-icon">👁</span>
+          <span>Viewed: <span class="view-counter-text" id="view-count">-</span> times</span>
+        </div>
       </div>
     </div>
 
@@ -701,6 +721,36 @@
           </div>
         </a>
       `).join('');
+    })();
+
+    // View counter - unique views tracking
+    (async function initViewCounter() {
+      const videoId = 'AE01';
+      const storageKey = `viewed_${videoId}`;
+      const apiUrl = `https://api.countapi.xyz/hit/splat-store/${videoId}`;
+      
+      // Check if already viewed from this browser
+      const hasViewed = localStorage.getItem(storageKey);
+      
+      try {
+        // Get current count
+        let response = await fetch(`https://api.countapi.xyz/get/splat-store/${videoId}`);
+        let data = await response.json();
+        let currentCount = data.value || 0;
+        
+        // If first time viewing from this browser, increment
+        if (!hasViewed) {
+          response = await fetch(apiUrl);
+          data = await response.json();
+          currentCount = data.value || 0;
+          localStorage.setItem(storageKey, 'true');
+        }
+        
+        document.getElementById('view-count').textContent = currentCount;
+      } catch (error) {
+        console.log('View counter unavailable');
+        document.getElementById('view-count').textContent = '?';
+      }
     })();
   </script>
 </body>
