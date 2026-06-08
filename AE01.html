@@ -727,14 +727,14 @@
     (async function initViewCounter() {
       const videoId = 'AE01';
       const storageKey = `viewed_${videoId}`;
-      const apiUrl = `https://api.countapi.xyz/hit/splat-store/${videoId}`;
+      const apiUrl = `https://api.countapi.xyz/hit/splatstores-team-4386/${videoId}`;
       
       // Check if already viewed from this browser
       const hasViewed = localStorage.getItem(storageKey);
       
       try {
         // Get current count
-        let response = await fetch(`https://api.countapi.xyz/get/splat-store/${videoId}`);
+        let response = await fetch(`https://api.countapi.xyz/get/splatstores-team-4386/${videoId}`);
         let data = await response.json();
         let currentCount = data.value || 0;
         
