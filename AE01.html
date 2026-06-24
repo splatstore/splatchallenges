@@ -508,31 +508,32 @@
       background: var(--gray-mid);
     }
     .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
-    .suggestions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+    .suggestions-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      padding-bottom: 8px;
+      margin: 0 -48px;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+    .suggestions-grid {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+    }
+    .sugg-card {
+      flex: 0 0 220px;
+      width: 220px;
+    }
     .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); background: var(--gray); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
     .sugg-card:hover { transform: translateY(-2px); }
     .sugg-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--gray); }
     .sugg-info { padding: 10px 12px 12px; }
     .sugg-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
     .sugg-price { font-size: 12px; font-weight: 700; color: var(--green-dark); }
-    /* View counter */
-    .view-counter { 
-      font-size: 11px; 
-      letter-spacing: 1.5px; 
-      text-transform: uppercase; 
-      color: var(--gray-text); 
-      margin-top: 20px; 
-      padding-top: 20px; 
-      border-top: 1px solid var(--gray-mid);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .view-counter-icon { font-size: 14px; }
-    .view-counter-text { font-weight: 700; color: var(--black); }
-    @media (prefers-color-scheme: dark) { .view-counter { border-top-color: #333; } }
-    @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; gap: 30px; } .detail-right { position: static; } .suggestions-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } .suggestions::before { left: -20px; right: -20px; }  }
+    @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; gap: 30px; } .detail-right { position: static; } }
+    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions::before { left: -20px; right: -20px; } .suggestions-scroll { margin: 0 -20px; padding-left: 20px; padding-right: 20px; } .sugg-card { flex: 0 0 160px; width: 160px; } }
   </style>
 </head>
 <body>
@@ -626,17 +627,15 @@
         <div class="price-label">By PayPal</div>
         <div class="notice-box">Specify the video(s) and your email address.</div>
         <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
-        <div class="view-counter">
-          <span class="view-counter-icon">👁</span>
-          <span>Viewed: <span class="view-counter-text" id="view-count">-</span> times</span>
-        </div>
       </div>
     </div>
 
     <!-- Suggestions -->
     <div class="suggestions">
       <h2>Related videos</h2>
-      <div class="suggestions-grid" id="suggestions-grid"></div>
+      <div class="suggestions-scroll">
+        <div class="suggestions-grid" id="suggestions-grid"></div>
+      </div>
     </div>
   </div>
 
@@ -680,8 +679,8 @@
       { href: 'DL01.html', img: 'https://i.ibb.co/HpppT1b2/DOLL1-img3.jpg', title: 'DOLL. The Nightmare', price: '$10 USD' },
       { href: 'FT03.html', img: 'https://i.ibb.co/ycsMTcbM/FITNESS3-img4.jpg', title: 'FITNESS 3. Five Questions Game', price: '$10 USD' },
       { href: 'JC06.html', img: 'https://i.ibb.co/xK3KQt82/JACKSON6-img3.jpg', title: 'JACKSON 6. Slimy Games', price: '$10 USD' },
-      { href: 'JC012.html', img: 'https://i.ibb.co/YSXF76W/JACKSON12-img5.jpg', title: 'JACKSON 12. Pies & Cakes', price: '$10 USD' },
-      { href: 'JC013.html', img: 'https://i.ibb.co/JJw14yq/JACKSON13-img2.jpg', title: 'JACKSON 13. Shave & Shower', price: '$10 USD' },
+      { href: 'JC12.html', img: 'https://i.ibb.co/YSXF76W/JACKSON12-img5.jpg', title: 'JACKSON 12. Pies & Cakes', price: '$10 USD' },
+      { href: 'JC13.html', img: 'https://i.ibb.co/JJw14yq/JACKSON13-img2.jpg', title: 'JACKSON 13. Shave & Shower', price: '$10 USD' },
       { href: 'JS01.html', img: 'https://i.ibb.co/b5FVtLgL/JISU1-img3.jpg', title: 'JISU 1. Teaching How To Pie', price: '$10 USD' },
       { href: 'JN04.html', img: 'https://i.ibb.co/vx3J94XQ/JONES4-img3.jpg', title: 'JONES 4. Feet & Pies', price: '$10 USD' },
       { href: 'KT02.html', img: 'https://i.ibb.co/N6DL5R8z/KITTY2-img3.jpg', title: 'KITTY 2. Bucket Game', price: '$10 USD' },
@@ -721,36 +720,6 @@
           </div>
         </a>
       `).join('');
-    })();
-
-    // View counter - unique views tracking
-    (async function initViewCounter() {
-      const videoId = 'AE01';
-      const storageKey = `viewed_${videoId}`;
-      const apiUrl = `https://api.countapi.xyz/hit/splatstores-team-4386/${videoId}`;
-      
-      // Check if already viewed from this browser
-      const hasViewed = localStorage.getItem(storageKey);
-      
-      try {
-        // Get current count
-        let response = await fetch(`https://api.countapi.xyz/get/splatstores-team-4386/${videoId}`);
-        let data = await response.json();
-        let currentCount = data.value || 0;
-        
-        // If first time viewing from this browser, increment
-        if (!hasViewed) {
-          response = await fetch(apiUrl);
-          data = await response.json();
-          currentCount = data.value || 0;
-          localStorage.setItem(storageKey, 'true');
-        }
-        
-        document.getElementById('view-count').textContent = currentCount;
-      } catch (error) {
-        console.log('View counter unavailable');
-        document.getElementById('view-count').textContent = '?';
-      }
     })();
   </script>
 </body>
