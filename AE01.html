@@ -27,7 +27,7 @@
       }
       header { border-bottom-color: #333; }
       .specs-block { background: #111111; }
-      .detail-right { background: #111111; border-color: #333; }
+      .price-block { background: #111111; border-color: #333; }
       .model-link { background: #111111; border-color: #444; }
       .model-link:hover { border-color: var(--green); }
       .sugg-card { border-color: #333; }
@@ -182,7 +182,7 @@
       .sidebar-overlay { background: rgba(0,0,0,0.55); }
     }
 
-    .detail-page { max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; }
+    .detail-page { padding: 48px 48px 80px; }
     .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); text-decoration: none; font-family: var(--font); margin-bottom: 36px; transition: color 0.15s; }
     .back-btn::before { content: '←'; font-size: 14px; }
     .back-btn:hover { color: var(--black); }
@@ -192,10 +192,35 @@
     .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
     .gallery-thumb:hover { opacity: 0.85; }
     .gallery-thumb.active { border-color: var(--green); }
-    .detail-info { display: grid; grid-template-columns: 1fr 340px; gap: 30px; align-items: start;}
+    /* ===== PAGE GRID (desktop: gallery+specs left, title+price right, sticky) ===== */
+    .page-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .left-col { grid-column: 1; }
+    .right-col {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      position: sticky;
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .area-gallery {}
+    .area-titlemeta {}
+    .area-price {}
+    .area-specs { margin-top: 30px; }
+
+    .price-block { background: var(--gray); border-radius: 8px; padding: 20px 24px; border: 1px solid var(--gray-mid); }
+
     .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
 
-    .meta-rows { margin-bottom: 25px; margin-top: 10px; }
+    .meta-rows { margin-top: 10px; }
 
     .meta-inline {
       display: inline-flex;
@@ -474,7 +499,7 @@
     @media (prefers-color-scheme: dark) {
       .notice-box { background: rgba(255, 200, 0, 0.08); border-color: #c9a000; color: #f0f0f0; }
     }
-    .detail-right { background: var(--gray); border-radius: 8px; padding: 20px 24px; border: 1px solid var(--gray-mid); position: sticky; top: 80px;}
+    /* legacy .detail-right removed — see .area-price / .price-block */
     .price-big { font-size: 26px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
     .price-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 15px; }
     .btn-buy {
@@ -532,7 +557,22 @@
     .sugg-info { padding: 14px 16px 16px; }
     .sugg-title { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
     .sugg-price { font-size: 14px; font-weight: 700; color: var(--green-dark); }
-    @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; gap: 30px; } .detail-right { position: static; } }
+    @media (max-width: 900px) {
+      .page-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .left-col, .right-col {
+        display: contents;
+      }
+      .area-gallery { order: 1; width: 100%; }
+      .area-titlemeta { order: 2; margin-top: 22px; width: 100%; }
+      .area-price { order: 3; margin-top: 22px; width: 100%; }
+      .area-specs { order: 4; margin-top: 22px; width: 100%; }
+      .right-col { position: static; }
+    }
     @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions::before { left: -20px; right: -20px; } .suggestions-scroll { margin: 0 -20px; padding-left: 20px; padding-right: 20px; } .sugg-card { flex: 0 0 200px; width: 200px; } }
   </style>
 </head>
@@ -565,68 +605,78 @@
   </header>
 
   <div class="detail-page">
-    <!-- Gallery -->
-    <div class="gallery">
-      <img id="main-img" class="gallery-main"
-        src="https://i.ibb.co/nsVx06nW/AE01-img1.jpg"
-        alt="AERIAL 1. Pies & Chocolate" />
-      <div class="gallery-thumbs">
-        <img class="gallery-thumb active"
-          src="https://i.ibb.co/nsVx06nW/AE01-img1.jpg"
-          alt="Image 1" onclick="selectThumb(this)" />
-        <img class="gallery-thumb"
-          src="https://i.ibb.co/1GSyL6sy/AE01-img2.jpg"
-          alt="Image 2" onclick="selectThumb(this)" />
-        <img class="gallery-thumb"
-          src="https://i.ibb.co/GQCSFG10/AE01-img3.jpg"
-          alt="Image 3" onclick="selectThumb(this)" />
-        <img class="gallery-thumb"
-          src="https://i.ibb.co/JWGqnCLD/AE01-img4.jpg"
-          alt="Image 4" onclick="selectThumb(this)" />
-        <img class="gallery-thumb"
-          src="https://i.ibb.co/qYZkWFgd/AE01-img5.jpg"
-          alt="Image 5" onclick="selectThumb(this)" />
-      </div>
-    </div>
-    <!-- Info -->
-    <div class="detail-info">
-      <div class="detail-left">
-        <div class="detail-title">AERIAL 1. Pies & Chocolate</div>
-        <div class="meta-rows">
-          <div class="meta-inline">
-            <div class="meta-item">Code: <strong>AE01</strong></div>
-            <div class="meta-sep"></div>
-            <div class="meta-item">Model: <strong>Aerial</strong></div>
-            <div class="meta-sep"></div>
-            <div class="meta-item">Tags: <strong>Pie, Cake</strong></div>
+    <div class="page-grid">
+      <div class="left-col">
+        <div class="area-gallery">
+          <div class="gallery">
+            <img id="main-img" class="gallery-main"
+              src="https://i.ibb.co/nsVx06nW/AE01-img1.jpg"
+              alt="AERIAL 1. Pies & Chocolate" />
+            <div class="gallery-thumbs">
+              <img class="gallery-thumb active"
+                src="https://i.ibb.co/nsVx06nW/AE01-img1.jpg"
+                alt="Image 1" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/1GSyL6sy/AE01-img2.jpg"
+                alt="Image 2" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/GQCSFG10/AE01-img3.jpg"
+                alt="Image 3" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/JWGqnCLD/AE01-img4.jpg"
+                alt="Image 4" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/qYZkWFgd/AE01-img5.jpg"
+                alt="Image 5" onclick="selectThumb(this)" />
+            </div>
           </div>
         </div>
-        <div class="specs-block">
-          <div class="specs-toggle" style="cursor:default;">
-            <h3>Video Details</h3>
-          </div>
-          <div class="specs-body">
-            <div class="spec-row">
-              <span class="spec-label">Duration</span>
-              <span class="spec-value">5:08</span>
+
+        <div class="area-specs">
+          <div class="specs-block">
+            <div class="specs-toggle" style="cursor:default;">
+              <h3>Video Details</h3>
             </div>
-            <div class="spec-row">
-              <span class="spec-label">Resolution</span>
-              <span class="spec-value">1920x1080</span>
-            </div>
-            <div class="aspec-row">
-              <span class="spec-label">File size</span>
-              <span class="spec-value">747.64MB</span>
+            <div class="specs-body">
+              <div class="spec-row">
+                <span class="spec-label">Duration</span>
+                <span class="spec-value">5:08</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Resolution</span>
+                <span class="spec-value">1920x1080</span>
+              </div>
+              <div class="aspec-row">
+                <span class="spec-label">File size</span>
+                <span class="spec-value">747.64MB</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="detail-right">
-        <div class="price-big">$10 USD</div>
-        <div class="price-label">By PayPal</div>
-        <div class="notice-box">Specify the video(s) and your email address.</div>
-        <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
+      <div class="right-col">
+        <div class="area-titlemeta">
+          <div class="detail-title">AERIAL 1. Pies & Chocolate</div>
+          <div class="meta-rows">
+            <div class="meta-inline">
+              <div class="meta-item">Code: <strong>AE01</strong></div>
+              <div class="meta-sep"></div>
+              <div class="meta-item">Model: <strong>Aerial</strong></div>
+              <div class="meta-sep"></div>
+              <div class="meta-item">Tags: <strong>Pie, Cake</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="area-price">
+          <div class="price-block">
+            <div class="price-big">$10 USD</div>
+            <div class="price-label">By PayPal</div>
+            <div class="notice-box">Specify the video(s) and your email address.</div>
+            <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
+          </div>
+        </div>
       </div>
     </div>
 
