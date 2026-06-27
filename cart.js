@@ -253,7 +253,7 @@
             <span id="cart-total-value">$0 USD</span>
           </div>
           <a class="cart-pay-btn" id="cart-pay-btn" href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">Pay Now</a>
-          <button class="cart-clear-btn" id="cart-clear-btn">Clear cart</button>
+          <button class="cart-clear-btn" id="cart-clear-btn">Clear All</button>
         </div>
       </div>
     `;

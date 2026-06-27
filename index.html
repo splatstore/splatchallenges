@@ -699,7 +699,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 8px;
       transform: translateY(0);
       transition: transform 0.30s ease, opacity 0.30s ease;
       opacity: 1;
@@ -779,7 +779,7 @@
 
     /* ========== TAGS FILTER ========== */
     .tags-wrap {
-      position: relative;
+      position: sticky;
       flex-shrink: 0;
     }
 
@@ -1033,6 +1033,7 @@
         />
         <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Clear search">✕</button>
       </div>
+      <span class="search-count" id="search-count"></span>
       <div class="tags-wrap" id="tags-wrap">
         <button class="tags-btn" id="tags-btn" onclick="toggleTagsDropdown()">
           Tags <span class="tags-arrow">▼</span>
@@ -1054,7 +1055,6 @@
           <button class="tags-apply" onclick="applyTags()">Apply</button>
         </div>
       </div>
-      <span class="search-count" id="search-count"></span>
     </div>
     <div class="hero">
       <p>Splat Challenges Females</p>
@@ -2154,7 +2154,7 @@
         img: btn.dataset.img
       });
       const originalText = btn.textContent;
-      btn.textContent = 'Added ✓';
+      btn.textContent = 'Added';
       btn.classList.add('added');
       setTimeout(() => {
         btn.textContent = originalText;
