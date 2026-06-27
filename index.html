@@ -38,9 +38,6 @@
       .card { border-color: #333; }
       .search-input { background: #242424; color: #f0f0f0; border-color: #333; }
       .search-bar-wrap { background: #000000; border-bottom-color: #333; }
-      .burger-menu { background: #0d0d0d; border-color: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-      .burger-menu a { color: #f0f0f0; }
-      .burger-menu a:hover { background: #1a1a1a; }
     }
 
     body {
@@ -111,38 +108,119 @@
       width: 100%;
       background: var(--black);
       border-radius: 2px;
-      transition: background 0.15s;
     }
+
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 260px;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 190;
+    }
+    .sidebar-overlay.open { display: block; }
 
     .burger-menu {
       display: none;
-      position: absolute;
-      top: calc(100% + 10px);
+      position: fixed;
+      top: 0;
       left: 0;
+      bottom: 0;
+      width: 260px;
       background: var(--white);
-      border: 1px solid var(--gray-mid);
-      border-radius: 8px;
-      min-width: 180px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-      overflow: hidden;
+      border-right: 1px solid var(--gray-mid);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
       z-index: 200;
+      flex-direction: column;
     }
 
-    .burger-menu.open { display: block; }
+    .burger-menu.open { display: flex; }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--gray-mid);
+    }
+
+    .sidebar-logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--black);
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.15s;
+    }
+
+    .sidebar-close:hover { color: var(--green); }
+
+    .sidebar-section-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      font-weight: 700;
+      padding: 20px 20px 8px;
+    }
 
     .burger-menu a {
       display: block;
-      padding: 13px 20px;
+      padding: 12px 20px;
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--black);
       text-decoration: none;
+      border-top: 1px solid var(--gray-mid);
       transition: background 0.12s;
     }
 
+    .burger-menu a:last-of-type { border-bottom: 1px solid var(--gray-mid); }
     .burger-menu a:hover { background: var(--gray); }
+
+    .sidebar-social {
+      padding: 20px;
+      margin-top: auto;
+      border-top: 1px solid var(--gray-mid);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-social a {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      text-decoration: none;
+      transition: color 0.15s;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .sidebar-social a:hover { color: var(--green-dark); background: none !important; }
+
+    @media (prefers-color-scheme: dark) {
+      .burger-menu { background: #0d0d0d; border-right-color: #333; }
+      .burger-menu a { color: #f0f0f0; border-top-color: #333; }
+      .burger-menu a:last-child { border-bottom-color: #333; }
+      .burger-menu a:hover { background: #1a1a1a; }
+      .sidebar-overlay { background: rgba(0,0,0,0.55); }
+    }
 
     /* ========== HERO (index only) ========== */
     .hero {
@@ -914,6 +992,8 @@
 </head>
 <body>
 
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
   <header>
     <div class="header-left">
       <div class="burger-wrap">
@@ -921,18 +1001,26 @@
           <span></span><span></span><span></span>
         </button>
         <nav class="burger-menu" id="burger-menu">
+          <div class="sidebar-header">
+            <img class="sidebar-logo" src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT" />
+            <button class="sidebar-close" onclick="closeBurger()" aria-label="Close">✕</button>
+          </div>
           <a href="index.html">All Videos</a>
+          <div class="sidebar-social">
+            <a href="mailto:splaymessydares@gmail.com">Email</a>
+            <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD</a>
+            <a href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">PayPal</a>
+          </div>
         </nav>
       </div>
       <a class="logo" href="index.html"><img src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT Challenges" /></a>
     </div>
+    <div id="cart-mount"></div>
   </header>
 
   <!-- INDEX PAGE -->
   <div id="page-index" class="page active">
-    <div class="hero">
-      <p>Splat Challenges Females: All videos</p>
-    </div>
     <div class="search-bar-wrap">
       <div class="search-bar-inner">
         <input
@@ -967,6 +1055,9 @@
         </div>
       </div>
       <span class="search-count" id="search-count"></span>
+    </div>
+    <div class="hero">
+      <p>Splat Challenges Females</p>
     </div>
     <div class="grid-section">
       <div class="video-grid" id="video-grid"></div>
@@ -2027,7 +2118,14 @@
       countEl.textContent = hasFilter ? `${list.length} video${list.length > 1 ? 's' : ''}` : '';
 
       const page = list.slice(0, PAGE_SIZE);
-      grid.innerHTML = renderCards(page);
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      page.forEach(v => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderCards([v]);
+        frag.appendChild(tmp.firstElementChild);
+      });
+      grid.appendChild(frag);
       showMoreWrap.style.display = list.length > PAGE_SIZE ? 'flex' : 'none';
     }
 
@@ -2071,7 +2169,13 @@
       const start = currentPage * PAGE_SIZE;
       const end = start + PAGE_SIZE;
       const nextItems = currentList.slice(start, end);
-      grid.innerHTML += renderCards(nextItems);
+      const frag = document.createDocumentFragment();
+      nextItems.forEach(v => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderCards([v]);
+        frag.appendChild(tmp.firstElementChild);
+      });
+      grid.appendChild(frag);
       showMoreWrap.style.display = currentList.length > end ? 'flex' : 'none';
     }
 
@@ -2128,7 +2232,15 @@
     // Init
     buildGrid();
     function toggleBurger() {
-      document.getElementById('burger-menu').classList.toggle('open');
+      const menu = document.getElementById('burger-menu');
+      const overlay = document.getElementById('sidebar-overlay');
+      menu.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    function closeBurger() {
+      document.getElementById('burger-menu').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
     }
 
     // Hide search bar on scroll down, show on scroll up
@@ -2149,10 +2261,6 @@
       }, { passive: true });
     })();
     document.addEventListener('click', function(e) {
-      const wrap = document.querySelector('.burger-wrap');
-      if (wrap && !wrap.contains(e.target)) {
-        document.getElementById('burger-menu').classList.remove('open');
-      }
       const tagsWrap = document.getElementById('tags-wrap');
       if (tagsWrap && !tagsWrap.contains(e.target)) {
         document.getElementById('tags-dropdown').classList.remove('open');
