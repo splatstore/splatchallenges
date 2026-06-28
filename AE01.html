@@ -513,32 +513,42 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       text-align: center;
       text-decoration: none;
     }
-    .btn-buy:hover { background: var(--gray-btn); }
+
+    .btn-buy:hover {
+      background: var(--gray-btn);
+    }
 
     .btn-add-cart {
       display: block;
       width: 100%;
-      background: none;
-      color: var(--black);
-      border: 1.5px solid var(--black);
+      background: var(--green);
+      color: var(--white);
+      border: none;
       border-radius: 6px;
-      padding: 12px;
+      padding: 14px;
       font-family: var(--font);
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       margin-top: 10px;
     }
 
-    .btn-add-cart:hover { background: var(--black); color: var(--white); }
-    .btn-add-cart.added { border-color: var(--green); color: var(--green-dark); }
+    .btn-add-cart:hover {
+      background: var(--green-dark);
+      color: var(--white);
+    }
+
+    .btn-add-cart.added {
+      background: var(--green-dark);
+      color: var(--white);
+    }
 
     @media (prefers-color-scheme: dark) {
       .btn-add-cart { border-color: #f0f0f0; color: #f0f0f0; }
@@ -598,8 +608,8 @@
     }
     @media (max-width: 600px) {
       header { padding: 0 14px; }
-      .detail-page { padding: 18px 14px 24px; }
-      .gallery { margin-bottom: 14px; }
+      .detail-page { padding: 14px 14px 20px; }
+      .gallery { gap: 4px; margin-bottom: 13px; }
       .gallery-thumbs { gap: 4px; }
       .detail-title { margin-bottom: 6px; }
       .meta-rows { margin-top: 6px; }
@@ -607,16 +617,17 @@
       .area-price { margin-top: 14px; }
       .specs-toggle { padding: 12px 16px; }
       .specs-body { padding: 0 16px 14px; }
-      .price-block { padding: 14px 16px; }
+      .price-block { padding: 14px 14px; }
       .notice-box { padding: 8px 10px; margin-bottom: 8px; }
-      .btn-add-cart { margin-top: 6px; padding: 10px; }
+      .btn-add-cart { margin-top: 6px; padding: 14px; }
       .trailer-wrap { margin-top: 18px; margin-bottom: 18px; }
-      .suggestions { margin-top: 18px; padding-top: 18px; }
-      .suggestions h2 { margin-bottom: 16px; }
+      .suggestions { margin-top: 25px; padding-top: 14px; }
+      .suggestions h2 { margin-bottom: 14px; }
       .suggestions::before { left: -14px; right: -14px; }
       .suggestions-scroll { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+      .suggestions-grid { gap: 14px; }
       .sugg-card { flex: 0 0 200px; width: 200px; }
-      .site-footer { padding: 16px 14px; }
+      .site-footer { padding: 25px 14px; }
     }
   </style>
 </head>
