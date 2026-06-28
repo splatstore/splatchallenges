@@ -358,7 +358,8 @@
 
     @media (prefers-color-scheme: dark) {
       .site-footer { border-top-color: #333; }
-      .btn-buy { background: var(--white); color: var(--black); }
+      .btn-buy { border-color: var(--white); color: var(--white); }
+      .btn-buy:hover { background: var(--white); color: #111; }
     }
 
     /* Right buttons group */
@@ -513,9 +514,9 @@
     .btn-buy {
       display: block;
       width: 100%;
-      background: var(--black);
-      color: var(--white);
-      border: none;
+      background: none;
+      color: var(--black);
+      border: 1.5px solid var(--black);
       border-radius: 6px;
       padding: 14px;
       font-family: var(--font);
@@ -524,21 +525,22 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s;
+      transition: background 0.18s, color 0.18s;
       text-align: center;
       text-decoration: none;
     }
 
     .btn-buy:hover {
-      background: var(--gray-btn);
+      background: var(--black);
+      color: var(--white);
     }
 
     .btn-add-cart {
       display: block;
       width: 100%;
-      background: var(--green);
-      color: var(--white);
-      border: none;
+      background: none;
+      color: var(--green-dark);
+      border: 1.5px solid var(--green);
       border-radius: 6px;
       padding: 14px;
       font-family: var(--font);
@@ -547,24 +549,20 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s;
+      transition: background 0.18s, color 0.18s;
       margin-top: 10px;
     }
 
     .btn-add-cart:hover {
-      background: var(--green-dark);
+      background: var(--green);
       color: var(--white);
     }
 
     .btn-add-cart.added {
-      background: var(--green-dark);
+      background: var(--green);
       color: var(--white);
     }
 
-    @media (prefers-color-scheme: dark) {
-      .btn-add-cart { border-color: #f0f0f0; color: #f0f0f0; }
-      .btn-add-cart:hover { background: #f0f0f0; color: #111; }
-    }
     .suggestions { margin-top: 30px; padding-top: 30px; position: relative; }
     .suggestions::before {
       content: '';
