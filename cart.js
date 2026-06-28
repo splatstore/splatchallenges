@@ -94,29 +94,68 @@
         font-family: Arial, sans-serif;
       }
       .cart-badge.show { display: flex; }
+
+      /* Cart sidebar overlay */
+      .cart-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 260px;
+        bottom: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 290;
+      }
+      .cart-overlay.open { display: block; }
+
       .cart-popover {
         display: none;
-        position: absolute;
-        top: calc(100% + 10px);
+        position: fixed;
+        top: 0;
         right: 0;
-        width: 320px;
-        max-height: 420px;
+        bottom: 0;
+        width: 260px;
+        max-height: none;
         overflow-y: auto;
         background: var(--white, #fff);
-        border: 1px solid var(--gray-mid, #e0e0e0);
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        border-left: 1px solid var(--gray-mid, #e0e0e0);
+        border-radius: 0;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.15);
         z-index: 300;
-        padding: 16px;
+        padding: 0;
+        flex-direction: column;
       }
-      .cart-popover.open { display: block; }
+      .cart-popover.open { display: flex; }
+      .cart-popover-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid var(--gray-mid, #e0e0e0);
+      }
+      .cart-popover-close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--black, #111);
+        line-height: 1;
+        padding: 4px;
+        transition: color 0.15s;
+      }
+      .cart-popover-close:hover { color: var(--green, #32CD32); }
+      .cart-popover-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+      }
       .cart-popover-title {
-        font-size: 11px;
-        letter-spacing: 2px;
+        font-size: 14px;
+        letter-spacing: 1px;
         text-transform: uppercase;
-        color: var(--gray-text, #888);
+        color: var(--black, #111);
         font-weight: 700;
-        margin-bottom: 12px;
+        margin: 0;
       }
       .cart-empty {
         font-size: 13px;
@@ -171,8 +210,8 @@
       }
       .cart-item-remove:hover { color: #c00; }
       .cart-footer {
-        margin-top: 12px;
-        padding-top: 12px;
+        margin-top: 0;
+        padding: 16px 20px 20px;
         border-top: 1px solid var(--gray-mid, #e0e0e0);
       }
       .cart-total-row {
@@ -219,18 +258,28 @@
       .cart-pay-btn:hover { background: #333; }
       @media (prefers-color-scheme: dark) {
         .cart-btn svg { stroke: #f0f0f0; }
-        .cart-popover { background: #111111; border-color: #333; }
+        .cart-popover { background: #0d0d0d; border-left-color: #333; }
+        .cart-popover-header { border-bottom-color: #333; }
+        .cart-popover-title { color: #f0f0f0; }
+        .cart-popover-close { color: #f0f0f0; }
         .cart-item { border-bottom-color: #333; }
         .cart-footer { border-top-color: #333; }
         .cart-clear-btn { border-color: #444; color: #999; }
         .cart-pay-btn { background: #f0f0f0; color: #111; }
         .cart-pay-btn:hover { background: #ddd; }
+        .cart-overlay { background: rgba(0,0,0,0.55); }
       }
       @media (max-width: 600px) {
-        .cart-popover { width: 280px; right: -10px; }
+        .cart-popover { width: 260px; }
+        .cart-overlay { right: 260px; }
       }
     `;
     document.head.appendChild(style);
+
+    const cartOverlay = document.createElement('div');
+    cartOverlay.className = 'cart-overlay';
+    cartOverlay.id = 'cart-overlay';
+    document.body.appendChild(cartOverlay);
 
     const cartWrap = document.createElement('div');
     cartWrap.className = 'cart-wrap';
@@ -245,8 +294,13 @@
         <span class="cart-badge" id="cart-badge"></span>
       </button>
       <div class="cart-popover" id="cart-popover">
-        <div class="cart-popover-title">Your Cart</div>
-        <div id="cart-items"></div>
+        <div class="cart-popover-header">
+          <div class="cart-popover-title">Your Cart</div>
+          <button class="cart-popover-close" onclick="window.SplatCart.closePopup()" aria-label="Close">✕</button>
+        </div>
+        <div class="cart-popover-body">
+          <div id="cart-items"></div>
+        </div>
         <div class="cart-footer" id="cart-footer" style="display:none;">
           <div class="cart-total-row">
             <span>Total</span>
@@ -267,23 +321,24 @@
       e.stopPropagation();
       clearCart();
     });
-    document.addEventListener('click', function (e) {
-      const wrap = document.getElementById('cart-wrap');
-      if (wrap && !wrap.contains(e.target)) {
-        closeCartPopup();
-      }
+    cartOverlay.addEventListener('click', function () {
+      closeCartPopup();
     });
   }
 
   function toggleCartPopup() {
     document.getElementById('cart-popover').classList.toggle('open');
+    document.getElementById('cart-overlay').classList.toggle('open');
   }
   function openCartPopup() {
     document.getElementById('cart-popover').classList.add('open');
+    document.getElementById('cart-overlay').classList.add('open');
   }
   function closeCartPopup() {
     const pop = document.getElementById('cart-popover');
+    const overlay = document.getElementById('cart-overlay');
     if (pop) pop.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
   }
 
   function updateCartUI() {
@@ -335,7 +390,8 @@
     remove: removeFromCart,
     clear: clearCart,
     getAll: getCart,
-    total: cartTotal
+    total: cartTotal,
+    closePopup: closeCartPopup
   };
 
   /* ---------- Init on DOM ready ---------- */
