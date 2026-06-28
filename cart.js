@@ -167,9 +167,15 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 8px 0;
+        padding: 8px 4px;
+        margin: 0 -4px;
         border-bottom: 1px solid var(--gray-mid, #e0e0e0);
+        text-decoration: none;
+        color: inherit;
+        border-radius: 6px;
+        transition: background 0.15s;
       }
+      .cart-item:hover { background: var(--gray, #f5f5f5); }
       .cart-item:last-of-type { border-bottom: none; }
       .cart-item img {
         width: 48px;
@@ -256,6 +262,170 @@
         transition: background 0.18s;
       }
       .cart-pay-btn:hover { background: #333; }
+
+      /* Pay confirmation modal */
+      .pay-confirm-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 400;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .pay-confirm-overlay.open { display: flex; }
+
+      .pay-confirm-modal {
+        background: var(--white, #fff);
+        border-radius: 12px;
+        max-width: 380px;
+        width: 100%;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      }
+
+      .pay-confirm-title {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--black, #111);
+        margin-bottom: 14px;
+      }
+
+      .pay-confirm-list {
+        margin-bottom: 16px;
+      }
+
+      .pay-confirm-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--black, #111);
+        padding: 8px 0;
+        border-bottom: 1px solid var(--gray-mid, #e0e0e0);
+      }
+      .pay-confirm-item img {
+        width: 48px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 4px;
+        flex-shrink: 0;
+        background: var(--gray, #f5f5f5);
+      }
+      .pay-confirm-item-info { flex: 1; min-width: 0; }
+      .pay-confirm-item-name {
+        font-weight: 700;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .pay-confirm-item-price {
+        font-size: 11px;
+        color: var(--green-dark, #1db029);
+        font-weight: 700;
+        margin-top: 2px;
+      }
+      .pay-confirm-item:last-of-type { border-bottom: none; }
+      .pay-confirm-total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black, #111);
+        padding: 10px 0 14px;
+      }
+
+      .pay-confirm-notice {
+        background: rgba(255, 220, 50, 0.12);
+        border: 1.5px solid #f0c000;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 12px;
+        color: var(--black, #111);
+        letter-spacing: 0.3px;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
+      .pay-confirm-note-label {
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--gray-text, #888);
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .pay-confirm-note-box {
+        background: var(--gray, #f5f5f5);
+        border: 1px solid var(--gray-mid, #e0e0e0);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 12px;
+        color: var(--black, #111);
+        line-height: 1.6;
+        margin-bottom: 8px;
+        word-break: break-word;
+        white-space: pre-line;
+      }
+
+      .pay-confirm-copy-btn {
+        width: 100%;
+        background: none;
+        border: 1px solid var(--gray-mid, #e0e0e0);
+        border-radius: 6px;
+        padding: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--black, #111);
+        cursor: pointer;
+        margin-bottom: 16px;
+        transition: border-color 0.15s;
+      }
+      .pay-confirm-copy-btn:hover { border-color: var(--green, #32CD32); }
+      .pay-confirm-copy-btn.copied { border-color: var(--green, #32CD32); color: var(--green-dark, #1db029); }
+
+      .pay-confirm-go-btn {
+        display: block;
+        width: 100%;
+        background: var(--black, #111);
+        color: var(--white, #fff);
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 6px;
+        padding: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-bottom: 8px;
+        transition: background 0.18s;
+      }
+      .pay-confirm-go-btn:hover { background: #333; }
+
+      .pay-confirm-cancel-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        color: var(--gray-text, #888);
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 6px;
+      }
+      .pay-confirm-cancel-btn:hover { color: var(--black, #111); }
       @media (prefers-color-scheme: dark) {
         .cart-btn svg { stroke: #f0f0f0; }
         .cart-popover { background: #0d0d0d; border-left-color: #333; }
@@ -263,11 +433,22 @@
         .cart-popover-title { color: #f0f0f0; }
         .cart-popover-close { color: #f0f0f0; }
         .cart-item { border-bottom-color: #333; }
+        .cart-item:hover { background: #1a1a1a; }
         .cart-footer { border-top-color: #333; }
         .cart-clear-btn { border-color: #444; color: #999; }
         .cart-pay-btn { background: #f0f0f0; color: #111; }
         .cart-pay-btn:hover { background: #ddd; }
         .cart-overlay { background: rgba(0,0,0,0.55); }
+        .pay-confirm-modal { background: #111111; }
+        .pay-confirm-title { color: #f0f0f0; }
+        .pay-confirm-item { color: #f0f0f0; border-bottom-color: #333; }
+        .pay-confirm-total-row { color: #f0f0f0; }
+        .pay-confirm-note-box { background: #1a1a1a; border-color: #333; color: #f0f0f0; }
+        .pay-confirm-notice { background: rgba(255, 200, 0, 0.08); border-color: #c9a000; color: #f0f0f0; }
+        .pay-confirm-copy-btn { border-color: #444; color: #f0f0f0; }
+        .pay-confirm-go-btn { background: #f0f0f0; color: #111; }
+        .pay-confirm-go-btn:hover { background: #ddd; }
+        .pay-confirm-cancel-btn:hover { color: #f0f0f0; }
       }
       @media (max-width: 600px) {
         .cart-popover { width: 260px; }
@@ -280,6 +461,27 @@
     cartOverlay.className = 'cart-overlay';
     cartOverlay.id = 'cart-overlay';
     document.body.appendChild(cartOverlay);
+
+    const payOverlay = document.createElement('div');
+    payOverlay.className = 'pay-confirm-overlay';
+    payOverlay.id = 'pay-confirm-overlay';
+    payOverlay.innerHTML = `
+      <div class="pay-confirm-modal">
+        <div class="pay-confirm-title">Confirm your order</div>
+        <div class="pay-confirm-list" id="pay-confirm-list"></div>
+        <div class="pay-confirm-total-row">
+          <span>Total</span>
+          <span id="pay-confirm-total-value">$0 USD</span>
+        </div>
+        <div class="pay-confirm-notice">Specify the video(s) and your email address.</div>
+        <div class="pay-confirm-note-label">PayPal note</div>
+        <div class="pay-confirm-note-box" id="pay-confirm-note"></div>
+        <button class="pay-confirm-copy-btn" id="pay-confirm-copy-btn">Copy note</button>
+        <a class="pay-confirm-go-btn" id="pay-confirm-go-btn" href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">Go to PayPal</a>
+        <button class="pay-confirm-cancel-btn" id="pay-confirm-cancel-btn">Cancel</button>
+      </div>
+    `;
+    document.body.appendChild(payOverlay);
 
     const cartWrap = document.createElement('div');
     cartWrap.className = 'cart-wrap';
@@ -306,7 +508,7 @@
             <span>Total</span>
             <span id="cart-total-value">$0 USD</span>
           </div>
-          <a class="cart-pay-btn" id="cart-pay-btn" href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">Pay Now</a>
+          <button class="cart-pay-btn" id="cart-pay-btn">Pay Now</button>
           <button class="cart-clear-btn" id="cart-clear-btn">Clear All</button>
         </div>
       </div>
@@ -320,6 +522,25 @@
     document.getElementById('cart-clear-btn').addEventListener('click', function (e) {
       e.stopPropagation();
       clearCart();
+    });
+    document.getElementById('cart-pay-btn').addEventListener('click', function (e) {
+      e.stopPropagation();
+      openPayConfirm();
+    });
+    document.getElementById('pay-confirm-cancel-btn').addEventListener('click', closePayConfirm);
+    payOverlay.addEventListener('click', function (e) {
+      if (e.target === payOverlay) closePayConfirm();
+    });
+    document.getElementById('pay-confirm-copy-btn').addEventListener('click', function () {
+      const note = document.getElementById('pay-confirm-note').textContent;
+      navigator.clipboard.writeText(note).then(() => {
+        this.textContent = 'Copied ✓';
+        this.classList.add('copied');
+        setTimeout(() => {
+          this.textContent = 'Copy';
+          this.classList.remove('copied');
+        }, 1800);
+      });
     });
     cartOverlay.addEventListener('click', function () {
       closeCartPopup();
@@ -338,6 +559,38 @@
     const pop = document.getElementById('cart-popover');
     const overlay = document.getElementById('cart-overlay');
     if (pop) pop.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+  }
+
+  function openPayConfirm() {
+    const cart = getCart();
+    if (cart.length === 0) return;
+
+    const listEl = document.getElementById('pay-confirm-list');
+    const noteEl = document.getElementById('pay-confirm-note');
+    const totalEl = document.getElementById('pay-confirm-total-value');
+
+    listEl.innerHTML = cart.map(v => `
+      <div class="pay-confirm-item">
+        <img src="${v.img}" alt="${v.name}" />
+        <div class="pay-confirm-item-info">
+          <div class="pay-confirm-item-name">${v.name}</div>
+          <div class="pay-confirm-item-price">$${v.price} USD</div>
+        </div>
+      </div>
+    `).join('');
+
+    totalEl.textContent = `$${cartTotal()} USD`;
+
+    const lines = cart.map(v => v.name);
+    lines.push('youremail@email.com');
+    noteEl.textContent = lines.join('\n');
+
+    document.getElementById('pay-confirm-overlay').classList.add('open');
+  }
+
+  function closePayConfirm() {
+    const overlay = document.getElementById('pay-confirm-overlay');
     if (overlay) overlay.classList.remove('open');
   }
 
@@ -363,18 +616,19 @@
     }
 
     itemsWrap.innerHTML = cart.map(v => `
-      <div class="cart-item">
+      <a class="cart-item" href="${v.id}.html">
         <img src="${v.img}" alt="${v.name}" />
         <div class="cart-item-info">
           <div class="cart-item-name">${v.name}</div>
           <div class="cart-item-price">$${v.price} USD</div>
         </div>
         <button class="cart-item-remove" data-id="${v.id}" aria-label="Remove">✕</button>
-      </div>
+      </a>
     `).join('');
 
     itemsWrap.querySelectorAll('.cart-item-remove').forEach(btn => {
       btn.addEventListener('click', function (e) {
+        e.preventDefault();
         e.stopPropagation();
         removeFromCart(this.dataset.id);
       });
