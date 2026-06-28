@@ -358,8 +358,19 @@
 
     @media (prefers-color-scheme: dark) {
       .site-footer { border-top-color: #333; }
-      .btn-buy { border-color: var(--white); color: var(--white); }
-      .btn-buy:hover { background: var(--white); color: #111; }
+      .btn-buy { background: var(--white); color: var(--black); }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .btn-add-cart {
+        background: var(--green);
+        color: #000;
+      }
+
+      .btn-add-cart:hover {
+        background: var(--green-dark);
+        color: #fff;
+      }
     }
 
     /* Right buttons group */
@@ -514,9 +525,9 @@
     .btn-buy {
       display: block;
       width: 100%;
-      background: none;
-      color: var(--black);
-      border: 1.5px solid var(--black);
+      background: var(--black);
+      color: var(--white);
+      border: none;
       border-radius: 6px;
       padding: 14px;
       font-family: var(--font);
@@ -525,22 +536,21 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       text-align: center;
       text-decoration: none;
     }
 
     .btn-buy:hover {
-      background: var(--black);
-      color: var(--white);
+      background: var(--gray-btn);
     }
 
     .btn-add-cart {
       display: block;
       width: 100%;
-      background: none;
-      color: var(--green-dark);
-      border: 1.5px solid var(--green);
+      background: var(--black);
+      color: var(--white);
+      border: none;
       border-radius: 6px;
       padding: 14px;
       font-family: var(--font);
@@ -549,20 +559,23 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       margin-top: 10px;
     }
 
     .btn-add-cart:hover {
-      background: var(--green);
-      color: var(--white);
+      background: var(--gray-btn);
     }
 
     .btn-add-cart.added {
-      background: var(--green);
+      background: var(--green-dark);
       color: var(--white);
     }
 
+    @media (prefers-color-scheme: dark) {
+      .btn-add-cart { background: var(--white); color: var(--black); }
+      .btn-add-cart:hover { background: var(--gray-btn); }
+    }
     .suggestions { margin-top: 30px; padding-top: 30px; position: relative; }
     .suggestions::before {
       content: '';
