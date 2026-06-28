@@ -354,15 +354,6 @@
         margin-bottom: 14px;
       }
 
-      .pay-confirm-note-label {
-        font-size: 11px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--gray-text, #888);
-        font-weight: 700;
-        margin-bottom: 6px;
-      }
-
       .pay-confirm-note-box {
         background: var(--gray, #f5f5f5);
         border: 1px solid var(--gray-mid, #e0e0e0);
@@ -473,8 +464,7 @@
           <span>Total</span>
           <span id="pay-confirm-total-value">$0 USD</span>
         </div>
-        <div class="pay-confirm-notice">Specify the video(s) and your email address.</div>
-        <div class="pay-confirm-note-label">PayPal note</div>
+        <div class="pay-confirm-notice">Specify your email address and the video(s) on the PayPal note.</div>
         <div class="pay-confirm-note-box" id="pay-confirm-note"></div>
         <button class="pay-confirm-copy-btn" id="pay-confirm-copy-btn">Copy note</button>
         <a class="pay-confirm-go-btn" id="pay-confirm-go-btn" href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">Go to PayPal</a>
@@ -582,8 +572,7 @@
 
     totalEl.textContent = `$${cartTotal()} USD`;
 
-    const lines = cart.map(v => v.name);
-    lines.push('youremail@email.com');
+    const lines = ['youremail@email.com', ...cart.map(v => v.id)];
     noteEl.textContent = lines.join('\n');
 
     document.getElementById('pay-confirm-overlay').classList.add('open');
