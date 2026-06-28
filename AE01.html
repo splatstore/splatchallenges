@@ -192,6 +192,17 @@
     .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
     .gallery-thumb:hover { opacity: 0.85; }
     .gallery-thumb.active { border-color: var(--green); }
+    .action-buttons{
+      display:flex;
+      gap:10px;
+    }
+
+    .action-buttons .btn-add-cart,
+    .action-buttons .btn-buy{
+      flex:1;
+      width:auto;
+      margin-top:0;
+    }
     /* ===== PAGE GRID (desktop: gallery+specs left, title+price right, sticky) ===== */
     .page-grid {
       display: grid;
@@ -728,8 +739,16 @@
           <div class="price-block">
             <div class="price-big">$10 USD</div>
             <div class="price-label">By PayPal</div>
-            <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
-            <button class="btn-add-cart" id="add-to-cart-btn">Add to Cart</button>
+            <div class="action-buttons">
+              <button class="btn-add-cart" id="add-to-cart-btn">Add to Cart</button>
+
+              <a href="https://www.paypal.com/paypalme/splatmessydares"
+                class="btn-buy"
+                target="_blank"
+                rel="noopener noreferrer">
+                Pay now
+              </a>
+            </div>
           </div>
         </div>
       </div>
