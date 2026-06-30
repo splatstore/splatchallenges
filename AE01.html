@@ -209,7 +209,7 @@
       { href: 'GP10.html', img: 'https://i.ibb.co/MkkFkW26/GROUP10-img3.jpg', title: 'GROUP 10. History Of Slapstick', price: '$10 USD' }
     ];
 
-    const CART_ICON_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+    const CART_ICON_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>`;
 
     (function renderSuggestions() {
       const shuffled = allSuggestions.slice().sort(() => Math.random() - 0.5);
@@ -232,7 +232,7 @@
         if (!btn) return;
         e.preventDefault();
         e.stopPropagation();
-        SplatCart.add({
+        SplatCart.addSilent({
           id: btn.dataset.href.replace('.html',''),
           name: btn.dataset.title,
           price: btn.dataset.price,

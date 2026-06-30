@@ -611,8 +611,9 @@
     .sugg-card:hover { transform: translateY(-2px); }
     .sugg-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--gray); }
     .sugg-info { padding: 14px 16px 16px; }
+    .sugg-card a { display: block; text-decoration: none; color: inherit; }
     .sugg-title { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
-    .sugg-price { font-size: 14px; font-weight: 700; color: var(--green-dark); }
+    .sugg-price { font-size: 14px; font-weight: 700; color: var(--black); }
     .sugg-cart-btn {
       position: absolute;
       bottom: 10px;
@@ -631,7 +632,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.18);
     }
     .sugg-cart-btn:hover { background: var(--green-dark); transform: scale(1.1); }
-    .sugg-cart-btn svg { width: 16px; height: 16px; fill: #fff; }
+    .sugg-cart-btn svg { width: 15px; height: 15px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     @media (max-width: 1100px) {
       .page-grid {
         grid-template-columns: 1fr;
@@ -648,6 +649,7 @@
       .area-specs { order: 4; margin-top: 25px; width: 100%; }
       .right-col { position: static; }
     }
+    .cart-section { margin-top: 30px; }
     @media (max-width: 600px) {
       header { padding: 0 14px; }
       .detail-page { padding: 14px 14px 30px; }
@@ -665,6 +667,7 @@
       .trailer-wrap { margin-top: 18px; margin-bottom: 18px; }
       .suggestions { margin-top: 35px; padding-top: 14px; }
       .suggestions h2 { margin-bottom: 14px; }
+      .cart-section { margin-top: 8px; }
       .suggestions::before { left: -14px; right: -14px; }
       .suggestions-scroll { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
       .suggestions-grid { gap: 14px; }
@@ -672,7 +675,6 @@
     }
 
     /* Page cart block (gray rectangle, no top divider) */
-    .cart-section { margin-top: 30px; }
     .cart-box {
       background: var(--gray);
       border: 1px solid var(--gray-mid);
@@ -740,7 +742,7 @@
       min-width: 180px;
       display: block;
       text-align: center;
-      padding: 14px 20px;
+      padding: 14px 0;
       background: var(--black);
       color: var(--white);
       text-decoration: none;

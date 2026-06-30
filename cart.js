@@ -26,7 +26,6 @@
     // item: { id, name, price, img }
     const cart = getCart();
     if (cart.some(v => v.id === item.id)) {
-      // already in cart — do nothing (or could show a toast)
       openCartPopup();
       updateCartUI();
       return;
@@ -34,6 +33,15 @@
     cart.push(item);
     saveCart(cart);
     openCartPopup();
+  }
+
+  function addToCartSilent(item) {
+    // Same as addToCart but never opens the sidebar
+    const cart = getCart();
+    if (!cart.some(v => v.id === item.id)) {
+      cart.push(item);
+      saveCart(cart);
+    }
   }
 
   function removeFromCart(id) {
@@ -644,7 +652,7 @@
       return;
     }
 
-    grid.innerHTML = cart.map(v => `
+    grid.innerHTML = cart.slice().reverse().map(v => `
       <div class="sugg-card cart-block-card">
         <button class="cart-block-remove" data-id="${v.id}" aria-label="Remove">✕</button>
         <a class="cart-block-link" href="${v.id}.html">
@@ -669,6 +677,7 @@
   /* ---------- Public API ---------- */
   window.SplatCart = {
     add: addToCart,
+    addSilent: addToCartSilent,
     remove: removeFromCart,
     clear: clearCart,
     getAll: getCart,
