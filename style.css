@@ -649,6 +649,7 @@
       .area-specs { order: 4; margin-top: 25px; width: 100%; }
       .right-col { position: static; }
     }
+    .cart-section { margin-top: 30px; }
     @media (max-width: 600px) {
       header { padding: 0 14px; }
       .detail-page { padding: 14px 14px 30px; }
@@ -666,7 +667,7 @@
       .trailer-wrap { margin-top: 18px; margin-bottom: 18px; }
       .suggestions { margin-top: 35px; padding-top: 14px; }
       .suggestions h2 { margin-bottom: 14px; }
-      .cart-section { margin-top: 14px; }
+      .cart-section { margin-top: 8px; }
       .suggestions::before { left: -14px; right: -14px; }
       .suggestions-scroll { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
       .suggestions-grid { gap: 14px; }
@@ -674,7 +675,6 @@
     }
 
     /* Page cart block (gray rectangle, no top divider) */
-    .cart-section { margin-top: 30px; }
     .cart-box {
       background: var(--gray);
       border: 1px solid var(--gray-mid);
@@ -698,7 +698,7 @@
       flex: 0 0 200px;
       width: 200px;
       position: relative;
-      background: var(--white);
+      background: var(--grey);
       border: 1px solid var(--gray-mid);
       border-radius: 6px;
       overflow: hidden;
@@ -844,8 +844,6 @@
     @media (prefers-color-scheme: dark) {
       .nav-btn { background: #f0f0f0; color: #111; }
       .nav-btn:hover { background: #ddd; }
-      .cart-box { background: #111111; border-color: #333; }
-      .cart-block-card { background: #0d0d0d; border-color: #333; }
       .cart-block-remove { background: rgba(255,255,255,0.18); color: #f0f0f0; }
       .cart-block-remove:hover { background: #c00; color: #fff; }
     }
