@@ -859,4 +859,18 @@
       .cart-block-card { flex: 0 0 calc(50% - 5px); width: calc(50% - 5px); }
       .cart-block-paynow { display: block; width: 100%; padding: 13px 0; }
       .site-footer { padding: 25px 14px; }
+      .cart-block-row-link img {
+          width: 80px;
+          height: 54px;
+      }
+      .cart-block-row-name {
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .cart-block-row-price {
+        font-size: 13px;
+        margin-top: 4px;
+      }
+
     }
