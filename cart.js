@@ -580,7 +580,8 @@
   }
 
   function buyNow(item) {
-    openPayConfirm([item]);
+    addToCart(item);
+    openPayConfirm();
   }
 
   function closePayConfirm() {
@@ -589,6 +590,7 @@
   }
 
   function updateCartUI() {
+    renderPageCartBlock();
     const cart = getCart();
     const badge = document.getElementById('cart-badge');
     const itemsWrap = document.getElementById('cart-items');
@@ -630,6 +632,38 @@
 
     footer.style.display = 'block';
     totalValue.textContent = `$${cartTotal()} USD`;
+  }
+
+  function renderPageCartBlock() {
+    const grid = document.getElementById('page-cart-grid');
+    if (!grid) return;
+    const cart = getCart();
+
+    if (cart.length === 0) {
+      grid.innerHTML = '<div class="cart-block-empty">Add your first video</div>';
+      return;
+    }
+
+    grid.innerHTML = cart.map(v => `
+      <div class="sugg-card cart-block-card">
+        <button class="cart-block-remove" data-id="${v.id}" aria-label="Remove">✕</button>
+        <a class="cart-block-link" href="${v.id}.html">
+          <img class="sugg-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
+          <div class="sugg-info">
+            <div class="sugg-title">${v.name}</div>
+            <div class="sugg-price">$${v.price} USD</div>
+          </div>
+        </a>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('.cart-block-remove').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        removeFromCart(this.dataset.id);
+      });
+    });
   }
 
   /* ---------- Public API ---------- */
