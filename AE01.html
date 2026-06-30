@@ -761,12 +761,12 @@
             <div class="action-buttons">
               <button class="btn-add-cart" id="add-to-cart-btn">Add to Cart</button>
 
-              <a href="https://www.paypal.com/paypalme/splatmessydares"
+              <button
                 class="btn-buy"
-                target="_blank"
-                rel="noopener noreferrer">
+                id="pay-now-btn"
+                type="button">
                 Pay now
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -879,6 +879,15 @@
         this.textContent = 'Add to Cart';
         this.classList.remove('added');
       }, 1800);
+    });
+    // Wire up Pay Now button (opens same confirmation popup as cart sidebar)
+    document.getElementById('pay-now-btn').addEventListener('click', function () {
+      SplatCart.buyNow({
+        id: 'AE01',
+        name: 'AERIAL 1. Pies & Chocolate',
+        price: '10',
+        img: 'https://i.ibb.co/1GSyL6sy/AE01-img2.jpg'
+      });
     });
   </script>
   <script src="cart.js"></script>

@@ -552,15 +552,15 @@
     if (overlay) overlay.classList.remove('open');
   }
 
-  function openPayConfirm() {
-    const cart = getCart();
-    if (cart.length === 0) return;
+  function openPayConfirm(items) {
+    const list = items && items.length ? items : getCart();
+    if (list.length === 0) return;
 
     const listEl = document.getElementById('pay-confirm-list');
     const noteEl = document.getElementById('pay-confirm-note');
     const totalEl = document.getElementById('pay-confirm-total-value');
 
-    listEl.innerHTML = cart.map(v => `
+    listEl.innerHTML = list.map(v => `
       <div class="pay-confirm-item">
         <img src="${v.img}" alt="${v.name}" />
         <div class="pay-confirm-item-info">
@@ -570,12 +570,17 @@
       </div>
     `).join('');
 
-    totalEl.textContent = `$${cartTotal()} USD`;
+    const total = list.reduce((sum, v) => sum + (parseFloat(v.price) || 0), 0);
+    totalEl.textContent = `$${total} USD`;
 
-    const lines = ['youremail@email.com', ...cart.map(v => v.id)];
+    const lines = ['youremail@email.com', ...list.map(v => v.id)];
     noteEl.textContent = lines.join('\n');
 
     document.getElementById('pay-confirm-overlay').classList.add('open');
+  }
+
+  function buyNow(item) {
+    openPayConfirm([item]);
   }
 
   function closePayConfirm() {
@@ -634,7 +639,8 @@
     clear: clearCart,
     getAll: getCart,
     total: cartTotal,
-    closePopup: closeCartPopup
+    closePopup: closeCartPopup,
+    buyNow: buyNow
   };
 
   /* ---------- Init on DOM ready ---------- */
