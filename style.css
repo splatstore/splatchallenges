@@ -651,8 +651,30 @@
       .sugg-card { flex: 0 0 200px; width: 200px; }
     }
 
-    /* Page cart block (reuses .suggestions / .sugg-card layout) */
-    .cart-block-card { position: relative; }
+    /* Page cart block (gray rectangle, no top divider) */
+    .cart-section { margin-top: 30px; }
+    .cart-section h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 14px; font-weight: 700; }
+    .cart-box {
+      background: var(--gray);
+      border: 1px solid var(--gray-mid);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .cart-box-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      align-items: stretch;
+    }
+    .cart-block-card {
+      flex: 0 0 200px;
+      width: 200px;
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--gray-mid);
+      border-radius: 6px;
+      overflow: hidden;
+    }
     .cart-block-link { display: block; text-decoration: none; color: inherit; }
     .cart-block-remove {
       position: absolute;
@@ -675,21 +697,21 @@
     }
     .cart-block-remove:hover { background: #c00; }
     .cart-block-empty {
-      grid-column: 1 / -1;
+      width: 100%;
       text-align: center;
-      padding: 30px 10px;
+      padding: 24px 10px;
       font-size: 13px;
       color: var(--gray-text);
-      width: 100%;
     }
 
     /* Home / Challenges nav buttons */
-    .nav-buttons { display: flex; gap: 12px; margin: 30px 0; }
+    .nav-buttons { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; }
     .nav-btn {
-      flex: 1;
+      flex: 0 0 auto;
+      min-width: 180px;
       display: block;
       text-align: center;
-      padding: 14px;
+      padding: 14px 20px;
       background: var(--black);
       color: var(--white);
       text-decoration: none;
@@ -699,15 +721,20 @@
       text-transform: uppercase;
       border-radius: 6px;
       transition: background 0.18s;
+      white-space: nowrap;
     }
     .nav-btn:hover { background: #333; }
     @media (prefers-color-scheme: dark) {
       .nav-btn { background: #f0f0f0; color: #111; }
       .nav-btn:hover { background: #ddd; }
+      .cart-box { background: #111111; border-color: #333; }
+      .cart-block-card { background: #0d0d0d; border-color: #333; }
       .cart-block-remove { background: rgba(255,255,255,0.18); color: #f0f0f0; }
       .cart-block-remove:hover { background: #c00; color: #fff; }
     }
     @media (max-width: 600px) {
-      .nav-buttons { flex-direction: column; }
+      .nav-buttons { margin: 30px 0; }
+      .cart-box { padding: 12px; }
+      .cart-block-card { flex: 0 0 130px; width: 130px; }
       .site-footer { padding: 25px 14px; }
     }
