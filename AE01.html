@@ -363,13 +363,18 @@
 
     @media (prefers-color-scheme: dark) {
       .btn-add-cart {
-        background: var(--green);
-        color: #000;
+        background: #ffffff;
+        color: #000000;
       }
 
       .btn-add-cart:hover {
+        background: #e0e0e0;
+        color: #000000;
+      }
+
+      .btn-add-cart.added {
         background: var(--green-dark);
-        color: #fff;
+        color: #ffffff;
       }
     }
 
@@ -573,8 +578,11 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      .btn-add-cart { background: var(--white); color: var(--black); }
-      .btn-add-cart:hover { background: var(--gray-btn); }
+      .add-to-cart-btn {
+        background: #f0f0f0;
+        color: #111;
+      }
+    }
     }
     .suggestions { margin-top: 30px; padding-top: 30px; position: relative; }
     .suggestions::before {
@@ -630,7 +638,7 @@
     }
     @media (max-width: 600px) {
       header { padding: 0 14px; }
-      .detail-page { padding: 14px 14px 20px; }
+      .detail-page { padding: 14px 14px 30px; }
       .gallery { gap: 4px; margin-bottom: 13px; }
       .gallery-thumbs { gap: 4px; }
       .detail-title { margin-bottom: 6px; }
@@ -643,7 +651,7 @@
       .notice-box { padding: 8px 10px; margin-bottom: 10px; }
       .btn-add-cart { margin-top: 10px; padding: 14px; }
       .trailer-wrap { margin-top: 18px; margin-bottom: 18px; }
-      .suggestions { margin-top: 25px; padding-top: 14px; }
+      .suggestions { margin-top: 35px; padding-top: 14px; }
       .suggestions h2 { margin-bottom: 14px; }
       .suggestions::before { left: -14px; right: -14px; }
       .suggestions-scroll { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
