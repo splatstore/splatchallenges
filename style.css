@@ -649,7 +649,6 @@
       .area-specs { order: 4; margin-top: 25px; width: 100%; }
       .right-col { position: static; }
     }
-    .cart-section { margin-top: 30px; }
     @media (max-width: 600px) {
       header { padding: 0 14px; }
       .detail-page { padding: 14px 14px 30px; }
@@ -667,7 +666,7 @@
       .trailer-wrap { margin-top: 18px; margin-bottom: 18px; }
       .suggestions { margin-top: 35px; padding-top: 14px; }
       .suggestions h2 { margin-bottom: 14px; }
-      .cart-section { margin-top: 8px; }
+      .cart-section { margin-top: 14px; }
       .suggestions::before { left: -14px; right: -14px; }
       .suggestions-scroll { margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
       .suggestions-grid { gap: 14px; }
@@ -675,6 +674,7 @@
     }
 
     /* Page cart block (gray rectangle, no top divider) */
+    .cart-section { margin-top: 30px; }
     .cart-box {
       background: var(--gray);
       border: 1px solid var(--gray-mid);
@@ -693,9 +693,6 @@
     .cart-box-body {
       padding: 16px 24px 20px;
       border-top: 1px solid var(--gray-mid);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
     }
     .cart-block-card {
       flex: 0 0 200px;
@@ -755,6 +752,95 @@
       white-space: nowrap;
     }
     .nav-btn:hover { background: #333; }
+    .cart-block-cards { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    /* Mobile list view (sidebar style) */
+    .cart-block-list { width: 100%; }
+    .cart-block-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-mid);
+    }
+    .cart-block-row .cart-block-remove {
+      position: static;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: none;
+      color: var(--gray-text);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .cart-block-row .cart-block-remove:hover { background: none; color: #c00; }
+    @media (prefers-color-scheme: dark) {
+      .cart-block-row .cart-block-remove { background: none; color: #999; }
+      .cart-block-row .cart-block-remove:hover { background: none; color: #c00; }
+    }
+    .cart-block-row-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .cart-block-row-link img {
+      width: 56px;
+      height: 38px;
+      object-fit: cover;
+      border-radius: 4px;
+      flex-shrink: 0;
+      background: var(--gray-mid);
+    }
+    .cart-block-row-info { flex: 1; min-width: 0; }
+    .cart-block-row-name {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .cart-block-row-price {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--black);
+      margin-top: 3px;
+    }
+
+    /* Pay now button inside cart block */
+    .cart-block-total {
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .cart-block-paynow {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 13px 32px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .cart-block-paynow:hover { opacity: 0.85; }
+    @media (prefers-color-scheme: dark) {
+      .cart-block-paynow { background: #f0f0f0; color: #111; }
+    }
     @media (prefers-color-scheme: dark) {
       .nav-btn { background: #f0f0f0; color: #111; }
       .nav-btn:hover { background: #ddd; }
@@ -773,5 +859,6 @@
       .cart-box-title { padding: 12px 16px; }
       .cart-box-body { padding: 12px 16px 16px; gap: 10px; }
       .cart-block-card { flex: 0 0 calc(50% - 5px); width: calc(50% - 5px); }
+      .cart-block-paynow { display: block; width: 100%; padding: 13px 0; }
       .site-footer { padding: 25px 14px; }
     }

@@ -652,18 +652,46 @@
       return;
     }
 
-    grid.innerHTML = cart.slice().reverse().map(v => `
-      <div class="sugg-card cart-block-card">
-        <button class="cart-block-remove" data-id="${v.id}" aria-label="Remove">✕</button>
-        <a class="cart-block-link" href="${v.id}.html">
-          <img class="sugg-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">${v.name}</div>
-            <div class="sugg-price">$${v.price} USD</div>
-          </div>
-        </a>
-      </div>
-    `).join('');
+    const isMobile = window.innerWidth <= 600;
+    const reversed = cart.slice().reverse();
+
+    if (isMobile) {
+      grid.innerHTML = `
+        <div class="cart-block-list">
+          ${reversed.map(v => `
+            <div class="cart-block-row">
+              <a class="cart-block-row-link" href="${v.id}.html">
+                <img src="${v.img}" alt="${v.name}" />
+                <div class="cart-block-row-info">
+                  <div class="cart-block-row-name">${v.name}</div>
+                  <div class="cart-block-row-price">$${v.price} USD</div>
+                </div>
+              </a>
+              <button class="cart-block-remove" data-id="${v.id}" aria-label="Remove">✕</button>
+            </div>
+          `).join('')}
+        </div>
+        <div class="cart-block-total">Total: $${cartTotal()} USD</div><button class="cart-block-paynow" id="cart-block-paynow">Pay now</button>
+      `;
+    } else {
+      grid.innerHTML = `
+        <div class="cart-block-cards">
+          ${reversed.map(v => `
+            <div class="sugg-card cart-block-card">
+              <button class="cart-block-remove" data-id="${v.id}" aria-label="Remove">✕</button>
+              <a class="cart-block-link" href="${v.id}.html">
+                <img class="sugg-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
+                <div class="sugg-info">
+                  <div class="sugg-title">${v.name}</div>
+                  <div class="sugg-price">$${v.price} USD</div>
+                </div>
+              </a>
+            </div>
+          `).join('')}
+        </div>
+        <div class="cart-block-total">Total: $${cartTotal()} USD</div><button class="cart-block-paynow" id="cart-block-paynow">Pay now</button>
+      `;
+    }
 
     grid.querySelectorAll('.cart-block-remove').forEach(btn => {
       btn.addEventListener('click', function (e) {
@@ -671,6 +699,10 @@
         e.stopPropagation();
         removeFromCart(this.dataset.id);
       });
+    });
+
+    document.getElementById('cart-block-paynow').addEventListener('click', function () {
+      openPayConfirm();
     });
   }
 
