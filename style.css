@@ -653,18 +653,27 @@
 
     /* Page cart block (gray rectangle, no top divider) */
     .cart-section { margin-top: 30px; }
-    .cart-section h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 14px; font-weight: 700; }
     .cart-box {
       background: var(--gray);
       border: 1px solid var(--gray-mid);
       border-radius: 8px;
-      padding: 16px;
+      overflow: hidden;
     }
-    .cart-box-scroll {
+    .cart-box-title { padding: 16px 24px; }
+    .cart-box-title h2 {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      font-weight: 700;
+      margin: 0;
+    }
+    .cart-box-body {
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--gray-mid);
       display: flex;
+      flex-wrap: wrap;
       gap: 14px;
-      overflow-x: auto;
-      align-items: stretch;
     }
     .cart-block-card {
       flex: 0 0 200px;
@@ -705,7 +714,7 @@
     }
 
     /* Home / Challenges nav buttons */
-    .nav-buttons { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; }
+    .nav-buttons { display: flex; justify-content: center; gap: 12px; margin: 30px 0; overflow-x: auto; }
     .nav-btn {
       flex: 0 0 auto;
       min-width: 180px;
@@ -734,7 +743,8 @@
     }
     @media (max-width: 600px) {
       .nav-buttons { margin: 30px 0; }
-      .cart-box { padding: 12px; }
+      .cart-box-title { padding: 12px 16px; }
+      .cart-box-body { padding: 12px 16px 16px; }
       .cart-block-card { flex: 0 0 130px; width: 130px; }
       .site-footer { padding: 25px 14px; }
     }
