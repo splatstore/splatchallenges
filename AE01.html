@@ -209,18 +209,38 @@
       { href: 'GP10.html', img: 'https://i.ibb.co/MkkFkW26/GROUP10-img3.jpg', title: 'GROUP 10. History Of Slapstick', price: '$10 USD' }
     ];
 
+    const CART_ICON_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+
     (function renderSuggestions() {
       const shuffled = allSuggestions.slice().sort(() => Math.random() - 0.5);
       const picked = shuffled.slice(0, 8);
       document.getElementById('suggestions-grid').innerHTML = picked.map(s => `
-        <a class="sugg-card" href="${s.href}">
-          <img class="sugg-thumb" src="${s.img}" alt="${s.title}" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">${s.title}</div>
-            <div class="sugg-price">${s.price}</div>
-          </div>
-        </a>
+        <div class="sugg-card">
+          <a href="${s.href}">
+            <img class="sugg-thumb" src="${s.img}" alt="${s.title}" loading="lazy" />
+            <div class="sugg-info">
+              <div class="sugg-title">${s.title}</div>
+              <div class="sugg-price">${s.price}</div>
+            </div>
+          </a>
+          <button class="sugg-cart-btn" data-href="${s.href}" data-img="${s.img}" data-title="${s.title}" data-price="${s.price.replace(/[^0-9.]/g,'')}" aria-label="Add to cart">${CART_ICON_SVG}</button>
+        </div>
       `).join('');
+
+      document.getElementById('suggestions-grid').addEventListener('click', function(e) {
+        const btn = e.target.closest('.sugg-cart-btn');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        SplatCart.add({
+          id: btn.dataset.href.replace('.html',''),
+          name: btn.dataset.title,
+          price: btn.dataset.price,
+          img: btn.dataset.img
+        });
+        btn.style.background = 'var(--green-dark)';
+        setTimeout(() => btn.style.background = '', 900);
+      });
     })();
 
     // Wire up Add to Cart button

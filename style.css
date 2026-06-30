@@ -587,7 +587,7 @@
       height: 1px;
       background: var(--gray-mid);
     }
-    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
+    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--black); margin-bottom: 30px; font-weight: 700; }
     .suggestions-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -605,6 +605,7 @@
     .sugg-card {
       flex: 0 0 300px;
       width: 300px;
+      position: relative;
     }
     .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); background: var(--gray); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
     .sugg-card:hover { transform: translateY(-2px); }
@@ -612,6 +613,25 @@
     .sugg-info { padding: 14px 16px 16px; }
     .sugg-title { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
     .sugg-price { font-size: 14px; font-weight: 700; color: var(--green-dark); }
+    .sugg-cart-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 2;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--green);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.15s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+    .sugg-cart-btn:hover { background: var(--green-dark); transform: scale(1.1); }
+    .sugg-cart-btn svg { width: 16px; height: 16px; fill: #fff; }
     @media (max-width: 1100px) {
       .page-grid {
         grid-template-columns: 1fr;
@@ -742,9 +762,14 @@
       .cart-block-remove:hover { background: #c00; color: #fff; }
     }
     @media (max-width: 600px) {
-      .nav-buttons { margin: 30px 0; }
+      .nav-buttons {
+        margin: 30px -14px 0;
+        padding: 0 14px;
+        justify-content: flex-start;
+      }
+      .nav-btn { flex: 1; min-width: 140px; }
       .cart-box-title { padding: 12px 16px; }
-      .cart-box-body { padding: 12px 16px 16px; }
-      .cart-block-card { flex: 0 0 130px; width: 130px; }
+      .cart-box-body { padding: 12px 16px 16px; gap: 10px; }
+      .cart-block-card { flex: 0 0 calc(50% - 5px); width: calc(50% - 5px); }
       .site-footer { padding: 25px 14px; }
     }
