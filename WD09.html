@@ -4,520 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WONDER 9. Clumsy Girl — SPLAT Store</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --white: #ffffff; --black: #000000; --green: #32CD32;
-      --green-dark: #1db029; --green-light: #e8f7eb;
-      --gray: #f5f5f5; --gray-mid: #e0e0e0; --gray-text: #888; --gray-btn: #333333;
-      --font: 'Arial', sans-serif;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --white: #000000;
-        --black: #f0f0f0;
-        --green: #32CD32;
-        --green-dark: #1db029;
-        --green-light: #1e3324;
-        --gray: #242424;
-        --gray-mid: #333333;
-        --gray-btn: #e0e0e0;
-        --gray-text: #999;
-      }
-      header { border-bottom-color: #333; }
-      .specs-block { background: #111111; }
-      .detail-right { background: #111111; border-color: #333; }
-      .model-link { background: #111111; border-color: #444; }
-      .model-link:hover { border-color: var(--green); }
-      .sugg-card { border-color: #333; }
-      .suggestions::before { background: #333; }
-    }
-    body { font-family: var(--font); background: var(--white); color: var(--black); min-height: 100vh; }
-    header { position: sticky; top: 0; z-index: 100; background: var(--gray); border-bottom: 1px solid var(--gray-mid);; padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: flex-start; }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo { display: flex; align-items: center; text-decoration: none; height: 44px; }
-    .logo img { height: 44px; width: auto; display: block; }
-    nav { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); }
-    /* ========== BURGER MENU ========== */
-    .burger-wrap {
-      position: relative;
-    }
-
-    .burger-btn {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px;
-      border-radius: 4px;
-      transition: background 0.15s;
-    }
-
-    .burger-btn:hover { background: var(--gray); }
-
-    .burger-btn span {
-      display: block;
-      height: 2px;
-      width: 100%;
-      background: var(--black);
-      border-radius: 2px;
-    }
-
-    /* Sidebar overlay */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 260px;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 190;
-    }
-    .sidebar-overlay.open { display: block; }
-
-    .burger-menu {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 260px;
-      background: var(--white);
-      border-right: 1px solid var(--gray-mid);
-      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-      overflow-y: auto;
-      z-index: 200;
-      flex-direction: column;
-    }
-
-    .burger-menu.open { display: flex; }
-
-    .sidebar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--gray-mid);
-    }
-
-    .sidebar-logo {
-      height: 36px;
-      width: auto;
-    }
-
-    .sidebar-close {
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: var(--black);
-      line-height: 1;
-      padding: 4px;
-      transition: color 0.15s;
-    }
-
-    .sidebar-close:hover { color: var(--green); }
-
-    .sidebar-section-label {
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gray-text);
-      font-weight: 700;
-      padding: 20px 20px 8px;
-    }
-
-    .burger-menu a {
-      display: block;
-      padding: 12px 20px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--black);
-      text-decoration: none;
-      border-top: 1px solid var(--gray-mid);
-      transition: background 0.12s;
-    }
-
-    .burger-menu a:last-of-type { border-bottom: 1px solid var(--gray-mid); }
-    .burger-menu a:hover { background: var(--gray); }
-
-    .sidebar-social {
-      padding: 20px;
-      margin-top: auto;
-      border-top: 1px solid var(--gray-mid);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sidebar-social a {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--gray-text);
-      text-decoration: none;
-      transition: color 0.15s;
-      border: none !important;
-      padding: 0 !important;
-    }
-
-    .sidebar-social a:hover { color: var(--green-dark); background: none !important; }
-
-    @media (prefers-color-scheme: dark) {
-      .burger-menu { background: #0d0d0d; border-right-color: #333; }
-      .burger-menu a { color: #f0f0f0; border-top-color: #333; }
-      .burger-menu a:last-child { border-bottom-color: #333; }
-      .burger-menu a:hover { background: #1a1a1a; }
-      .burger-menu-close button { color: #f0f0f0; }
-      .sidebar-overlay { background: rgba(0,0,0,0.55); }
-    }
-
-    .detail-page { max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; }
-    .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); text-decoration: none; font-family: var(--font); margin-bottom: 36px; transition: color 0.15s; }
-    .back-btn::before { content: '←'; font-size: 14px; }
-    .back-btn:hover { color: var(--black); }
-    .gallery { display: grid; gap: 12px; margin-bottom: 22px; }
-    .gallery-main { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-mid); display: block; background: var(--gray); }
-    .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .gallery-thumb { aspect-ratio: 16/10; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; display: block; width: 100%; background: var(--gray); transition: border-color 0.15s, opacity 0.15s; }
-    .gallery-thumb:hover { opacity: 0.85; }
-    .gallery-thumb.active { border-color: var(--green); }
-    .detail-info { display: grid; grid-template-columns: 1fr 340px; gap: 30px; align-items: start;}
-    .detail-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
-
-    .meta-rows { margin-bottom: 25px; margin-top: 10px; }
-
-    .meta-inline {
-      display: inline-flex;
-      align-items: center;
-      gap: 0;
-      font-size: 13px;
-    }
-
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      color: var(--gray-text);
-    }
-
-    .meta-item strong {
-      color: var(--black);
-      font-weight: 700;
-    }
-
-    .meta-sep {
-      width: 1px;
-      height: 14px;
-      background: var(--gray-mid);
-      margin: 0 12px;
-      flex-shrink: 0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .meta-sep { background: #444; }
-    }
-    .detail-price { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 28px; }
-    .specs-block { background: var(--gray); border-radius: 6px; overflow: hidden;  border: 1px solid var(--gray-mid);}
-
-    .specs-toggle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      cursor: pointer;
-      user-select: none;
-      list-style: none;
-    }
-
-    .specs-toggle::-webkit-details-marker { display: none; }
-
-    .specs-toggle h3 {
-      font-size: 11px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gray-text);
-      font-weight: 700;
-      margin: 0;
-    }
-
-    .specs-arrow {
-      font-size: 11px;
-      color: var(--gray-text);
-      transition: transform 0.22s ease;
-      line-height: 1;
-    }
-
-    details[open] .specs-arrow { transform: rotate(180deg); }
-
-    .specs-body {
-      padding: 0 24px 20px;
-      border-top: 1px solid var(--gray-mid);
-    }
-
-
-
-    /* Trailer */
-    .trailer-wrap {
-      margin-top: 30px;
-      margin-bottom: 30px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--gray-mid);
-      aspect-ratio: 16/9;
-      position: relative;
-      background: #000;
-    }
-
-    .trailer-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-mid); font-size: 13px; }
-    .spec-row:last-child { border-bottom: none; }
-    .spec-label { color: var(--gray-text); font-weight: 400; }
-    .spec-value { font-weight: 700; color: var(--black); }
-    .model-tag { display: inline-block; background: var(--green-light); color: var(--green-dark); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .aspec-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-mid); font-size: 13px; }
-    .aspec-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .aspec-label { color: var(--gray-text); font-weight: 400; }
-    .aspec-value { font-weight: 700; color: var(--black); }
-    .amodel-tag { display: inline-block; background: var(--green-light); color: var(--green-dark); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-
-    /* Footer */
-    .site-footer {
-      border-top: 1px solid var(--gray-mid);
-      padding: 32px 48px;
-      text-align: center;
-      background: var(--gray);
-    }
-
-    .site-footer p {
-      font-size: 12px;
-      color: var(--gray-text);
-      letter-spacing: 1px;
-      line-height: 1.8;
-    }
-
-    .site-footer a {
-      color: var(--green-dark);
-      text-decoration: none;
-    }
-
-    .site-footer a:hover { text-decoration: underline; }
-
-    @media (prefers-color-scheme: dark) {
-      .site-footer { border-top-color: #333; }
-      .btn-buy { background: var(--white); color: var(--black); }
-    }
-
-    @media (max-width: 600px) {
-      .site-footer { padding: 24px 20px; }
-    }
-
-    /* Right buttons group */
-    .row-right-btns {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* More button (3 dots) */
-    .more-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      border: 1px solid var(--gray-mid);
-      background: var(--gray);
-      cursor: pointer;
-      transition: border-color 0.18s, box-shadow 0.18s;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .more-btn:hover {
-      border-color: var(--green);
-      box-shadow: 0 3px 12px rgba(126,201,143,0.18);
-    }
-
-    .more-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--black);
-    }
-
-    /* More popover */
-    .more-popover {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: var(--white);
-      border: 1px solid var(--gray-mid);
-      border-radius: 8px;
-      padding: 0;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--black);
-      white-space: nowrap;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      z-index: 50;
-      overflow: hidden;
-    }
-
-    .more-popover.open { display: block; }
-
-    .popover-row {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--black);
-      padding: 10px 18px;
-      text-align: left;
-    }
-
-    .popover-divider {
-      border: none;
-      border-top: 1px solid var(--gray-mid);
-      margin: 0;
-      width: 100%;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .popover-divider { border-top-color: #444; }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .more-btn { background: #242424; border-color: #444; }
-      .more-btn svg { fill: #f0f0f0; }
-      .more-btn:hover { border-color: var(--green); }
-      .more-popover { background: #111111; border-color: #444; color: #f0f0f0; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-    }
-
-    /* Model link card */
-    .model-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      border: 1px solid var(--gray-mid);
-      border-radius: 40px;
-      padding: 8px 18px 8px 8px;
-      transition: box-shadow 0.18s, border-color 0.18s;
-      background: var(--gray);
-      margin-bottom: 0;
-      margin-top: 0;
-    }
-
-    .model-link:hover {
-      border-color: var(--green);
-      box-shadow: 0 3px 12px rgba(126,201,143,0.18);
-    }
-
-    .model-link-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--gray);
-      display: block;
-      flex-shrink: 0;
-    }
-
-    .model-link-info {}
-
-    .model-link-name {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--black);
-      line-height: 1.2;
-    }
-
-    .model-link-count {
-      font-size: 11px;
-      color: var(--gray-text);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .notice-box {
-      background: rgba(255, 220, 50, 0.12);
-      border: 1.5px solid #f0c000;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: var(--black);
-      letter-spacing: 0.3px;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .notice-box { background: rgba(255, 200, 0, 0.08); border-color: #c9a000; color: #f0f0f0; }
-    }
-    .detail-right { background: var(--gray); border-radius: 8px; padding: 20px 24px; border: 1px solid var(--gray-mid); position: sticky; top: 80px;}
-    .price-big { font-size: 26px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
-    .price-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 15px; }
-    .btn-buy {
-      display: block;
-      width: 100%;
-      background: var(--black);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      padding: 14px;
-      font-family: var(--font);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.18s, color 0.18s;
-      text-align: center;
-      text-decoration: none;
-    }
-    .btn-buy:hover { background: var(--gray-btn); }
-    .suggestions { margin-top: 30px; padding-top: 30px; position: relative; }
-    .suggestions::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: -48px;
-      right: -48px;
-      height: 1px;
-      background: var(--gray-mid);
-    }
-    .suggestions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 30px; font-weight: 700; }
-    .suggestions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-    .sugg-card { display: block; text-decoration: none; border: 1px solid var(--gray-mid); background: var(--gray); border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.18s; }
-    .sugg-card:hover { transform: translateY(-2px); }
-    .sugg-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--gray); }
-    .sugg-info { padding: 10px 12px 12px; }
-    .sugg-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
-    .sugg-price { font-size: 12px; font-weight: 700; color: var(--green-dark); }
-    @media (max-width: 900px) { .detail-info { grid-template-columns: 1fr; gap: 30px; } .detail-right { position: static; } .suggestions-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-    @media (max-width: 600px) { header { padding: 0 20px; } .detail-page { padding: 24px 20px 60px; } .gallery-thumbs { gap: 4px; } .suggestions-grid { grid-template-columns: repeat(2, 1fr); } .suggestions::before { left: -20px; right: -20px; }  }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -548,76 +35,105 @@
   </header>
 
   <div class="detail-page">
-    <!-- Gallery -->
-    <div class="gallery">
-      <img id="main-img" class="gallery-main"
-        src="https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg"
-        alt="WONDER 9. Clumsy Girl" />
-      <div class="gallery-thumbs">
-        <img class="gallery-thumb active"
-          src="https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg"
-          alt="Image 1" onclick="selectThumb(this)" />
-        <img class="gallery-thumb "
-          src="https://i.ibb.co/n8Dy8h2p/WONDER9-img2.jpg"
-          alt="Image 2" onclick="selectThumb(this)" />
-        <img class="gallery-thumb "
-          src="https://i.ibb.co/Y4MfZ0dF/WONDER9-img3.jpg"
-          alt="Image 3" onclick="selectThumb(this)" />
-        <img class="gallery-thumb "
-          src="https://i.ibb.co/4nFYc993/WONDER9-img4.jpg"
-          alt="Image 4" onclick="selectThumb(this)" />
-        <img class="gallery-thumb "
-          src="https://i.ibb.co/HTnTF7hY/WONDER9-img5.jpg"
-          alt="Image 5" onclick="selectThumb(this)" />
-      </div>
-    </div>
-    <!-- Info -->
-    <div class="detail-info">
-      <div class="detail-left">
-        <div class="detail-title">WONDER 9. Clumsy Girl</div>
-        <div class="meta-rows">
-          <div class="meta-inline">
-            <div class="meta-item">Code: <strong>WD09</strong></div>
-            <div class="meta-sep"></div>
-            <div class="meta-item">Model: <strong>Wonder</strong></div>
-            <div class="meta-sep"></div>
-            <div class="meta-item">Tags: <strong>Slime, Laying down</strong></div>
+    <div class="page-grid">
+      <div class="left-col">
+        <div class="area-gallery">
+          <div class="gallery">
+            <img id="main-img" class="gallery-main"
+              src="https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg"
+              alt="WONDER 9. Clumsy Girl" />
+            <div class="gallery-thumbs">
+              <img class="gallery-thumb active"
+                src="https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg"
+                alt="Image 1" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg"
+                alt="Image 2" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/n8Dy8h2p/WONDER9-img2.jpg"
+                alt="Image 3" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/Y4MfZ0dF/WONDER9-img3.jpg"
+                alt="Image 4" onclick="selectThumb(this)" />
+              <img class="gallery-thumb"
+                src="https://i.ibb.co/4nFYc993/WONDER9-img4.jpg"
+                alt="Image 5" onclick="selectThumb(this)" />
+            </div>
           </div>
         </div>
-        <div class="specs-block">
-          <div class="specs-toggle" style="cursor:default;">
-            <h3>Video Details</h3>
-          </div>
-          <div class="specs-body">
-            <div class="spec-row">
-              <span class="spec-label">Duration</span>
-              <span class="spec-value">5:57</span>
+
+        <div class="area-specs">
+          <div class="specs-block">
+            <div class="specs-toggle" style="cursor:default;">
+              <h3>Video Details</h3>
             </div>
-            <div class="spec-row">
-              <span class="spec-label">Resolution</span>
-              <span class="spec-value">1920x1080</span>
-            </div>
-            <div class="aspec-row">
-              <span class="spec-label">File size</span>
-              <span class="spec-value">868.8MB</span>
+            <div class="specs-body">
+              <div class="spec-row">
+                <span class="spec-label">Duration</span>
+                <span class="spec-value">5:57</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Resolution</span>
+                <span class="spec-value">1920x1080</span>
+              </div>
+              <div class="aspec-row">
+                <span class="spec-label">File size</span>
+                <span class="spec-value">868.8MB</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="detail-right">
-        <div class="price-big">$10 USD</div>
-        <div class="price-label">By PayPal</div>
-        <div class="notice-box">Specify the video(s) and your email address.</div>
-        <a href="https://www.paypal.com/paypalme/splatmessydares" class="btn-buy" target="_blank" rel="noopener noreferrer">Pay now</a>
+      <div class="right-col">
+        <div class="area-titlemeta">
+          <div class="detail-title">WONDER 9. Clumsy Girl</div>
+          <div class="meta-rows">
+            <div class="meta-inline">
+              <div class="meta-item">Code: <strong>WD09</strong></div>
+              <div class="meta-sep"></div>
+              <div class="meta-item">Model: <strong>Wonder</strong></div>
+              <div class="meta-sep"></div>
+              <div class="meta-item">Tags: <strong>Slime, Laying down</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="area-price">
+          <div class="price-block">
+            <div class="price-big">$10 USD</div>
+            <div class="price-label">By PayPal</div>
+            <div class="action-buttons">
+              <button class="btn-add-cart" id="add-to-cart-btn">Add to Cart</button>
+
+              <button
+                class="btn-buy"
+                id="pay-now-btn"
+                type="button">
+                Pay now
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Suggestions -->
     <div class="suggestions">
       <h2>Related videos</h2>
-      <div class="suggestions-grid" id="suggestions-grid"></div>
+      <div class="suggestions-scroll">
+        <div class="suggestions-grid" id="suggestions-grid"></div>
+      </div>
     </div>
+
+    <!-- Your Cart -->
+    <div class="cart-section">
+      <div class="cart-box">
+        <div class="cart-box-title"><h2>Your Cart</h2></div>
+        <div class="cart-box-body" id="page-cart-grid"></div>
+      </div>
+    </div>
+
   </div>
 
   <footer class="site-footer">
@@ -660,8 +176,8 @@
       { href: 'DL01.html', img: 'https://i.ibb.co/HpppT1b2/DOLL1-img3.jpg', title: 'DOLL. The Nightmare', price: '$10 USD' },
       { href: 'FT03.html', img: 'https://i.ibb.co/ycsMTcbM/FITNESS3-img4.jpg', title: 'FITNESS 3. Five Questions Game', price: '$10 USD' },
       { href: 'JC06.html', img: 'https://i.ibb.co/xK3KQt82/JACKSON6-img3.jpg', title: 'JACKSON 6. Slimy Games', price: '$10 USD' },
-      { href: 'JC012.html', img: 'https://i.ibb.co/YSXF76W/JACKSON12-img5.jpg', title: 'JACKSON 12. Pies & Cakes', price: '$10 USD' },
-      { href: 'JC013.html', img: 'https://i.ibb.co/JJw14yq/JACKSON13-img2.jpg', title: 'JACKSON 13. Shave & Shower', price: '$10 USD' },
+      { href: 'JC12.html', img: 'https://i.ibb.co/YSXF76W/JACKSON12-img5.jpg', title: 'JACKSON 12. Pies & Cakes', price: '$10 USD' },
+      { href: 'JC13.html', img: 'https://i.ibb.co/JJw14yq/JACKSON13-img2.jpg', title: 'JACKSON 13. Shave & Shower', price: '$10 USD' },
       { href: 'JS01.html', img: 'https://i.ibb.co/b5FVtLgL/JISU1-img3.jpg', title: 'JISU 1. Teaching How To Pie', price: '$10 USD' },
       { href: 'JN04.html', img: 'https://i.ibb.co/vx3J94XQ/JONES4-img3.jpg', title: 'JONES 4. Feet & Pies', price: '$10 USD' },
       { href: 'KT02.html', img: 'https://i.ibb.co/N6DL5R8z/KITTY2-img3.jpg', title: 'KITTY 2. Bucket Game', price: '$10 USD' },
@@ -689,19 +205,65 @@
       { href: 'GP10.html', img: 'https://i.ibb.co/MkkFkW26/GROUP10-img3.jpg', title: 'GROUP 10. History Of Slapstick', price: '$10 USD' }
     ];
 
+    const CART_ICON_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>`;
+
     (function renderSuggestions() {
       const shuffled = allSuggestions.slice().sort(() => Math.random() - 0.5);
       const picked = shuffled.slice(0, 8);
       document.getElementById('suggestions-grid').innerHTML = picked.map(s => `
-        <a class="sugg-card" href="${s.href}">
-          <img class="sugg-thumb" src="${s.img}" alt="${s.title}" loading="lazy" />
-          <div class="sugg-info">
-            <div class="sugg-title">${s.title}</div>
-            <div class="sugg-price">${s.price}</div>
-          </div>
-        </a>
+        <div class="sugg-card">
+          <a href="${s.href}">
+            <img class="sugg-thumb" src="${s.img}" alt="${s.title}" loading="lazy" />
+            <div class="sugg-info">
+              <div class="sugg-title">${s.title}</div>
+              <div class="sugg-price">${s.price}</div>
+            </div>
+          </a>
+          <button class="sugg-cart-btn" data-href="${s.href}" data-img="${s.img}" data-title="${s.title}" data-price="${s.price.replace(/[^0-9.]/g,'')}" aria-label="Add to cart">${CART_ICON_SVG}</button>
+        </div>
       `).join('');
+
+      document.getElementById('suggestions-grid').addEventListener('click', function(e) {
+        const btn = e.target.closest('.sugg-cart-btn');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        SplatCart.addSilent({
+          id: btn.dataset.href.replace('.html',''),
+          name: btn.dataset.title,
+          price: btn.dataset.price,
+          img: btn.dataset.img
+        });
+        btn.style.background = 'var(--green-dark)';
+        setTimeout(() => btn.style.background = '', 900);
+      });
     })();
+
+    // Wire up Add to Cart button
+    document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+      SplatCart.add({
+        id: 'WD09',
+        name: 'WONDER 9. Clumsy Girl',
+        price: '10',
+        img: 'https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg'
+      });
+      this.textContent = 'Added ✓';
+      this.classList.add('added');
+      setTimeout(() => {
+        this.textContent = 'Add to Cart';
+        this.classList.remove('added');
+      }, 1800);
+    });
+    // Wire up Pay Now button (opens same confirmation popup as cart sidebar)
+    document.getElementById('pay-now-btn').addEventListener('click', function () {
+      SplatCart.buyNow({
+        id: 'WD09',
+        name: 'WONDER 9. Clumsy Girl',
+        price: '10',
+        img: 'https://i.ibb.co/B2yZTS90/WONDER9-img1.jpg'
+      });
+    });
   </script>
+  <script src="cart.js"></script>
 </body>
 </html>
