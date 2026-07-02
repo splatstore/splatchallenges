@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPLAT — Video Store</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #ffffff;
+      --black: #111111;
+      --green: #32CD32;
+      --green-dark: #1db029;
+      --green-light: #e8f7eb;
+      --gray: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --gray-text: #888;
+      --font: 'Arial', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --white: #000000;
+        --black: #f0f0f0;
+        --green: #32CD32;
+        --green-dark: #1db029;
+        --green-light: #1e3324;
+        --gray: #242424;
+        --gray-mid: #333333;
+        --gray-text: #999;
+      }
+      header { border-bottom-color: #333; }
+      .card { border-color: #333; }
+      .search-input { background: #242424; color: #f0f0f0; border-color: #333; }
+      .search-bar-wrap { background: #000000; border-bottom-color: #333; }
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--gray);
+      border-bottom: 1px solid var(--gray-mid);
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      height: 44px;
+    }
+
+    .logo img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
+    /* ========== BURGER MENU ========== */
+    .burger-wrap {
+      position: relative;
+    }
+
+    .burger-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+
+    .burger-btn:hover { background: var(--gray); }
+
+    .burger-btn span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: var(--black);
+      border-radius: 2px;
+    }
+
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 260px;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 190;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    .burger-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--white);
+      border-right: 1px solid var(--gray-mid);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
+      z-index: 200;
+      flex-direction: column;
+    }
+
+    .burger-menu.open { display: flex; }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--gray-mid);
+    }
+
+    .sidebar-logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--black);
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.15s;
+    }
+
+    .sidebar-close:hover { color: var(--green); }
+
+    .sidebar-section-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      font-weight: 700;
+      padding: 20px 20px 8px;
+    }
+
+    .burger-menu a {
+      display: block;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      border-top: 1px solid var(--gray-mid);
+      transition: background 0.12s;
+    }
+
+    .burger-menu a:last-of-type { border-bottom: 1px solid var(--gray-mid); }
+    .burger-menu a:hover { background: var(--gray); }
+
+    .sidebar-social {
+      padding: 20px;
+      margin-top: auto;
+      border-top: 1px solid var(--gray-mid);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-social a {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      text-decoration: none;
+      transition: color 0.15s;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .sidebar-social a:hover { color: var(--green-dark); background: none !important; }
+
+    @media (prefers-color-scheme: dark) {
+      .burger-menu { background: #0d0d0d; border-right-color: #333; }
+      .burger-menu a { color: #f0f0f0; border-top-color: #333; }
+      .burger-menu a:last-child { border-bottom-color: #333; }
+      .burger-menu a:hover { background: #1a1a1a; }
+      .sidebar-overlay { background: rgba(0,0,0,0.55); }
+    }
+
+    /* ========== HERO (index only) ========== */
+    .hero {
+      padding: 30px 48px 30px;
+      border-bottom: 1px solid var(--gray-mid);
+      margin-bottom: 0;
+    }
+
+    .hero h1 {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gra);
+      line-height: 1.15;
+    }
+
+    /* ========== SHOW MORE ========== */
+    .show-more-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 36px 0 24px;
+    }
+
+    .show-more-btn {
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--black);
+      border-radius: 30px;
+      padding: 12px 36px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .show-more-btn:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .show-more-btn { background: #1a1a1a; border-color: #f0f0f0; color: #f0f0f0; }
+      .show-more-btn:hover { background: #f0f0f0; color: #111; }
+    }
+
+    /* ========== FOOTER ========== */
+    .site-footer {
+      border-top: 1px solid var(--gray-mid);
+      padding: 32px 48px;
+      text-align: center;
+      background: var(--gray);
+    }
+
+    .site-footer p {
+      font-size: 12px;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    .site-footer a {
+      color: var(--green-dark);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { text-decoration: underline; }
+
+    @media (prefers-color-scheme: dark) {
+      .site-footer { border-top-color: #333; }
+    }
+
+    @media (max-width: 600px) {
+      .site-footer { padding: 24px 20px; }
+    }
+
+    /* ========== GRID ========== */
+    .grid-section {
+      padding: 48px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    /* ========== CARD ========== */
+    .card {
+      background: var(--gray);
+      border: 1px solid var(--gray-mid);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      background: var(--gray);
+    }
+
+    .card-body {
+      padding: 16px 18px 18px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .btn-see-more {
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 20px;
+      padding: 7px 18px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background 0.18s;
+      text-transform: uppercase;
+    }
+
+    .btn-see-more:hover {
+      background: var(--green-dark);
+    }
+
+    a.btn-see-more {
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-see-more.added {
+      background: var(--green-dark);
+    }
+
+    /* ========== DETAIL PAGE ========== */
+    .detail-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font);
+      margin-bottom: 36px;
+      padding: 0;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover {
+      color: var(--black);
+    }
+
+    .back-btn::before {
+      content: '←';
+      font-size: 14px;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--gray-mid);
+      display: block;
+      background: var(--gray);
+    }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .gallery-thumb {
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.15s, opacity 0.15s;
+      display: block;
+      width: 100%;
+      background: var(--gray);
+    }
+
+    .gallery-thumb:hover {
+      opacity: 0.85;
+    }
+
+    .gallery-thumb.active {
+      border-color: var(--green);
+    }
+
+    /* Detail info */
+    .detail-info {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .detail-left {}
+
+    .detail-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .detail-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 28px;
+    }
+
+    /* Specs block */
+    .specs-block {
+      background: var(--gray);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .specs-block h3 {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-mid);
+      font-size: 13px;
+    }
+
+    .spec-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .spec-label {
+      color: var(--gray-text);
+      font-weight: 400;
+    }
+
+    .spec-value {
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .model-tag {
+      display: inline-block;
+      background: var(--green-light);
+      color: var(--green-dark);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0;
+    }
+
+    /* Right column (buy) */
+    .detail-right {
+      background: var(--gray);
+      border-radius: 8px;
+      padding: 28px 24px;
+      border: 1px solid var(--gray-mid);
+      position: sticky;
+      top: 80px;
+    }
+
+    .detail-right .price-big {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .detail-right .price-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 20px;
+    }
+
+    .btn-buy {
+      display: block;
+      width: 100%;
+      background: #003087;
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .btn-buy:hover {
+      background: #009cde;
+    }
+
+    .btn-cart {
+      display: block;
+      width: 100%;
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--black);
+      border-radius: 6px;
+      padding: 13px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .btn-cart:hover {
+      background: var(--gray);
+    }
+
+    /* Suggestions */
+    .suggestions {
+      margin-top: 56px;
+      border-top: 1.5px solid var(--black);
+      padding-top: 36px;
+    }
+
+    .suggestions h2 {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+
+    .suggestions-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .sugg-card {
+      cursor: pointer;
+      border: 1px solid var(--gray-mid);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.18s;
+    }
+
+    .sugg-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    .sugg-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      background: var(--gray);
+    }
+
+    .sugg-info {
+      padding: 10px 12px 12px;
+    }
+
+    .sugg-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .sugg-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    /* ========== SEARCH BAR ========== */
+    .search-bar-wrap {
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-mid);
+      padding: 10px 48px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transform: translateY(0);
+      transition: transform 0.30s ease, opacity 0.30s ease;
+      opacity: 1;
+    }
+
+    .search-bar-wrap.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .search-bar-inner {
+      position: relative;
+      flex: 1;
+      max-width: 800px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-text);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 40px 11px 16px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 30px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--black);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .search-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(126,201,143,0.18);
+    }
+
+    .search-input::placeholder {
+      color: var(--gray-text);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-text);
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+      display: none;
+      transition: color 0.15s;
+    }
+
+    .search-clear:hover {
+      color: var(--black);
+    }
+
+    .search-count {
+      font-size: 12px;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* ========== TAGS FILTER ========== */
+    .tags-wrap {
+      position: sticky;
+      flex-shrink: 0;
+    }
+
+    .tags-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 16px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 30px;
+      background: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--black);
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+    }
+
+    .tags-btn:hover,
+    .tags-btn.active {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(126,201,143,0.18);
+    }
+
+    .tags-btn .tags-arrow {
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    .tags-btn.active .tags-arrow { transform: rotate(180deg); }
+
+    .tags-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .tags-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--white);
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 10px;
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      z-index: 200;
+    }
+
+    .tags-dropdown.open { display: block; }
+
+    .tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 20px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+    }
+
+    .tag-chip:hover { border-color: var(--green); }
+
+    .tag-chip.selected {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .tag-chip.selected::before { content: '✓ '; }
+
+    .tags-apply {
+      display: block;
+      width: 100%;
+      padding: 9px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .tags-apply:hover { background: #333; }
+
+    .tags-clear-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .tags-clear-btn {
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-size: 11px;
+      color: var(--gray-text);
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0;
+      transition: color 0.15s;
+    }
+
+    .tags-clear-btn:hover { color: var(--black); }
+
+    @media (prefers-color-scheme: dark) {
+      .tags-btn { background: #000000; border-color: var(--gray-mid); color: #f0f0f0; }
+      .tags-dropdown { background: #1a1a1a; border-color: #444; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+      .tag-chip { background: #242424; border-color: #555; color: #f0f0f0; }
+      .tag-chip.selected { background: var(--green); border-color: var(--green); color: #fff; }
+      .tags-apply { background: #f0f0f0; color: #111; }
+      .tags-apply:hover { background: #ccc; }
+    }
+
+    @media (max-width: 600px) {
+      .tags-btn { padding: 12px 12px; font-size: 12px; }
+      .tags-dropdown { left: auto; right: 0; min-width: 200px; }
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray-text);
+      font-size: 14px;
+      letter-spacing: 1px;
+      display: none;
+    }
+
+    .no-results span {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .search-bar-wrap { padding: 10px 14px; top: 64px; justify-content: stretch; }
+      .search-bar-inner { flex: 1; max-width: none; }
+      .tags-wrap { flex-shrink: 0; }
+    }
+
+    /* PAGE TRANSITIONS */
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .detail-info {
+        grid-template-columns: 1fr;
+      }
+      .detail-right {
+        position: static;
+      }
+      .suggestions-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 14px; }
+      .hero { padding: 17px 14px 17px; }
+      .grid-section { padding: 13px 14px; }
+      .video-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .detail-page { padding: 20px 14px 60px; }
+      .gallery-thumbs { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .suggestions-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero p { font-size: 18px; }
+      .card-footer { flex-direction: column; align-items: flex-start; gap: 5px; }
+      .btn-see-more { width: 100%; text-align: center; }
+      .card-body { padding: 10px 12px 12px; }
+      .card-title { margin-bottom: 5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <header>
+    <div class="header-left">
+      <div class="burger-wrap">
+        <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="burger-menu" id="burger-menu">
+          <div class="sidebar-header">
+            <img class="sidebar-logo" src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT" />
+            <button class="sidebar-close" onclick="closeBurger()" aria-label="Close">✕</button>
+          </div>
+          <a href="index.html">Home</a>
+          <a href="index.html">Splat Messy Dares</a>
+          <a href="index.html">Splat Challenges Females</a>
+          <a href="index.html">Splat Challenges Males</a>
+          <div class="sidebar-social">
+            <a href="mailto:splaymessydares@gmail.com">Email</a>
+            <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD</a>
+            <a href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">PayPal</a>
+          </div>
+        </nav>
+      </div>
+      <a class="logo" href="index.html"><img src="https://i.ibb.co/jZyct3dh/splat.png" alt="SPLAT Challenges" /></a>
+    </div>
+    <div id="cart-mount"></div>
+  </header>
+
+  <!-- INDEX PAGE -->
+  <div id="page-index" class="page active">
+    <div class="search-bar-wrap">
+      <div class="search-bar-inner">
+        <input
+          class="search-input"
+          id="search-input"
+          type="text"
+          placeholder="Search"
+          oninput="handleSearch(this.value)"
+          autocomplete="off"
+        />
+        <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Clear search">✕</button>
+      </div>
+      <span class="search-count" id="search-count"></span>
+      <div class="tags-wrap" id="tags-wrap">
+        <button class="tags-btn" id="tags-btn" onclick="toggleTagsDropdown()">
+          Tags <span class="tags-arrow">▼</span>
+          <span class="tags-badge" id="tags-badge" style="display:none"></span>
+        </button>
+        <div class="tags-dropdown" id="tags-dropdown">
+          <div class="tags-clear-row">
+            <button class="tags-clear-btn" onclick="clearTags()">Clear</button>
+          </div>
+          <div class="tags-list" id="tags-list">
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Pie">Pie</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Cake">Cake</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Slime">Slime</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Cream">Cream</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Laying down">Laying down</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Feet">Feet</div>
+            <div class="tag-chip" onclick="toggleTag(this)" data-tag="Shower">Shower</div>
+          </div>
+          <button class="tags-apply" onclick="applyTags()">Apply</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero">
+      <p>Splat Challenges Females</p>
+    </div>
+    <div class="grid-section">
+      <div class="video-grid" id="video-grid"></div>
+      <div class="show-more-wrap" id="show-more-wrap" style="display:none;">
+        <button class="show-more-btn" onclick="showMore()">Show More</button>
+      </div>
+      <div class="no-results" id="no-results">
+        No videos found for <span id="no-results-query"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ALL_TAGS = ["Pie","Cake","Slime","Cream","Feet","Laying down","Shower"];
+
+    const videos = [
+      {
+        id: "AE01",
+        name: "AERIAL 1. Pies & Chocolate",
+        price: 10,
+        img: "https://i.ibb.co/CKVGW4Xz/AE01-img3.jpg",
+        model: "AERIAL",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "AE02",
+        name: "AERIAL 2. Splat Spa Salon",
+        price: 12,
+        img: "https://i.ibb.co/bg2yRn76/AERIAL1-img4.jpg",
+        model: "AERIAL",
+        tags: ["Pie","Cake","Laying down"]
+      },
+      {
+        id: "AE03",
+        name: "AERIAL 3. Shave & Shower",
+        price: 10,
+        img: "https://i.ibb.co/dwmrHcdT/AERIAL3-img3.jpg",
+        model: "AERIAL",
+        tags: ["Shower"]
+      },
+      {
+        id: "BB01",
+        name: "BABY 1. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/sJvWgpg6/BABY1-img5.jpg",
+        model: "BABY",
+        tags: ["Pie"]
+      },
+      {
+        id: "BB02",
+        name: "BABY 2. Vain Model",
+        price: 10,
+        img: "https://i.ibb.co/p7gTfFG/BABY2-img3.jpg",
+        model: "BABY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "BB03",
+        name: "BABY 3. SO CLUMSY! THE NERD",
+        price: 12,
+        img: "https://i.ibb.co/qLQYsnft/BABY3-img4.jpg",
+        model: "BABY",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "BB04",
+        name: "BABY 4. Messy Workout",
+        price: 10,
+        img: "https://i.ibb.co/4nkMDxFs/BABY4-img5.jpg",
+        model: "BABY",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "BB05",
+        name: "BABY 5. Extreme Challenge",
+        price: 12,
+        img: "https://i.ibb.co/Dnz99Jv/BABY5-img3.jpg",
+        model: "BABY",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "BE01",
+        name: "BEAUTY. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/5xLJDByR/BEAUTY1-img3.jpg",
+        model: "BEAUTY",
+        tags: ["Pie"]
+      },
+      {
+        id: "BK01",
+        name: "BIKE 1. The Audition",
+        price: 10,
+        img: "https://i.ibb.co/r2Bs3HGF/BIKE1-img2.jpg",
+        model: "BIKE",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "BK02",
+        name: "BIKE 2. Birthday Pie Party",
+        price: 10,
+        img: "https://i.ibb.co/Ps7QmcXs/BIKE2-img2.jpg",
+        model: "BIKE",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "BK03",
+        name: "BIKE 3. Vanilla Or Chocolate",
+        price: 10,
+        img: "https://i.ibb.co/LhNHcsgp/BIKE3-img5.jpg",
+        model: "BIKE",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "BK04",
+        name: "BIKE 4. The Detention",
+        price: 10,
+        img: "https://i.ibb.co/hFQKVw8b/BIKE4-img3.jpg",
+        model: "BIKE",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "BK05",
+        name: "BIKE 5. Splat Spa Salon",
+        price: 12,
+        img: "https://i.ibb.co/RkWcnVpJ/BIKE5-img2.jpg",
+        model: "BIKE",
+        tags: ["Pie","Cake","Laying down"]
+      },
+      {
+        id: "BU01",
+        name: "BUTTERFLY 1. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/fWG28GK/BUTTERFLY1-img4.jpg",
+        model: "BUTTERFLY",
+        tags: ["Pie","Laying down","Feet"]
+      },
+      {
+        id: "BU02",
+        name: "BUTTERFLY 2. The Splatter's Joke",
+        price: 10,
+        img: "https://i.ibb.co/67j0LsDx/BUTTERFLY2-img4.jpg",
+        model: "BUTTERFLY",
+        tags: ["Pie"]
+      },
+      {
+        id: "BU03",
+        name: "BUTTERFLY 3. The Final Test",
+        price: 12,
+        img: "https://i.ibb.co/ZpWk7hzT/BUTTERFLY3-img2.jpg",
+        model: "BUTTERFLY",
+        tags: ["Pie","Cream","Laying down"]
+      },
+      {
+        id: "BU04",
+        name: "BUTTERFLY 4. Pie Techniques",
+        price: 10,
+        img: "https://i.ibb.co/356BF3VW/BUTTERFLY4-img2.jpg",
+        model: "BUTTERFLY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "CA01",
+        name: "CANDY 1. Pies & Slime",
+        price: 10,
+        img: "https://i.ibb.co/BHQhqb5s/CANDY-img5.jpg",
+        model: "CANDY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "CA02",
+        name: "CANDY 2. How to Pie Yourself",
+        price: 10,
+        img: "https://i.ibb.co/JRtPc8Sz/CANDY1-img4.jpg",
+        model: "CANDY",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "CB01",
+        name: "CARIBBEAN 1. QUESTIONS & ANSWERS",
+        price: 10,
+        img: "https://i.ibb.co/ZtJbL18/CARIBBEAN1-img5.jpg",
+        model: "CARIBBEAN",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "CB02",
+        name: "CARIBBEAN 2. VAIN MODEL",
+        price: 12,
+        img: "https://i.ibb.co/7fP5v41/CARIBBEAN2-img4.jpg",
+        model: "CARIBBEAN",
+        tags: ["Pie","Slime","Feet"]
+      },
+      {
+        id: "CB03",
+        name: "CARIBBEAN 3. Teaching sign langage",
+        price: 10,
+        img: "https://i.ibb.co/G458b7ss/CARIBBEAN3-img3.jpg",
+        model: "CARIBBEAN",
+        tags: ["Pie"]
+      },
+      {
+        id: "CH01",
+        name: "CHEER. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/15tmfRh/CHEER1-img4.jpg",
+        model: "CHEER",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "CL01",
+        name: "CHELSEY. The Audition",
+        price: 10,
+        img: "https://i.ibb.co/RkL3MqNJ/CHELSEY1-img2.jpg",
+        model: "CHELSEY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "CT01",
+        name: "CUTIE 1. Do It Better Game",
+        price: 10,
+        img: "https://i.ibb.co/YBNbjmPh/CUTIE1-img3.jpg",
+        model: "CUTIE",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "CT02",
+        name: "CUTIE 2. Feet & Pies",
+        price: 10,
+        img: "https://i.ibb.co/5hJqrXxs/CUTIE2-img2.jpg",
+        model: "CUTIE",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "DL01",
+        name: "DOLL. The Nightmare",
+        price: 10,
+        img: "https://i.ibb.co/HpppT1b2/DOLL1-img3.jpg",
+        model: "DOLL",
+        tags: ["Pie"]
+      },
+      {
+        id: "FT01",
+        name: "FITNESS 1. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/fGZXZxd9/FITNESS1-img3.jpg",
+        model: "FITNESS",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "FT02",
+        name: "FITNESS 2. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/s9ykxZ6D/FITNESS2-img3.jpg",
+        model: "FITNESS",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "FT03",
+        name: "FITNESS 3. Five Questions Game",
+        price: 10,
+        img: "https://i.ibb.co/ycsMTcbM/FITNESS3-img4.jpg",
+        model: "FITNESS",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "GR01",
+        name: "GREY 1. The Audition",
+        price: 10,
+        img: "https://i.ibb.co/YFFHyJzn/GREY1-img3.jpg",
+        model: "GREY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "GR02",
+        name: "GREY 2. Living in a Shaving World",
+        price: 10,
+        img: "https://i.ibb.co/QFf77ppP/GREY2-img3.jpg",
+        model: "GREY",
+        tags: ["Pie"]
+      },
+      {
+        id: "JC01",
+        name: "JACKSON 1. Pie Therapy",
+        price: 10,
+        img: "https://i.ibb.co/Y64yWQP/JACKSON1-img2.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "JC02",
+        name: "JACKSON 2. Birthday Pie Party",
+        price: 10,
+        img: "https://i.ibb.co/wNGvF9mJ/JACKSON2-img3.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "JC03",
+        name: "JACKSON 3. So Clumsy!",
+        price: 10,
+        img: "https://i.ibb.co/qMhDxhzw/JACKSON3-img2.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "JC04",
+        name: "JACKSON 4. Sign Language",
+        price: 10,
+        img: "https://i.ibb.co/fdpBgy3S/JACKSON4-img5.jpg",
+        model: "JACKSON",
+        tags: ["Pie"]
+      },
+      {
+        id: "JC05",
+        name: "JACKSON 5. THE SPLATTER",
+        price: 10,
+        img: "https://i.ibb.co/vxtHgr3z/JACKSON-img3.jpg",
+        model: "JACKSON",
+        tags: ["Pie"]
+      },
+      {
+        id: "JC06",
+        name: "JACKSON 6. Slimy Games",
+        price: 10,
+        img: "https://i.ibb.co/xK3KQt82/JACKSON6-img3.jpg",
+        model: "JACKSON",
+        tags: ["Slime","Laying down"]
+      },
+      {
+        id: "JC07",
+        name: "JACKSON 7. Splat Spa Salon",
+        price: 12,
+        img: "https://i.ibb.co/KjLy8qDz/JACKSON7-img2.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "JC08",
+        name: "JACKSON 8. Extreme Challenge",
+        price: 12,
+        img: "https://i.ibb.co/23pw3gWs/JACKSON8-img5.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "JC09",
+        name: "JACKSON 9. Full Body Shaving Challenge",
+        price: 10,
+        img: "https://i.ibb.co/0ykGhGPL/JACKSON9-img4.jpg",
+        model: "JACKSON"
+      },
+      {
+        id: "JC10",
+        name: "JACKSON 10. New Year 2023 Special",
+        price: 10,
+        img: "https://i.ibb.co/nMSZzDL2/JACKSON10-img2.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "JC11",
+        name: "JACKSON 11. Funny Business",
+        price: 10,
+        img: "https://i.ibb.co/mr3WvbPg/JACKSON11-img4.jpg",
+        model: "JACKSON",
+        tags: ["Pie"]
+      },
+      {
+        id: "JC12",
+        name: "JACKSON 12. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/YSXF76W/JACKSON12-img5.jpg",
+        model: "JACKSON",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "JC13",
+        name: "JACKSON 13. Shave & Shower",
+        price: 10,
+        img: "https://i.ibb.co/JJw14yq/JACKSON13-img2.jpg",
+        model: "JACKSON",
+        tags: ["Shower"]
+      },
+      {
+        id: "JC14",
+        name: "JACKSON 14. The Interrogation",
+        price: 10,
+        img: "https://i.ibb.co/2YCzjnFM/JACKSON14-img3.jpg",
+        model: "JACKSON",
+        tags: ["Pie"]
+      },
+      {
+        id: "JS01",
+        name: "JISU 1. Teaching How To Pie",
+        price: 10,
+        img: "https://i.ibb.co/b5FVtLgL/JISU1-img3.jpg",
+        model: "JISU",
+        tags: ["Pie"]
+      },
+      {
+        id: "JS02",
+        name: "JISU 2. Birthday Party Goes Wrong",
+        price: 10,
+        img: "https://i.ibb.co/7xZngrhC/JISU2-img2.jpg",
+        model: "JISU",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "JS03",
+        name: "JISU 3. Feet & Pies",
+        price: 10,
+        img: "https://i.ibb.co/cS2vCgmc/JISU3-img4.jpg",
+        model: "JISU",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "JN01",
+        name: "JONES 1. What Do You Really Want",
+        price: 10,
+        img: "https://i.ibb.co/3m0wNfBs/JONES1-img2.jpg",
+        model: "JONES",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "JN02",
+        name: "JONES 2. TWELVE GRAPES",
+        price: 10,
+        img: "https://i.ibb.co/353vBynf/JONES2-img4.jpg",
+        model: "JONES",
+        tags: ["Pie"]
+      },
+      {
+        id: "JN03",
+        name: "JONES 3. Dirty Jokes",
+        price: 10,
+        img: "https://i.ibb.co/CsNzB70s/JONES3-img3.jpg",
+        model: "JONES",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "JN04",
+        name: "JONES 4. Feet & Pies",
+        price: 10,
+        img: "https://i.ibb.co/vx3J94XQ/JONES4-img3.jpg",
+        model: "JONES",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "JN05",
+        name: "JONES 5. Messy Christmas",
+        price: 10,
+        img: "https://i.ibb.co/qYKVPxYJ/JONES5-img5.jpg",
+        model: "JONES",
+        tags: ["Pie"]
+      },
+      {
+        id: "KT01",
+        name: "KITTY 1. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/7dPF2pBw/KITTY1-img2.jpg",
+        model: "KITTY",
+        tags: ["Pie"]
+      },
+      {
+        id: "KT02",
+        name: "KITTY 2. Bucket Game",
+        price: 10,
+        img: "https://i.ibb.co/N6DL5R8z/KITTY2-img3.jpg",
+        model: "KITTY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "KT03",
+        name: "KITTY 3. Birthday Pie Party",
+        price: 10,
+        img: "https://i.ibb.co/F4Sr9HMF/KITTY3-img4.jpg",
+        model: "KITTY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "KT04",
+        name: "KITTY 4. Splat Spa Salon",
+        price: 12,
+        img: "https://i.ibb.co/ns2GyCFB/KITTY4-img41.jpg",
+        model: "KITTY",
+        tags: ["Pie","Cream","Laying down"]
+      },
+      {
+        id: "KT05",
+        name: "KITTY 5. Secret Card Game",
+        price: 10,
+        img: "https://i.ibb.co/7ffZF6g/KITTY5-img3.jpg",
+        model: "KITTY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "KT06",
+        name: "KITTY 6. Teaching How To Pie",
+        price: 10,
+        img: "https://i.ibb.co/Jw3PjNbY/KITTY6-img2.jpg",
+        model: "KITTY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "KT07",
+        name: "KITTY 7. KISSING BOOTH",
+        price: 10,
+        img: "https://i.ibb.co/Tq2HmKk2/KITTY7-img4.jpg",
+        model: "KITTY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "LD01",
+        name: "LADY 1. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/hFnvkynR/LADY1-img4.jpg",
+        model: "LADY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "LN01",
+        name: "LUNA 1. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/8D5RRB6Y/LUNA1-img3.jpg",
+        model: "LUNA",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "LN02",
+        name: "LUNA 2. Extreme Challenge",
+        price: 12,
+        img: "https://i.ibb.co/YFDGjwzq/LUNA2-img4.jpg",
+        model: "LUNA",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "MG01",
+        name: "MEGA 1. Pie Therapy",
+        price: 10,
+        img: "https://i.ibb.co/n8n5jkcN/MEGA1-img2.jpg",
+        model: "MEGA",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "MG02",
+        name: "MEGA 2. Bad Jokes",
+        price: 10,
+        img: "https://i.ibb.co/xtPKZQ5f/MEGA2-img4.jpg",
+        model: "MEGA",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "MN01",
+        name: "MOONLIGHT. Extreme Challenge",
+        price: 10,
+        img: "https://i.ibb.co/dRmDX86/MOONLIGHT1-img3.jpg",
+        model: "MOONLIGHT",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "NU01",
+        name: "NURSEY 1. Pies & Chocolate",
+        price: 10,
+        img: "https://i.ibb.co/dsw5RSwg/NURSEY1-img4.jpg",
+        model: "NURSEY",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "NU02",
+        name: "NURSEY 2. Laying Down Nutella Treatment",
+        price: 12,
+        img: "https://i.ibb.co/9mXZm05r/NURSEY1-img3.jpg",
+        model: "NURSEY",
+        tags: ["Cream","Laying down"]
+      },
+      {
+        id: "PK01",
+        name: "POKAR 1. Bad Jokes",
+        price: 10,
+        img: "https://i.ibb.co/TM4XTgvK/POKAR1-img4.jpg",
+        model: "POKAR",
+        tags: ["Pie","Slime","Feet"]
+      },
+      {
+        id: "PK02",
+        name: "POKAR 2. Splat Spa Salon: Though Customer",
+        price: 12,
+        img: "https://i.ibb.co/svpQdZFs/POKAR2-img5.jpg",
+        model: "POKAR",
+        tags: ["Pie","Cream","Laying down"]
+      },
+      {
+        id: "PK03",
+        name: "POKAR 3. Extreme Challenge",
+        price: 12,
+        img: "https://i.ibb.co/jZg1LWQ0/POKAR3-img4.jpg",
+        model: "POKAR",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "PK04",
+        name: "POKAR 4. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/9mKPwJ7D/POKAR4-img2.jpg",
+        model: "POKAR",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "PK05",
+        name: "POKAR 5. The Bounty Hunter",
+        price: 10,
+        img: "https://i.ibb.co/cK4gjW4f/POKAR5-img2.jpg",
+        model: "POKAR",
+        tags: ["Pie"]
+      },
+      {
+        id: "PK06",
+        name: "POKAR 6. The Kissing Booth",
+        price: 10,
+        img: "https://i.ibb.co/WvgfbN12/POKAR6-img4.jpg",
+        model: "POKAR",
+        tags: ["Pie"]
+      },
+      {
+        id: "PW01",
+        name: "POWER 1. Teaching Spanish",
+        price: 10,
+        img: "https://i.ibb.co/27zGDvtZ/POWER1-img2.jpg",
+        model: "POWER",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "PW02",
+        name: "POWER 2. Splat Pastry School",
+        price: 12,
+        img: "https://i.ibb.co/F4RLwYx8/POWER2-img4.jpg",
+        model: "POWER",
+        tags: ["Pie","Cake","Cream","Laying down"]
+      },
+      {
+        id: "PW03",
+        name: "POWER 3. School Girl",
+        price: 10,
+        img: "https://i.ibb.co/gZyW6FPv/POWER3-img5.jpg",
+        model: "POWER",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "SC01",
+        name: "SCHOOL 1. LEARNING PIE IN THE FACE TECHNIQUES",
+        price: 10,
+        img: "https://i.ibb.co/VWs9y5L3/SCHOOL1-img2.jpg",
+        model: "SCHOOL",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "SC02",
+        name: "SCHOOL 2. So Clumsy! Again...",
+        price: 12,
+        img: "https://i.ibb.co/67b1TVG0/SCHOOL2-img2.jpg",
+        model: "SCHOOL",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "SH01",
+        name: "SHAY 1. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/Q7cKk0dT/SHAY1-img4.jpg",
+        model: "SHAY",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "SH02",
+        name: "SHAY 2. Feet & Pies",
+        price: 10,
+        img: "https://i.ibb.co/fYp6XdS2/SHAY2-img5.jpg",
+        model: "SHAY",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "SH03",
+        name: "SHAY 3. So Hungry",
+        price: 10,
+        img: "https://i.ibb.co/Gv9tnx6W/SHAY3-img3.jpg",
+        model: "SHAY",
+        tags: ["Pie"]
+      },
+      {
+        id: "SK01",
+        name: "SKYE. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/Sw3VK57Y/SKYE1-img2.jpg",
+        model: "SKYE",
+        tags: ["Pie"]
+      },
+      {
+        id: "SM01",
+        name: "SOMER 1. Do It Better Game",
+        price: 10,
+        img: "https://i.ibb.co/FkNmjWW4/SOMER1-img2.jpg",
+        model: "SOMER",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "SM02",
+        name: "SOMER 2. Keep Quiet",
+        price: 10,
+        img: "https://i.ibb.co/NnG3vhmv/SOMER2-img2.jpg",
+        model: "SOMER",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "ST01",
+        name: "STREET. Splat Modeling",
+        price: 10,
+        img: "https://i.ibb.co/CK3PXzfP/STREET1-img2.jpg",
+        model: "STREET",
+        tags: ["Pie"]
+      },
+      {
+        id: "SU01",
+        name: "SUMMER. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/xSWrV6CG/SUMMER1-img5.jpg",
+        model: "SUMMER",
+        tags: ["Pie"]
+      },
+      {
+        id: "SP01",
+        name: "SUPERMOON 1. Messy Challenge",
+        price: 10,
+        img: "https://i.ibb.co/cK1wD387/SUPERMOON1-img5.jpg",
+        model: "SUPERMOON",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "SP02",
+        name: "SUPERMOON 2. Birthday Pie Party",
+        price: 10,
+        img: "https://i.ibb.co/rGjWMfpN/SUPERMOON2-img2.jpg",
+        model: "SUPERMOON",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "SW01",
+        name: "SWEETY 1. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/Ldnm1vNM/SWEETY1-img3.jpg",
+        model: "SWEETY",
+        tags: ["Pie"]
+      },
+      {
+        id: "SW02",
+        name: "SWEETY 2. Valentine's Day Surprise",
+        price: 10,
+        img: "https://i.ibb.co/h5vQ1Lw/SWEETY2-img4.jpg",
+        model: "SWEETY",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "SW03",
+        name: "SWEETY 3. Pies & Cakes",
+        price: 10,
+        img: "https://i.ibb.co/XrtDbXZX/SWEETY3-img4.jpg",
+        model: "SWEETY",
+        tags: ["Pie","Cake","Feet"]
+      },
+      {
+        id: "SW04",
+        name: "SWEETY 4. Shaving Cream Fun",
+        price: 10,
+        img: "https://i.ibb.co/mFXHC9hd/SWEETY4-img4.jpg",
+        model: "SWEETY",
+        tags: ["Pie"]
+      },
+      {
+        id: "SW05",
+        name: "SWEETY 5. Creamy Facial Traitment",
+        price: 12,
+        img: "https://i.ibb.co/F48ZHvzf/SWEETY5-img4.jpg",
+        model: "SWEETY",
+        tags: ["Cream","Laying down"]
+      },
+      {
+        id: "TN01",
+        name: "TINY. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/C3yqs7ss/TINY1-img2.jpg",
+        model: "TINY",
+        tags: ["Pie"]
+      },
+      {
+        id: "VN01",
+        name: "VENUS 1. Pie Challenge",
+        price: 10,
+        img: "https://i.ibb.co/dwDwfRML/VENUS1-img2.jpg",
+        model: "VENUS",
+        tags: ["Pie"]
+      },
+      {
+        id: "VN02",
+        name: "VENUS 2. Birthday Pie Party",
+        price: 10,
+        img: "https://i.ibb.co/kgWNstHY/VENUS2-img5.jpg",
+        model: "VENUS",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "VN03",
+        name: "VENUS 3. Something New",
+        price: 10,
+        img: "https://i.ibb.co/qYwwBYzT/VENUS3-img3.jpg",
+        model: "VENUS",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "VN04",
+        name: "VENUS 4. So Hot",
+        price: 12,
+        img: "https://i.ibb.co/v6cjKtcx/VENUS4-img3.jpg",
+        model: "VENUS",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "VN05",
+        name: "VENUS 5. Funny Business",
+        price: 10,
+        img: "https://i.ibb.co/0RLBNskG/VENUS5-img3.jpg",
+        model: "VENUS",
+        tags: ["Pie"]
+      },
+      {
+        id: "VN06",
+        name: "VENUS 6. Clown Prank",
+        price: 10,
+        img: "https://i.ibb.co/wFDQyWbZ/VENUS6-img3.jpg",
+        model: "VENUS",
+        tags: ["Pie"]
+      },
+      {
+        id: "VN07",
+        name: "VENUS 7. Perfect Clowning",
+        price: 10,
+        img: "https://i.ibb.co/DgmtWF9w/VENUS7-img5.jpg",
+        model: "VENUS",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "VN08",
+        name: "VENUS 8. The Paralize Horn",
+        price: 10,
+        img: "https://i.ibb.co/rR9p7VDb/VENUS8-img2.jpg",
+        model: "VENUS",
+        tags: ["Pie"]
+      },
+      {
+        id: "VN09",
+        name: "VENUS 9. Laying Down Challenge",
+        price: 10,
+        img: "https://i.ibb.co/d486sF7w/VENUS9-img3.jpg",
+        model: "VENUS",
+        tags: ["Pie","Cake","Laying down"]
+      },
+      {
+        id: "WD01",
+        name: "WONDER 1. Birthday Wish",
+        price: 10,
+        img: "https://i.ibb.co/ycrqvkQ1/WONDER1-img4.jpg",
+        model: "WONDER",
+        tags: ["Pie","Feet"]
+      },
+      {
+        id: "WD02",
+        name: "WONDER 2. The Wizard's Apprentice",
+        price: 10,
+        img: "https://i.ibb.co/wh2c4HMF/WONDER2-img3.jpg",
+        model: "WONDER",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "WD03",
+        name: "WONDER 3. The Splatter's Joke, part 1",
+        price: 10,
+        img: "https://i.ibb.co/pvTkvG94/WONDER3-img4.jpg",
+        model: "WONDER",
+        tags: ["Pie","Laying down"]
+      },
+      {
+        id: "WD04",
+        name: "WONDER 4. Slimy Games",
+        price: 10,
+        img: "https://i.ibb.co/NdwBdmDs/WONDER4-img2.jpg",
+        model: "WONDER",
+        tags: ["Slime","Laying down"]
+      },
+      {
+        id: "WD05",
+        name: "WONDER 5. Valentine's Day",
+        price: 10,
+        img: "https://i.ibb.co/V7VgYkh/WONDER5-img5.jpg",
+        model: "WONDER",
+        tags: ["Pie"]
+      },
+      {
+        id: "WD06",
+        name: "WONDER 6. Birthday Surprise",
+        price: 10,
+        img: "https://i.ibb.co/mj5Z3W2/WONDER6-img4.jpg",
+        model: "WONDER",
+        tags: ["Cake"]
+      },
+      {
+        id: "WD07",
+        name: "WONDER 7. The Splatter's Joke, part 2",
+        price: 10,
+        img: "https://i.ibb.co/9JDCgnq/WONDER7-img5.jpg",
+        model: "WONDER",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "WD08",
+        name: "WONDER 8. The Good Customer",
+        price: 10,
+        img: "https://i.ibb.co/4R0jbNP5/WONDER8-img5.jpg",
+        model: "WONDER",
+        tags: ["Pie","Cake","Slime"]
+      },
+      {
+        id: "WD09",
+        name: "WONDER 9. Clumsy Girl",
+        price: 10,
+        img: "https://i.ibb.co/0pSYts9R/WONDER9-img3.jpg",
+        model: "WONDER",
+        tags: ["Laying down","Slime"]
+      },
+      {
+        id: "WD10",
+        name: "WONDER 10. Clown vs Mime",
+        price: 10,
+        img: "https://i.ibb.co/gbQFdZHB/WONDER10-img5.jpg",
+        model: "WONDER",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "GP01",
+        name: "GROUP 1. Super Girls Pie Game (Wonder, Power & Mega)",
+        price: 10,
+        img: "https://i.ibb.co/67HjDdK0/GROUP1-img5.jpg",
+        model: "GROUP",
+        tags: ["Pie"]
+      },
+      {
+        id: "GP02",
+        name: "GROUP 2. New Year 2021 Special (Wonder & Extreme)",
+        price: 10,
+        img: "https://i.ibb.co/XffKnrWZ/GROUP2-img4.jpg",
+        model: "GROUP",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "GP03",
+        name: "GROUP 3. The Nightmare (Street & Jackson)",
+        price: 10,
+        img: "https://i.ibb.co/1tRXYRw6/GROUP3-img2.jpg",
+        model: "GROUP",
+        tags: ["Pie"]
+      },
+      {
+        id: "GP04",
+        name: "GROUP 4. Mirror Match (Mega & Butterfly)",
+        price: 10,
+        img: "https://i.ibb.co/rKKf0YVd/GROUP4-img3.jpg",
+        model: "GROUP",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "GP05",
+        name: "GROUP 5. New Year 2022 Special (Jisu & Venus)",
+        price: 10,
+        img: "https://i.ibb.co/ccvTLtdR/GROUP5-img2.jpg",
+        model: "GROUP",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "GP06",
+        name: "GROUP 6. How To Make a Cake (Wonder & Somer)",
+        price: 10,
+        img: "https://i.ibb.co/CybNwvF/GROUP6-img2.jpg",
+        model: "GROUP",
+        tags: ["Cake"]
+      },
+      {
+        id: "GP07",
+        name: "GROUP 7. Party Pie Fight (Jackson & Fitness)",
+        price: 10,
+        img: "https://i.ibb.co/Rp03K58k/GROUP7-img2.jpg",
+        model: "GROUP",
+        tags: ["Pie","Cake"]
+      },
+      {
+        id: "GP08",
+        name: "GROUP 8. The Fundraiser (Jackson & Jisu)",
+        price: 10,
+        img: "https://i.ibb.co/YBVj0tYH/GROUP8-img3.jpg",
+        model: "GROUP",
+        tags: ["Pie","Slime"]
+      },
+      {
+        id: "GP09",
+        name: "GROUP 9. Cherry On The Pie (Jackson, Wonder, Shay & Baby)",
+        price: 10,
+        img: "https://i.ibb.co/Kj4J4jMs/GROUP9-img3.jpg",
+        model: "GROUP",
+        tags: ["Pie"]
+      },
+      {
+        id: "GP10",
+        name: "GROUP 10. History Of Slapstick (Jackson, Jisu & Shay)",
+        price: 10,
+        img: "https://i.ibb.co/MkkFkW26/GROUP10-img3.jpg",
+        model: "GROUP",
+        tags: ["Pie"]
+      }
+
+    ];
+
+    /* ===== TAG STATE ===== */
+    let activeTags = new Set();
+
+    function getFilteredVideos() {
+      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      return videos.filter(v => {
+        const matchSearch = !q || v.name.toLowerCase().includes(q) || v.model.toLowerCase().includes(q) || v.id.toLowerCase().includes(q);
+        const matchTags = activeTags.size === 0 || [...activeTags].every(t => v.tags && v.tags.includes(t));
+        return matchSearch && matchTags;
+      });
+    }
+
+    /* ===== BUILD INDEX ===== */
+    const PAGE_SIZE = 30;
+    let currentList = [];
+    let currentPage = 0;
+
+    function buildGrid(list) {
+      const grid = document.getElementById('video-grid');
+      const noResults = document.getElementById('no-results');
+      const countEl = document.getElementById('search-count');
+      const showMoreWrap = document.getElementById('show-more-wrap');
+      const query = document.getElementById('search-input').value.trim();
+
+      if (!list) list = getFilteredVideos();
+      currentList = list;
+      currentPage = 0;
+
+      if (list.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        showMoreWrap.style.display = 'none';
+        document.getElementById('no-results-query').textContent = query || [...activeTags].join(', ');
+        countEl.textContent = '0 videos';
+        return;
+      }
+
+      noResults.style.display = 'none';
+      const hasFilter = query || activeTags.size > 0;
+      countEl.textContent = hasFilter ? `${list.length} video${list.length > 1 ? 's' : ''}` : '';
+
+      const page = list.slice(0, PAGE_SIZE);
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      page.forEach(v => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderCards([v]);
+        frag.appendChild(tmp.firstElementChild);
+      });
+      grid.appendChild(frag);
+      showMoreWrap.style.display = list.length > PAGE_SIZE ? 'flex' : 'none';
+    }
+
+    function renderCards(items) {
+      return items.map(v => `
+        <a class="card" href="${v.id}.html">
+          <img class="card-thumb" src="${v.img}" alt="${v.name}" loading="lazy" />
+          <div class="card-body">
+            <div class="card-title">${v.name}</div>
+            <div class="card-footer">
+              <span class="card-price">$${v.price} USD</span>
+              <button class="btn-see-more" data-id="${v.id}" data-name="${v.name.replace(/"/g, '&quot;')}" data-price="${v.price}" data-img="${v.img}" onclick="handleAddToCart(event, this)">Add to Cart</button>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function handleAddToCart(e, btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      SplatCart.add({
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+      });
+      const originalText = btn.textContent;
+      btn.textContent = 'Added';
+      btn.classList.add('added');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('added');
+      }, 1200);
+    }
+
+    function showMore() {
+      currentPage++;
+      const grid = document.getElementById('video-grid');
+      const showMoreWrap = document.getElementById('show-more-wrap');
+      const start = currentPage * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const nextItems = currentList.slice(start, end);
+      const frag = document.createDocumentFragment();
+      nextItems.forEach(v => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderCards([v]);
+        frag.appendChild(tmp.firstElementChild);
+      });
+      grid.appendChild(frag);
+      showMoreWrap.style.display = currentList.length > end ? 'flex' : 'none';
+    }
+
+    /* ===== SEARCH ===== */
+    function handleSearch(value) {
+      const clearBtn = document.getElementById('search-clear');
+      clearBtn.style.display = value.length > 0 ? 'block' : 'none';
+      buildGrid(getFilteredVideos());
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('search-input');
+      input.value = '';
+      document.getElementById('search-clear').style.display = 'none';
+      buildGrid(getFilteredVideos());
+      input.focus();
+    }
+
+    /* ===== TAGS ===== */
+    function toggleTagsDropdown() {
+      const dropdown = document.getElementById('tags-dropdown');
+      const btn = document.getElementById('tags-btn');
+      dropdown.classList.toggle('open');
+      btn.classList.toggle('active');
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    function applyTags() {
+      activeTags = new Set(
+        [...document.querySelectorAll('.tag-chip.selected')].map(el => el.dataset.tag)
+      );
+      const badge = document.getElementById('tags-badge');
+      if (activeTags.size > 0) {
+        badge.style.display = 'inline-flex';
+        badge.textContent = activeTags.size;
+      } else {
+        badge.style.display = 'none';
+      }
+      document.getElementById('tags-dropdown').classList.remove('open');
+      document.getElementById('tags-btn').classList.remove('active');
+      buildGrid(getFilteredVideos());
+    }
+
+    function clearTags() {
+      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+      activeTags.clear();
+      document.getElementById('tags-badge').style.display = 'none';
+      buildGrid(getFilteredVideos());
+    }
+
+    // Init
+    buildGrid();
+    function toggleBurger() {
+      const menu = document.getElementById('burger-menu');
+      const overlay = document.getElementById('sidebar-overlay');
+      menu.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    function closeBurger() {
+      document.getElementById('burger-menu').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+    }
+
+    // Hide search bar on scroll down, show on scroll up
+    (function() {
+      let lastY = 0;
+      window.addEventListener('scroll', function() {
+        const bar = document.querySelector('.search-bar-wrap');
+        if (!bar) return;
+        const currentY = window.scrollY;
+        if (currentY > lastY && currentY > 80) {
+          bar.classList.add('hidden');
+          document.getElementById('tags-dropdown').classList.remove('open');
+          document.getElementById('tags-btn').classList.remove('active');
+        } else {
+          bar.classList.remove('hidden');
+        }
+        lastY = currentY;
+      }, { passive: true });
+    })();
+    document.addEventListener('click', function(e) {
+      const tagsWrap = document.getElementById('tags-wrap');
+      if (tagsWrap && !tagsWrap.contains(e.target)) {
+        document.getElementById('tags-dropdown').classList.remove('open');
+        document.getElementById('tags-btn').classList.remove('active');
+      }
+    });
+  </script>
+
+  <footer class="site-footer">
+    <p>
+      <a href="mailto:splaymessydares@gmail.com">Email</a> |
+      <a href="https://www.instagram.com/splat_messy_dares" target="_blank" rel="noopener noreferrer">Instagram</a> |
+      <a href="https://umd.net/splatmessydares" target="_blank" rel="noopener noreferrer">UMD</a> |
+      <a href="https://www.paypal.com/paypalme/splatmessydares" target="_blank" rel="noopener noreferrer">PayPal</a>
+    </p>
+    <p>© 2026 SPLAT. All rights reserved.</p>
+    <p style="margin-top:8px; font-size:11px;">All videos are sold for personal use only. Unauthorized reproduction or redistribution is prohibited.</p>
+  </footer>
+
+  <script src="cart.js"></script>
+</body>
+</html>
